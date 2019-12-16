@@ -47,25 +47,24 @@
             sid = "SERVER_ID"
             extra_def_file = "DIRECTORY_PATH/myextra.cfg"
 
-            NOTE 1:  Include the cfg_file even if running remotely as the
-                file will be used in future releases.
+        NOTE 1:  Include the cfg_file even if running remotely as the file will
+            be used in future releases.
 
-            NOTE 2:  In MySQL 5.6 - it now gives warning if password is
-                passed on the command line.  To suppress this warning, will
-                require the use of the --defaults-extra-file option
-                (i.e. extra_def_file) in the database configuration file.
-                See below for the defaults-extra-file format.
+        NOTE 2:  In MySQL 5.6 - it now gives warning if password is passed on
+            the command line.  To suppress this warning, will require the use
+            of the --defaults-extra-file option (i.e. extra_def_file) in the
+            database configuration file.  See below for the defaults-extra-file
+            format.
 
-            configuration modules -> name is runtime dependent as it can be
-                used to connect to different databases with different names.
+        configuration modules -> name is runtime dependent as it can be used to
+            connect to different databases with different names.
 
-            Defaults Extra File format (mysql.cfg):
-            [client]
-            password="ROOT_PASSWORD"
-            socket="DIRECTORY_PATH/mysql.sock"
+        Defaults Extra File format (mysql.cfg):
+        password="ROOT_PASSWORD"
+        socket="DIRECTORY_PATH/mysql.sock"
 
-            NOTE:  The socket information can be obtained from the my.cnf
-                file under ~/mysql directory.
+        NOTE:  The socket information can be obtained from the my.cnf file
+            under ~/mysql directory.
 
     Example:
         mysql_log_admin.py -c database -d config -L
@@ -91,7 +90,6 @@ import mysql_lib.mysql_libs as mysql_libs
 import mysql_lib.mysql_class as mysql_class
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -110,7 +108,7 @@ def help_message():
 
 
 def fetch_binlog(SERVER, start_dt=None, stop_dt=None, binlog_files=None,
-                 opt_arg_list=None, bin_path=None):
+                 opt_arg_list=None, bin_path=None, **kwargs):
 
     """Function:  fetch_binlog
 
@@ -153,7 +151,7 @@ def fetch_binlog(SERVER, start_dt=None, stop_dt=None, binlog_files=None,
 
 
 def find_dt_pos(MASTER, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
-                SLAVE=None):
+                SLAVE=None, **kwargs):
 
     """Function:  find_dt_pos
 
@@ -233,8 +231,6 @@ def fetch_log_pos(SERVER, args_array, opt_arg_list=None, **kwargs):
         (input) SERVER -> Server instance.
         (input) args_array -> Array of command line options and values.
         (input) opt_arg_list ->  Arguments to be added to command line.
-        (input) **kwargs:
-            None
 
     """
 
@@ -256,8 +252,6 @@ def fetch_log_entries(SERVER, args_array, opt_arg_list, **kwargs):
         (input) SERVER -> Server instance.
         (input) args_array -> Array of command line options and values.
         (input) opt_arg_list ->  Arguments to be added to command line.
-        (input) **kwargs:
-            None
 
     """
 
@@ -269,7 +263,7 @@ def fetch_log_entries(SERVER, args_array, opt_arg_list, **kwargs):
         print(x, end="")
 
 
-def process_logs_list(SERVER, args_array):
+def process_logs_list(SERVER, args_array, **kwargs):
 
     """Function:  process_logs_list
 
@@ -329,8 +323,6 @@ def load_log(SERVER, args_array, opt_arg_list, **kwargs):
         (input) SERVER -> Server instance.
         (input) args_array -> Array of command line options and values.
         (input) opt_arg_list ->  Arguments to be added to command line.
-        (input) **kwargs:
-            None
 
     """
 
@@ -354,7 +346,7 @@ def load_log(SERVER, args_array, opt_arg_list, **kwargs):
     cmds_gen.disconnect(SERVER, TARGET)
 
 
-def run_program(args_array, func_dict, opt_arg_list):
+def run_program(args_array, func_dict, opt_arg_list, **kwargs):
 
     """Function:  run_program
 

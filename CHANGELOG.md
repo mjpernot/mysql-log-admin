@@ -4,8 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.1.0] - 2019-12-16
+### Changed
+- Documentation updates.
+
+
 ## [2.0.1] - 2018-12-03
 ### Changed
+- Added \*\*kwargs to those function parameter lists without the keyword argument capability.
 - fetch_binlog:  Changed check on binlog_files to be user readable.
 
 
