@@ -38,7 +38,7 @@ Breaking Change
 
 ## [1.7.0] - 2017-08-21
 ### Changed
-- Help_Message:  Replace docstring with printing the programs __doc__.
+- Help_Message:  Replace docstring with printing the programs \_\_doc\_\_.
 - Change single quotes to double quotes.
 - Convert program to use local libraries from ./lib directory.
 
@@ -84,8 +84,8 @@ Breaking Change
 
 ## [1.1.0] - 2016-01-07
 ### Changed
-- Fetch_Log_Entries:  Added **kwargs to argument list to allow for future use of additional arguments to the function.
-- Fetch_Log_Pos:  Added **kwargs to argument list to allow for future use of additional arguments to the function.
+- Fetch_Log_Entries:  Added \*\*kwargs to argument list to allow for future use of additional arguments to the function.
+- Fetch_Log_Pos:  Added \*\*kwargs to argument list to allow for future use of additional arguments to the function.
 - Fetch_Binlog:  Removed extranous print command from function, left over from original testing phase.
 - main:  Added new variable to hold function calls to the validity functions.
 - main:  Added function call to Arg_Validate to check the validity of the data in some of the arguments.
