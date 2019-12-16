@@ -3,5 +3,7 @@
 *.swp
 *.HOLD
 coverage.xml
+config/*.py
+config/*.cfg
 lib
 mysql_lib
