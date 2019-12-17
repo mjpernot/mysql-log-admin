@@ -95,7 +95,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
-        test_end_dt -> Test with end_dt argument passed.
+        test_stop_dt -> Test with stop_dt argument passed.
         test_start_dt -> Test with start_dt argument passed.
         test_opt_arg_list -> Test with opt_arg_list argument passed.
         test_binlog_files -> Test with binlog_files argument passed.
@@ -123,11 +123,11 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
-    def test_end_dt(self, mock_sub, mock_fetch):
+    def test_stop_dt(self, mock_sub, mock_fetch):
 
-        """Function:  test_end_dt
+        """Function:  test_stop_dt
 
-        Description:  Test with end_dt argument passed.
+        Description:  Test with stop_dt argument passed.
 
         Arguments:
 
@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.binlog_files
 
         dataout = mysql_log_admin.fetch_binlog(
-            self.server, bin_path="./", start_dt=self.start_dt)
+            self.server, bin_path="./", stop_dt=self.stop_dt)
 
         self.assertEqual([x for x in dataout], self.filehandler)
 
