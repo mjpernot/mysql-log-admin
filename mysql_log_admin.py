@@ -163,7 +163,7 @@ def find_dt_pos(MASTER, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     Arguments:
         (input) MASTER -> Server instance or Master, if Slave present.
         (input) start_dt -> Start datetime.
-        (input) stop_dr -> Stop datetime.
+        (input) stop_dt -> Stop datetime.
         (input) opt_arg_list ->  Arguments to be added to command line.
         (input) SLAVE -> Slave server instance.
         (output) -> Position class (file, pos).
