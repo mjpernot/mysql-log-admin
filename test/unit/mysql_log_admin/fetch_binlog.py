@@ -205,7 +205,7 @@ class UnitTest(unittest.TestCase):
 
         """Function:  test_binpath
 
-        Description:  Test with bin_path set to None.
+        Description:  Test with bin_path argument passed.
 
         Arguments:
 
