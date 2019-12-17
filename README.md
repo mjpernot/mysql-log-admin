@@ -158,9 +158,10 @@ pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host
 ### Unit testing:
 ```
 cd {Python_Project}/mysql-log-admin
+test/unit/mysql_log_admin/fetch_binlog.py
 test/unit/mysql_log_admin/help_message.py
-test/unit/mysql_log_admin/run_program.py
 test/unit/mysql_log_admin/main.py
+test/unit/mysql_log_admin/run_program.py
 ```
 
 ### All unit testing
