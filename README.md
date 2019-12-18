@@ -159,6 +159,7 @@ pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host
 ```
 cd {Python_Project}/mysql-log-admin
 test/unit/mysql_log_admin/fetch_binlog.py
+test/unit/mysql_log_admin/fetch_log_pos.py
 test/unit/mysql_log_admin/find_dt_pos.py
 test/unit/mysql_log_admin/help_message.py
 test/unit/mysql_log_admin/main.py
