@@ -25,6 +25,7 @@ else:
 
 # Third-party
 import mock
+import re
 
 # Local
 sys.path.append(os.getcwd())
@@ -72,6 +73,9 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_match_query -> Test with group match is query.
+        test_match_start -> Test with group match is start of line.
+        test_crc_32_match -> Test with CRC set to CRC32 and re.match.
         test_crc_none -> Test with CRC set to None.
         test_crc_32 -> Test with CRC set to CRC32.
         test_fetch_binlog_data -> Test with list from fetch_binlog.
@@ -99,6 +103,75 @@ class UnitTest(unittest.TestCase):
         self.start_dt = "start_datetime_format"
         self.stop_dt = "end_datetime_format"
         self.fetch_log = ["data line here"]
+
+        self.m1 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
+        self.m2 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
+
+    @mock.patch("mysql_log_admin.mysql_class.Position",
+                mock.Mock(return_value="Position"))
+    @mock.patch("mysql_log_admin.re.match")
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_match_query(self, mock_fetch, mock_binlog, mock_match):
+
+        """Function:  test_match_query
+
+        Description:  Test with group match is query.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.binlog_files
+        mock_binlog.return_value = self.fetch_log
+        mock_match.return_value = self.m2
+
+        self.assertEqual(mysql_log_admin.find_dt_pos(
+            self.master, self.start_dt, self.stop_dt), "Position")
+
+    @mock.patch("mysql_log_admin.mysql_class.Position",
+                mock.Mock(return_value="Position"))
+    @mock.patch("mysql_log_admin.re.match")
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_match_start(self, mock_fetch, mock_binlog, mock_match):
+
+        """Function:  test_match_start
+
+        Description:  Test with group match is start of line.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.binlog_files
+        mock_binlog.return_value = self.fetch_log
+        mock_match.return_value = self.m1
+
+        self.assertEqual(mysql_log_admin.find_dt_pos(
+            self.master, self.start_dt, self.stop_dt), "Position")
+
+    @mock.patch("mysql_log_admin.mysql_class.Position",
+                mock.Mock(return_value="Position"))
+    @mock.patch("mysql_log_admin.re.match")
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_crc_32_match(self, mock_fetch, mock_binlog, mock_match):
+
+        """Function:  test_crc_32_match
+
+        Description:  Test with CRC set to CRC32 and re.match.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.binlog_files
+        mock_binlog.return_value = self.fetch_log
+        mock_match.return_value = self.m1
+
+        self.assertEqual(mysql_log_admin.find_dt_pos(
+            self.master, self.start_dt, self.stop_dt), "Position")
 
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
