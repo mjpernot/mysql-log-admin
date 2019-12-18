@@ -59,7 +59,6 @@ class Server(object):
 
         self.extra_def_file = None
         self.sql_user = "mysql"
-        self.sql_pass = "pwd"
         self.host = "hostname"
         self.port = 3306
         self.crc = "CRC32"
