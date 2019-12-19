@@ -311,7 +311,7 @@ def process_logs_list(SERVER, args_array, **kwargs):
     return binlog_list
 
 
-def load_log(SERVER, args_array, opt_arg_list, **kwargs):
+def load_log(server, args_array, opt_arg_list, **kwargs):
 
     """Function:  load_log
 
@@ -320,30 +320,27 @@ def load_log(SERVER, args_array, opt_arg_list, **kwargs):
         database before closing all connections.
 
     Arguments:
-        (input) SERVER -> Server instance.
+        (input) server -> Server instance.
         (input) args_array -> Array of command line options and values.
         (input) opt_arg_list ->  Arguments to be added to command line.
 
     """
 
-    binlog_list = process_logs_list(SERVER, args_array)
-
-    TARGET = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
+    binlog_list = process_logs_list(server, args_array)
+    target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
                                         mysql_class.Server)
+    cmd = mysql_libs.crt_cmd(
+        target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
 
-    cmd = mysql_libs.crt_cmd(TARGET,
-                             arg_parser.arg_set_path(args_array, "-p") +
-                             "mysql")
-
-    # Fetch binary logs (SERVER) and restore to destination database (TARGET)
+    # Fetch binary logs (server) and restore to destination database (target)
     #   Wait until the load process has completed, before continuing.
-    P1 = fetch_binlog(SERVER, args_array.get("-s"), args_array.get("-t"),
+    P1 = fetch_binlog(server, args_array.get("-s"), args_array.get("-t"),
                       binlog_list, opt_arg_list,
                       arg_parser.arg_set_path(args_array, "-p"))
     P2 = subprocess.Popen(cmd, stdin=P1)
     P2.wait()
 
-    cmds_gen.disconnect(SERVER, TARGET)
+    cmds_gen.disconnect(server, target)
 
 
 def run_program(args_array, func_dict, opt_arg_list, **kwargs):
@@ -361,7 +358,6 @@ def run_program(args_array, func_dict, opt_arg_list, **kwargs):
 
     server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mysql_class.Server)
-
     server.connect()
     server.set_srv_binlog_crc()
 
