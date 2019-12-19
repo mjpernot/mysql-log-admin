@@ -314,7 +314,7 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_xor_dict.return_value = True
         mock_arg.arg_dir_chk_crt.return_value = False
         mock_arg.arg_validate.return_value = True
-        mock_arg.arg_cond_req.return_value = False
+        mock_arg.arg_cond_req.return_value = True
         mock_run.return_value = True
 
         self.assertFalse(mysql_log_admin.main())
