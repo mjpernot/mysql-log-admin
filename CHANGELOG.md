@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.1.0] - 2019-12-16
 ### Changed
+- fetch_log_pos: Changed variable name to standard convention.
 - fetch_log_entries: Changed variable name to standard convention.
 - process_logs_list: Changed variable name to standard convention.
 - load_log: Changed variable name to standard convention.

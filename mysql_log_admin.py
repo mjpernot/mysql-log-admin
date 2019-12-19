@@ -220,7 +220,7 @@ def find_dt_pos(MASTER, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     return mysql_class.Position(log_files[num_files - 1], last_log_pos)
 
 
-def fetch_log_pos(SERVER, args_array, opt_arg_list=None, **kwargs):
+def fetch_log_pos(server, args_array, opt_arg_list=None, **kwargs):
 
     """Function:  fetch_log_pos
 
@@ -228,14 +228,14 @@ def fetch_log_pos(SERVER, args_array, opt_arg_list=None, **kwargs):
         start and stop datetimes.
 
     Arguments:
-        (input) SERVER -> Server instance.
+        (input) server -> Server instance.
         (input) args_array -> Array of command line options and values.
         (input) opt_arg_list ->  Arguments to be added to command line.
 
     """
 
     # Get Position class from file and log position.
-    pos = find_dt_pos(SERVER, args_array.get("-s"), args_array.get("-t"),
+    pos = find_dt_pos(server, args_array.get("-s"), args_array.get("-t"),
                       opt_arg_list, arg_parser.arg_set_path(args_array, "-p"))
 
     print("Filename: {0}, Position: {1}".format(pos.file, pos.pos))
