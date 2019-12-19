@@ -277,9 +277,12 @@ def process_logs_list(server, args_array, **kwargs):
 
     """
 
+    args_array = dict(args_array)
+
     # Is -f and -g in the argument list and in the correct order.
     if ("-f" in args_array and "-g" in args_array) \
        and args_array["-g"] < args_array["-f"]:
+
         sys.exit("Error:  Option -g: '%s' is before -f '%s'." %
                  (args_array["-g"], args_array["-f"]))
 
@@ -287,7 +290,6 @@ def process_logs_list(server, args_array, **kwargs):
                                        "Log_name")
 
     if "-f" in args_array and args_array["-f"] in binlog_list:
-
         # Remove any logs before log file name.
         while binlog_list[0] < args_array["-f"]:
             binlog_list.pop(0)
@@ -298,7 +300,6 @@ def process_logs_list(server, args_array, **kwargs):
                  (args_array["-f"]))
 
     if "-g" in args_array and args_array["-g"] in binlog_list:
-
         # Remove any logs after log file name.
         while binlog_list[-1] > args_array["-g"]:
             binlog_list.pop(-1)
