@@ -241,7 +241,7 @@ def fetch_log_pos(SERVER, args_array, opt_arg_list=None, **kwargs):
     print("Filename: {0}, Position: {1}".format(pos.file, pos.pos))
 
 
-def fetch_log_entries(SERVER, args_array, opt_arg_list, **kwargs):
+def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
 
     """Function:  fetch_log_entries
 
@@ -249,13 +249,13 @@ def fetch_log_entries(SERVER, args_array, opt_arg_list, **kwargs):
         and stop datetimes.
 
     Arguments:
-        (input) SERVER -> Server instance.
+        (input) server -> Server instance.
         (input) args_array -> Array of command line options and values.
         (input) opt_arg_list ->  Arguments to be added to command line.
 
     """
 
-    lines = fetch_binlog(SERVER, args_array.get("-s"), args_array.get("-t"),
+    lines = fetch_binlog(server, args_array.get("-s"), args_array.get("-t"),
                          opt_arg_list=opt_arg_list,
                          bin_path=arg_parser.arg_set_path(args_array, "-p"))
 
