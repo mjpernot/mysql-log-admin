@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.1.0] - 2019-12-16
 ### Fixed
+- fetch_binlog:  Fixed problem with mutable default arguments issue.
 - find_dt_pos:  Fixed problem with mutable default arguments issue.
 - fetch_log_pos:  Fixed problem with mutable default arguments issue.
 - fetch_log_entries:  Fixed problem with mutable default arguments issue.

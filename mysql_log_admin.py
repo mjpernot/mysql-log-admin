@@ -127,15 +127,23 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
     """
 
+    if opt_arg_list is None:
+        opt_arg_list = list()
+
+    else:
+        opt_arg_list = list(opt_arg_list)
+
     if binlog_files is None:
         # List of current binary logs.
         binlog_files = [row["Log_name"]
                         for row in mysql_libs.fetch_logs(server)]
 
+    else:
+        binlog_files = list(binlog_files)
+
     cmd = mysql_libs.crt_cmd(server, bin_path + "mysqlbinlog")
 
     if opt_arg_list:
-
         for arg in opt_arg_list:
             cmd = cmds_gen.add_cmd(cmd, arg=arg)
 
@@ -172,6 +180,9 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
     if opt_arg_list is None:
         opt_arg_list = list()
+
+    else:
+        opt_arg_list = list(opt_arg_list)
 
     # List of current binary log names.
     log_files = [row["Log_name"] for row in mysql_libs.fetch_logs(master)]
@@ -240,6 +251,9 @@ def fetch_log_pos(server, args_array, opt_arg_list=None, **kwargs):
 
     if opt_arg_list is None:
         opt_arg_list = list()
+
+    else:
+        opt_arg_list = list(opt_arg_list)
 
     # Get Position class from file and log position.
     pos = find_dt_pos(server, args_array.get("-s"), args_array.get("-t"),
