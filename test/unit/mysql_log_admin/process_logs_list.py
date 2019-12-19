@@ -70,7 +70,12 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
-        test_no_binlogs -> Test with no binary logs detected.
+        test_last_missing -> Test with last argument missing in binlog list.
+        test_last_only -> Test with last argument only.
+        test_first_missing -> Test with first argument missing in binlog list.
+        test_first_only -> Test with first argument only.
+        test_last_first -> Test with last before first passed.
+        test_first_last -> Test with first and last arguments passed.
         test_process_logs_list -> Test with only default arguments passed.
 
     """
@@ -87,6 +92,11 @@ class UnitTest(unittest.TestCase):
 
         self.server = Server()
         self.args_array = {"-f": "binlog-08", "-g": "binlog-10"}
+        self.args_array2 = {"-f": "binlog-09", "-g": "binlog-08"}
+        self.args_array3 = {"-f": "binlog-08"}
+        self.args_array4 = {"-g": "binlog-10"}
+        self.args_array5 = {"-f": "binlog-01"}
+        self.args_array6 = {"-g": "binlog-12"}
         self.fetch_logs = [{"Log_name": "binlog-07"},
                            {"Log_name": "binlog-08"},
                            {"Log_name": "binlog-09"},
@@ -95,6 +105,98 @@ class UnitTest(unittest.TestCase):
         self.loglist = ["binlog-07", "binlog-08", "binlog-09", "binlog-10",
                         "binlog-11"]
         self.loglist2 = ["binlog-08", "binlog-09", "binlog-10"]
+        self.loglist3 = ["binlog-08", "binlog-09", "binlog-10", "binlog-11"]
+        self.loglist4 = ["binlog-07", "binlog-08", "binlog-09", "binlog-10"]
+
+    @mock.patch("mysql_log_admin.sys.exit", mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_last_missing(self, mock_fetch):
+
+        """Function:  test_last_missing
+
+        Description:  Test with last argument missing in binlog list.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.fetch_logs
+
+        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
+                                                           self.args_array6),
+                         self.loglist)
+
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_last_only(self, mock_fetch):
+
+        """Function:  test_last_only
+
+        Description:  Test with last argument only.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.fetch_logs
+
+        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
+                                                           self.args_array4),
+                         self.loglist4)
+
+    @mock.patch("mysql_log_admin.sys.exit", mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_first_missing(self, mock_fetch):
+
+        """Function:  test_first_missing
+
+        Description:  Test with first argument missing in binlog list.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.fetch_logs
+
+        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
+                                                           self.args_array5),
+                         self.loglist)
+
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_first_only(self, mock_fetch):
+
+        """Function:  test_first_only
+
+        Description:  Test with first argument only.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.fetch_logs
+
+        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
+                                                           self.args_array3),
+                         self.loglist3)
+
+    @unittest.skip("Awaiting removal of sys.exit from function")
+    # @mock.patch("mysql_log_admin.sys.exit", mock.Mock(return_value=True))
+    def test_last_first(self):
+
+        """Function:  test_last_first
+
+        Description:  Test with last before first passed.
+
+        Arguments:
+
+        """
+
+        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
+                                                           self.args_array2),
+                         self.loglist)
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     def test_first_last(self, mock_fetch):
