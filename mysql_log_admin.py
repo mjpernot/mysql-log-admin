@@ -170,6 +170,9 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
     """
 
+    if opt_arg_list is None:
+        opt_arg_list = list()
+
     # List of current binary log names.
     log_files = [row["Log_name"] for row in mysql_libs.fetch_logs(master)]
 
@@ -183,7 +186,6 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     # Get entries between start and stop datetimes.
     lines = fetch_binlog(master, start_dt, stop_dt, log_files, opt_arg_list,
                          bin_path)
-
     num_files = 0
     last_log_pos = None
 
