@@ -404,13 +404,13 @@ def main():
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
 
-    if not gen_libs.help_func(args_array, __version__, help_message):
-        if not arg_parser.arg_require(args_array, opt_req_list) \
-           and arg_parser.arg_xor_dict(args_array, opt_xor_dict) \
-           and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
-           and arg_parser.arg_validate(args_array, opt_valid_val) \
-           and arg_parser.arg_cond_req(args_array, opt_con_req_list):
-            run_program(args_array, func_dict, opt_arg_list)
+    if not gen_libs.help_func(args_array, __version__, help_message) \
+       and not arg_parser.arg_require(args_array, opt_req_list) \
+       and arg_parser.arg_xor_dict(args_array, opt_xor_dict) \
+       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
+       and arg_parser.arg_validate(args_array, opt_valid_val) \
+       and arg_parser.arg_cond_req(args_array, opt_con_req_list):
+        run_program(args_array, func_dict, opt_arg_list)
 
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.1.0] - 2019-12-16
 ### Changed
+- main: Refactored 'if' statements.
 - fetch_binlog: Changed variable name to standard convention.
 - find_dt_pos: Changed variable name to standard convention.
 - fetch_log_pos: Changed variable name to standard convention.
