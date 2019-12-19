@@ -263,7 +263,7 @@ def fetch_log_entries(SERVER, args_array, opt_arg_list, **kwargs):
         print(x, end="")
 
 
-def process_logs_list(SERVER, args_array, **kwargs):
+def process_logs_list(server, args_array, **kwargs):
 
     """Function:  process_logs_list
 
@@ -271,7 +271,7 @@ def process_logs_list(SERVER, args_array, **kwargs):
         Clean up the list if the -f and/or -g options are used.
 
     Arguments:
-        (input) SERVER -> Server instance.
+        (input) server -> Server instance.
         (input) args_array -> Array of command line options and values.
         (output) binlog_list -> List of binary log file names.
 
@@ -283,7 +283,7 @@ def process_logs_list(SERVER, args_array, **kwargs):
         sys.exit("Error:  Option -g: '%s' is before -f '%s'." %
                  (args_array["-g"], args_array["-f"]))
 
-    binlog_list = gen_libs.dict_2_list(mysql_libs.fetch_logs(SERVER),
+    binlog_list = gen_libs.dict_2_list(mysql_libs.fetch_logs(server),
                                        "Log_name")
 
     if "-f" in args_array and args_array["-f"] in binlog_list:
@@ -293,7 +293,7 @@ def process_logs_list(SERVER, args_array, **kwargs):
             binlog_list.pop(0)
 
     elif "-f" in args_array:
-        cmds_gen.disconnect(SERVER)
+        cmds_gen.disconnect(server)
         sys.exit("Error:  Option -f: '%s' not found in binary log list." %
                  (args_array["-f"]))
 
@@ -304,7 +304,7 @@ def process_logs_list(SERVER, args_array, **kwargs):
             binlog_list.pop(-1)
 
     elif "-g" in args_array:
-        cmds_gen.disconnect(SERVER)
+        cmds_gen.disconnect(server)
         sys.exit("Error:  Option -g: '%s' not found in binary log list." %
                  (args_array["-g"]))
 

@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [2.1.0] - 2019-12-16
 ### Changed
+- process_logs_list: Changed variable name to standard convention.
 - load_log: Changed variable name to standard convention.
 - run_program: Changed variable name to standard convention.
 - Documentation updates.
