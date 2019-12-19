@@ -255,6 +255,8 @@ def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
 
     """
 
+    args_array = dict(args_array)
+    opt_arg_list = list(opt_arg_list)
     lines = fetch_binlog(server, args_array.get("-s"), args_array.get("-t"),
                          opt_arg_list=opt_arg_list,
                          bin_path=arg_parser.arg_set_path(args_array, "-p"))
