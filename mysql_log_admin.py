@@ -150,8 +150,8 @@ def fetch_binlog(SERVER, start_dt=None, stop_dt=None, binlog_files=None,
                                  stdout=subprocess.PIPE).stdout)
 
 
-def find_dt_pos(MASTER, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
-                SLAVE=None, **kwargs):
+def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
+                slave=None, **kwargs):
 
     """Function:  find_dt_pos
 
@@ -161,27 +161,27 @@ def find_dt_pos(MASTER, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
         position found along with the binary log name that it was found in.
 
     Arguments:
-        (input) MASTER -> Server instance or Master, if Slave present.
+        (input) master -> Server instance or Master, if Slave present.
         (input) start_dt -> Start datetime.
         (input) stop_dt -> Stop datetime.
         (input) opt_arg_list ->  Arguments to be added to command line.
-        (input) SLAVE -> Slave server instance.
+        (input) slave -> Slave server instance.
         (output) -> Position class (file, pos).
 
     """
 
     # List of current binary log names.
-    log_files = [row["Log_name"] for row in mysql_libs.fetch_logs(MASTER)]
+    log_files = [row["Log_name"] for row in mysql_libs.fetch_logs(master)]
 
-    if SLAVE:
+    if slave:
         # Get only those binary log files up to the relay log file.
-        efile = SLAVE.relay_mst_log
+        efile = slave.relay_mst_log
         files = list(itertools.dropwhile(lambda file: file != efile,
                                          log_files))
         log_files = files
 
     # Get entries between start and stop datetimes.
-    lines = fetch_binlog(MASTER, start_dt, stop_dt, log_files, opt_arg_list,
+    lines = fetch_binlog(master, start_dt, stop_dt, log_files, opt_arg_list,
                          bin_path)
 
     num_files = 0
@@ -190,7 +190,7 @@ def find_dt_pos(MASTER, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     for x in lines:
 
         # Supports checksum and match for approriate format.
-        if MASTER.crc == "CRC32":
+        if master.crc == "CRC32":
             m = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
                          r"server id\s+(?P<sid>\d+)\s+"
                          r"end_log_pos\s+(?P<epos>\d+)\s+"
