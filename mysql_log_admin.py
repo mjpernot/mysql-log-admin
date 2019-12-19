@@ -326,6 +326,8 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
 
     """
 
+    args_array = dict(args_array)
+    opt_arg_list = list(opt_arg_list)
     binlog_list = process_logs_list(server, args_array)
     target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
                                         mysql_class.Server)
@@ -356,6 +358,9 @@ def run_program(args_array, func_dict, opt_arg_list, **kwargs):
 
     """
 
+    args_array = dict(args_array)
+    func_dict = dict(func_dict)
+    opt_arg_list = list(opt_arg_list)
     server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mysql_class.Server)
     server.connect()
