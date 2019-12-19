@@ -107,7 +107,7 @@ def help_message():
     print(__doc__)
 
 
-def fetch_binlog(SERVER, start_dt=None, stop_dt=None, binlog_files=None,
+def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
                  opt_arg_list=None, bin_path=None, **kwargs):
 
     """Function:  fetch_binlog
@@ -117,7 +117,7 @@ def fetch_binlog(SERVER, start_dt=None, stop_dt=None, binlog_files=None,
         Returns the entries as a file.
 
     Arguments:
-        (input) SERVER -> Server instance.
+        (input) server -> Server instance.
         (input) start_dt -> Start datetime.
         (input) stop_dr -> Stop datetime.
         (input) binlog_files -> List of binary log names.
@@ -130,9 +130,9 @@ def fetch_binlog(SERVER, start_dt=None, stop_dt=None, binlog_files=None,
     if binlog_files is None:
         # List of current binary logs.
         binlog_files = [row["Log_name"]
-                        for row in mysql_libs.fetch_logs(SERVER)]
+                        for row in mysql_libs.fetch_logs(server)]
 
-    cmd = mysql_libs.crt_cmd(SERVER, bin_path + "mysqlbinlog")
+    cmd = mysql_libs.crt_cmd(server, bin_path + "mysqlbinlog")
 
     if opt_arg_list:
 
