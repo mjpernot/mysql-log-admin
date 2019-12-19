@@ -13,3 +13,4 @@ test/unit/mysql_log_admin/find_dt_pos.py
 test/unit/mysql_log_admin/help_message.py
 test/unit/mysql_log_admin/load_log.py
 test/unit/mysql_log_admin/process_logs_list.py
+test/unit/mysql_log_admin/run_program.py
