@@ -13,6 +13,7 @@ coverage run -a --source=mysql_log_admin test/unit/mysql_log_admin/fetch_log_ent
 coverage run -a --source=mysql_log_admin test/unit/mysql_log_admin/fetch_log_pos.py
 coverage run -a --source=mysql_log_admin test/unit/mysql_log_admin/find_dt_pos.py
 coverage run -a --source=mysql_log_admin test/unit/mysql_log_admin/help_message.py
+coverage run -a --source=mysql_log_admin test/unit/mysql_log_admin/process_logs_list.py
 
 echo ""
 echo "Producing code coverage report"
