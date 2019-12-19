@@ -234,6 +234,11 @@ def fetch_log_pos(server, args_array, opt_arg_list=None, **kwargs):
 
     """
 
+    args_array = dict(args_array)
+
+    if opt_arg_list is None:
+        opt_arg_list = list()
+
     # Get Position class from file and log position.
     pos = find_dt_pos(server, args_array.get("-s"), args_array.get("-t"),
                       opt_arg_list, arg_parser.arg_set_path(args_array, "-p"))
