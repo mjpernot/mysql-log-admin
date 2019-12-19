@@ -359,18 +359,18 @@ def run_program(args_array, func_dict, opt_arg_list, **kwargs):
 
     """
 
-    SERVER = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
+    server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mysql_class.Server)
 
-    SERVER.connect()
-    SERVER.set_srv_binlog_crc()
+    server.connect()
+    server.set_srv_binlog_crc()
 
     # Call function(s) - intersection of command line and function dict.
     for x in set(args_array.keys()) & set(func_dict.keys()):
         # Call the function requested.
-        func_dict[x](SERVER, args_array, opt_arg_list)
+        func_dict[x](server, args_array, opt_arg_list)
 
-    cmds_gen.disconnect(SERVER)
+    cmds_gen.disconnect(server)
 
 
 def main():
