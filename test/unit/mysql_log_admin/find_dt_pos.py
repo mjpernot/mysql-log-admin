@@ -36,6 +36,34 @@ import version
 __version__ = version.__version__
 
 
+class Slave(object):
+
+    """Class:  Slave
+
+    Description:  Class stub holder for mysql_class.Slave class.
+
+    Methods:
+        __init__ -> Class initialization.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.relay_mst_log = ["binlog2"]
+        self.sql_user = "mysql"
+        self.host = "hostname"
+        self.port = 3306
+        self.crc = "CRC32"
+
+
 class Server(object):
 
     """Class:  Server
@@ -96,8 +124,11 @@ class UnitTest(unittest.TestCase):
         """
 
         self.master = Server()
+        self.slave = Slave()
         self.filehandler = ["binlog1"]
         self.binlog_files = [{"Log_name": "binlog1"}, {"Log_name": "binlog2"}]
+        self.binlog_files2 = [{"Log_name": "binlog1"}, {"Log_name": "binlog2"},
+                              {"Log_name": "binlog3"}]
         self.opt_arg_list = ["--force-read", "--read-from-remote-server"]
         self.start_dt = "start_datetime_format"
         self.stop_dt = "end_datetime_format"
@@ -105,6 +136,30 @@ class UnitTest(unittest.TestCase):
 
         self.m1 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
         self.m2 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
+
+    @unittest.skip("Possible Bug:  Slave argument has never been fully tested")
+    @mock.patch("mysql_log_admin.mysql_class.Position",
+                mock.Mock(return_value="Position"))
+    @mock.patch("mysql_log_admin.re.match")
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_slave_empty(self, mock_fetch, mock_binlog, mock_match):
+
+        """Function:  test_slave_empty
+
+        Description:  Test with slave with no relay entry.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.binlog_files2
+        mock_binlog.return_value = self.fetch_log
+        mock_match.return_value = self.m2
+
+        self.assertEqual(mysql_log_admin.find_dt_pos(
+            self.master, self.start_dt, self.stop_dt, slave=self.slave),
+                         "Position")
 
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
