@@ -4,8 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.1.0] - 2019-12-16
+### Fixed
+- fetch_binlog:  Fixed problem with mutable default arguments issue.
+- find_dt_pos:  Fixed problem with mutable default arguments issue.
+- fetch_log_pos:  Fixed problem with mutable default arguments issue.
+- fetch_log_entries:  Fixed problem with mutable default arguments issue.
+- process_logs_list:  Fixed problem with mutable default arguments issue.
+- load_log:  Fixed problem with mutable default arguments issue.
+- run_program:  Fixed problem with mutable default arguments issue.
+
+### Changed
+- main:  Added program lock functionality to program.
+- main:  Added new option -y to the program.
+- main: Refactored 'if' statements.
+- fetch_binlog: Changed variable name to standard convention.
+- find_dt_pos: Changed variable name to standard convention.
+- fetch_log_pos: Changed variable name to standard convention.
+- fetch_log_entries: Changed variable name to standard convention.
+- process_logs_list: Changed variable name to standard convention.
+- load_log: Changed variable name to standard convention.
+- run_program: Changed variable name to standard convention.
+- Documentation updates.
+
+
 ## [2.0.1] - 2018-12-03
 ### Changed
+- Added \*\*kwargs to those function parameter lists without the keyword argument capability.
 - fetch_binlog:  Changed check on binlog_files to be user readable.
 
 
@@ -32,7 +57,7 @@ Breaking Change
 
 ## [1.7.0] - 2017-08-21
 ### Changed
-- Help_Message:  Replace docstring with printing the programs __doc__.
+- Help_Message:  Replace docstring with printing the programs \_\_doc\_\_.
 - Change single quotes to double quotes.
 - Convert program to use local libraries from ./lib directory.
 
@@ -78,8 +103,8 @@ Breaking Change
 
 ## [1.1.0] - 2016-01-07
 ### Changed
-- Fetch_Log_Entries:  Added **kwargs to argument list to allow for future use of additional arguments to the function.
-- Fetch_Log_Pos:  Added **kwargs to argument list to allow for future use of additional arguments to the function.
+- Fetch_Log_Entries:  Added \*\*kwargs to argument list to allow for future use of additional arguments to the function.
+- Fetch_Log_Pos:  Added \*\*kwargs to argument list to allow for future use of additional arguments to the function.
 - Fetch_Binlog:  Removed extranous print command from function, left over from original testing phase.
 - main:  Added new variable to hold function calls to the validity functions.
 - main:  Added function call to Arg_Validate to check the validity of the data in some of the arguments.
