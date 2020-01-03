@@ -67,7 +67,7 @@ pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host
 
 # Configuration:
 
-Create MySQL configuration file.
+Create MySQL configuration file for Source database.
 
 ```
 cd config
@@ -87,7 +87,7 @@ vim mysql_cfg.py
 chmod 600 mysql_cfg.py
 ```
 
-Create MySQL definition file.
+Create MySQL definition file for Source database.
 
 ```
 cp mysql.cfg.TEMPLATE mysql.cfg
@@ -102,6 +102,20 @@ Make the appropriate change to the MySQL definition setup.
 vim mysql.cfg
 chmod 600 mysql.cfg
 ```
+
+For each Target database, create a seperate MySQL configuration and MySQL definition file.
+
+Make the appropriate change to each Target environment.  See above for the changes required in each file.  In addition, the "extra_def_file" entry will require "mysql.cfg" to be changed to "mysql\_{TargetName}.cfg".
+
+```
+cp mysql_cfg.py.TEMPLATE mysql_cfg_{TargetName}.py
+vim mysql_cfg._{TargetName}py
+chmod 600 mysql_cfg_{TargetName}.py
+cp mysql.cfg.TEMPLATE mysql_{TargetName}.cfg
+vim mysql_{TargetName}.cfg
+chmod 600 mysql_{TargetName}.cfg
+```
+
 
 
 # Program Help Function:
