@@ -19,7 +19,7 @@
             datetimes are NULL, then get current position.
         -D => Display log(s).  Will use a combination of start and stop
             datetimes along with log names.
-        -R => Restore binary logs from a source database (-c to a
+        -R => Restore binary logs from a source database (-c) to a
             target database (-e).  Requires args: -c and -e.
         -e file => Target database configuration file.
         -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
@@ -35,17 +35,17 @@
         NOTE:  -v or -h overrides the other options.
 
     Notes:
-        Database configuration file format (mysql_cfg.py):
-            # Configuration file for {Database Name/Server}
+        Database configuration file format (mysql_cfg.py.TEMPLATE):
+            # Configuration file for each Source/Target Database
             user = "root"
             passwd = "ROOT_PASSWORD"
             host = "IP_ADDRESS"
-            serv_os = "Linux" or "Solaris"
+            serv_os = "Linux"
             name = "HOSTNAME"
             port = PORT_NUMBER (default of mysql is 3306)
-            cfg_file = "DIRECTORY_PATH/mysql.cfg"
+            cfg_file = "DIRECTORY_PATH/my.cnf"
             sid = "SERVER_ID"
-            extra_def_file = "DIRECTORY_PATH/myextra.cfg"
+            extra_def_file = "DIRECTORY_PATH/mysql.cfg"
 
         NOTE 1:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
@@ -59,7 +59,7 @@
         configuration modules -> name is runtime dependent as it can be used to
             connect to different databases with different names.
 
-        Defaults Extra File format (mysql.cfg):
+        Defaults Extra File format (mysql.cfg.TEMPLATE):
         password="ROOT_PASSWORD"
         socket="DIRECTORY_PATH/mysql.sock"
 
