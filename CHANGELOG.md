@@ -15,6 +15,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - run_program:  Fixed problem with mutable default arguments issue.
 
 ### Changed
+- main:  Added program lock functionality to program.
+- main:  Added new option -y to the program.
 - main: Refactored 'if' statements.
 - fetch_binlog: Changed variable name to standard convention.
 - find_dt_pos: Changed variable name to standard convention.

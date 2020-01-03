@@ -10,7 +10,7 @@
     Usage:
         mysql_log_admin.py -c file -d path {-L | -D | -R {-e file}
             [-f file | -g file]} [-p path | -s datetime | -t datetime]
-            [-v | -h]
+            [-y flavor_id] [-v | -h]
 
     Arguments:
         -c file => Database configuration file.  Required arg.
@@ -29,6 +29,7 @@
         -p dir path => Directory path to mysql programs.  Only required if the
             mysql binary programs do not run properly.  (i.e. not in the $PATH
             variable.)
+        -y value => A flavor id for the program lock.  To create unique lock.
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -86,6 +87,7 @@ import itertools
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
 import lib.cmds_gen as cmds_gen
+import lib.gen_class as gen_class
 import mysql_lib.mysql_libs as mysql_libs
 import mysql_lib.mysql_class as mysql_class
 import version
@@ -425,7 +427,7 @@ def main():
     opt_arg_list = ["--force-read", "--read-from-remote-server"]
     opt_con_req_list = {"-R": ["-e"]}
     opt_req_list = ["-c", "-d"]
-    opt_val_list = ["-c", "-e", "-d", "-f", "-g", "-p", "-s", "-t"]
+    opt_val_list = ["-c", "-e", "-d", "-f", "-g", "-p", "-s", "-t", "-y"]
     opt_valid_val = {"-s": gen_libs.validate_date,
                      "-t": gen_libs.validate_date}
     opt_xor_dict = {"-L": ["-D", "-R"], "-D": ["-L", "-R"], "-R": ["-D", "-L"]}
@@ -439,7 +441,16 @@ def main():
        and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
        and arg_parser.arg_validate(args_array, opt_valid_val) \
        and arg_parser.arg_cond_req(args_array, opt_con_req_list):
-        run_program(args_array, func_dict, opt_arg_list)
+
+        try:
+            prog_lock = gen_class.ProgramLock(sys.argv,
+                                              args_array.get("-y", ""))
+            run_program(args_array, func_dict, opt_arg_list)
+            del prog_lock
+
+        except gen_class.SingleInstanceException:
+            print("WARNING:  lock in place for mysql_log_admin with id of: %s"
+                  % (args_array.get("-y", "")))
 
 
 if __name__ == "__main__":
