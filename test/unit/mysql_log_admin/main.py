@@ -319,6 +319,62 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mysql_log_admin.main())
 
+    @mock.patch("mysql_log_admin.gen_class.ProgramLock")
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
+    @mock.patch("mysql_log_admin.arg_parser")
+    def test_programlock_id(self, mock_arg, mock_help, mock_lock):
+
+        """Function:  test_programlock_id
+
+        Description:  Test ProgramLock fails with flavor id.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_valid_val.return_value = True
+        mock_arg.arg_xor_dict.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_validate.return_value = True
+        mock_arg.arg_cond_req.return_value = True
+        mock_lock.side_effect = \
+                              mysql_log_admin.gen_class.SingleInstanceException
+
+        self.args_array["-y"] = "FlavorID"
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_log_admin.main())
+
+    @mock.patch("mysql_log_admin.gen_class.ProgramLock")
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
+    @mock.patch("mysql_log_admin.arg_parser")
+    def test_programlock_fail(self, mock_arg, mock_help, mock_lock):
+
+        """Function:  test_programlock_fail
+
+        Description:  Test ProgramLock fails to lock.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_valid_val.return_value = True
+        mock_arg.arg_xor_dict.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_validate.return_value = True
+        mock_arg.arg_cond_req.return_value = True
+        mock_lock.side_effect = \
+                              mysql_log_admin.gen_class.SingleInstanceException
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_log_admin.main())
+
 
 if __name__ == "__main__":
     unittest.main()
