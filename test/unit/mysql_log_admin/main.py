@@ -35,6 +35,33 @@ import version
 __version__ = version.__version__
 
 
+class ProgramLock(object):
+
+    """Class:  ProgramLock
+
+    Description:  Class stub holder for gen_class.ProgramLock class.
+
+    Methods:
+        __init__ -> Class initialization.
+
+    """
+
+    def __init__(self, cmdline, flavor):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+            (input) cmdline -> Argv command line.
+            (input) flavor -> Lock flavor ID.
+
+        """
+
+        self.cmdline = cmdline
+        self.flavor = flavor
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -57,6 +84,10 @@ class UnitTest(unittest.TestCase):
         test_arg_validate_true -> Test arg_validate if returns true.
         test_arg_cond_req_false -> Test arg_cond_req if returns false.
         test_arg_cond_req_true -> Test arg_cond_req if returns true.
+        test_run_program -> Test run_program function.
+        test_programlock_id -> Test with ProgramLock with flavor id.
+        test_programlock_false -> Test with ProgramLock returns False.
+        test_programlock_true -> Test with ProgramLock returns True.
 
     """
 
@@ -71,6 +102,8 @@ class UnitTest(unittest.TestCase):
         """
 
         self.args_array = {"-c": "CfgFile", "-d": "CfgDir"}
+        self.args_array2 = {"-c": "CfgFile", "-d": "CfgDir", "-y": "Flavor"}
+        self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
     @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.arg_parser.arg_parse2")
@@ -294,10 +327,11 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mysql_log_admin.main())
 
+    @mock.patch("mysql_log_admin.gen_class.ProgramLock")
     @mock.patch("mysql_log_admin.run_program")
     @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.arg_parser")
-    def test_arg_cond_req_true(self, mock_arg, mock_help, mock_run):
+    def test_arg_cond_req_true(self, mock_arg, mock_help, mock_run, mock_lock):
 
         """Function:  test_arg_cond_req_true
 
@@ -316,13 +350,42 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_validate.return_value = True
         mock_arg.arg_cond_req.return_value = True
         mock_run.return_value = True
+        mock_lock.return_value = self.proglock
 
         self.assertFalse(mysql_log_admin.main())
 
     @mock.patch("mysql_log_admin.gen_class.ProgramLock")
+    @mock.patch("mysql_log_admin.run_program")
     @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.arg_parser")
-    def test_programlock_id(self, mock_arg, mock_help, mock_lock):
+    def test_run_program(self, mock_arg, mock_help, mock_run, mock_lock):
+
+        """Function:  test_run_program
+
+        Description:  Test run_program function.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_valid_val.return_value = True
+        mock_arg.arg_xor_dict.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_validate.return_value = True
+        mock_arg.arg_cond_req.return_value = True
+        mock_run.return_value = True
+        mock_lock.return_value = self.proglock
+
+        self.assertFalse(mysql_log_admin.main())
+
+    @mock.patch("mysql_log_admin.gen_class.ProgramLock")
+    @mock.patch("mysql_log_admin.run_program")
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
+    @mock.patch("mysql_log_admin.arg_parser")
+    def test_programlock_id(self, mock_arg, mock_help, mock_run, mock_lock):
 
         """Function:  test_programlock_id
 
@@ -332,7 +395,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        mock_arg.arg_parse2.return_value = self.args_array2
         mock_help.return_value = False
         mock_arg.arg_require.return_value = False
         mock_arg.arg_valid_val.return_value = True
@@ -340,22 +403,19 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_dir_chk_crt.return_value = False
         mock_arg.arg_validate.return_value = True
         mock_arg.arg_cond_req.return_value = True
-        mock_lock.side_effect = \
-                              mysql_log_admin.gen_class.SingleInstanceException
+        mock_run.return_value = True
+        mock_lock.return_value = self.proglock
 
-        self.args_array["-y"] = "FlavorID"
-
-        with gen_libs.no_std_out():
-            self.assertFalse(mysql_log_admin.main())
+        self.assertFalse(mysql_log_admin.main())
 
     @mock.patch("mysql_log_admin.gen_class.ProgramLock")
     @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.arg_parser")
-    def test_programlock_fail(self, mock_arg, mock_help, mock_lock):
+    def test_programlock_false(self, mock_arg, mock_help, mock_lock):
 
-        """Function:  test_programlock_fail
+        """Function:  test_programlock_false
 
-        Description:  Test ProgramLock fails to lock.
+        Description:  Test with ProgramLock returns False.
 
         Arguments:
 
@@ -374,6 +434,33 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_log_admin.main())
+
+    @mock.patch("mysql_log_admin.gen_class.ProgramLock")
+    @mock.patch("mysql_log_admin.run_program")
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
+    @mock.patch("mysql_log_admin.arg_parser")
+    def test_programlock_true(self, mock_arg, mock_help, mock_run, mock_lock):
+
+        """Function:  test_programlock_true
+
+        Description:  Test with ProgramLock returns True.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_valid_val.return_value = True
+        mock_arg.arg_xor_dict.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_arg.arg_validate.return_value = True
+        mock_arg.arg_cond_req.return_value = True
+        mock_run.return_value = True
+        mock_lock.return_value = self.proglock
+
+        self.assertFalse(mysql_log_admin.main())
 
 
 if __name__ == "__main__":
