@@ -23,8 +23,6 @@
 # Prerequisites:
 
   * List of Linux packages that need to be installed on the server.
-    - python-libs
-    - python-devel
     - git
     - python-pip
 
@@ -76,11 +74,11 @@ cp mysql_cfg.py.TEMPLATE mysql_cfg.py
 
 Make the appropriate change to the environment.
   * Change these entries in the MySQL setup:
-    - passwd = "ROOT_PASSWORD"
+    - passwd = "PSWORD"
     - host = "SERVER_IP"
     - name = "HOST_NAME"
     - sid = SERVER_ID
-    - extra_def_file = "{Python_Project}/config/mysql.cfg"
+    - extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
 
 ```
 vim mysql_cfg.py
@@ -95,8 +93,8 @@ cp mysql.cfg.TEMPLATE mysql.cfg
 
 Make the appropriate change to the MySQL definition setup.
   * Change these entries in the MySQL configuration file:
-    - password="ROOT_PASSWORD"
-    - socket={BASE_DIR}/mysql/tmp/mysql.sock
+    - password="PASSWORD"
+    - socket=DIRECTORY_PATH/mysql.sock
 
 ```
 vim mysql.cfg
@@ -108,12 +106,12 @@ For each Target database, create a seperate MySQL configuration and MySQL defini
 Make the appropriate change to each Target environment.  See above for the changes required in each file.  In addition, the "extra_def_file" entry will require "mysql.cfg" to be changed to "mysql\_{TargetName}.cfg".
 
 ```
-cp mysql_cfg.py.TEMPLATE mysql_cfg_{TargetName}.py
-vim mysql_cfg._{TargetName}py
-chmod 600 mysql_cfg_{TargetName}.py
-cp mysql.cfg.TEMPLATE mysql_{TargetName}.cfg
-vim mysql_{TargetName}.cfg
-chmod 600 mysql_{TargetName}.cfg
+cp mysql_cfg.py.TEMPLATE mysql_cfg_TARGET_NAME.py
+vim mysql_cfg._TARGET_NAME.py
+chmod 600 mysql_cfg_TARGET_NAME.py
+cp mysql.cfg.TEMPLATE mysql_TARGET_NAME.cfg
+vim mysql_TARGET_NAME.cfg
+chmod 600 mysql_TARGET_NAME.cfg
 ```
 
 
@@ -130,10 +128,7 @@ chmod 600 mysql_{TargetName}.cfg
 
 # Testing:
 
-
 # Unit Testing:
-
-### Description: Testing consists of unit testing for the functions in the mysql_log_admin.py program.
 
 ### Installation:
 
@@ -166,30 +161,18 @@ pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host
 ```
 
 
-# Unit test runs for mysql_log_admin.py:
+### Testing
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-### Unit testing:
 ```
 cd {Python_Project}/mysql-log-admin
-test/unit/mysql_log_admin/fetch_binlog.py
-test/unit/mysql_log_admin/fetch_log_entries.py
-test/unit/mysql_log_admin/fetch_log_pos.py
-test/unit/mysql_log_admin/find_dt_pos.py
-test/unit/mysql_log_admin/help_message.py
-test/unit/mysql_log_admin/load_log.py
-test/unit/mysql_log_admin/main.py
-test/unit/mysql_log_admin/process_logs_list.py
-test/unit/mysql_log_admin/run_program.py
-```
-
-### All unit testing
-```
 test/unit/mysql_log_admin/unit_test_run.sh
 ```
 
-### Code coverage program
+### Code coverage:
+
 ```
+cd {Python_Project}/mysql-log-admin
 test/unit/mysql_log_admin/code_coverage.sh
 ```
 
