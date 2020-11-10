@@ -354,6 +354,7 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
 
     """
 
+    subp = gen_libs.get_inst(subprocess)
     args_array = dict(args_array)
     opt_arg_list = list(opt_arg_list)
     binlog_list = process_logs_list(server, args_array)
@@ -367,7 +368,7 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
     proc1 = fetch_binlog(
         server, args_array.get("-s"), args_array.get("-t"), binlog_list,
         opt_arg_list, arg_parser.arg_set_path(args_array, "-p"))
-    proc2 = subprocess.Popen(cmd, stdin=proc1)
+    proc2 = subp.Popen(cmd, stdin=proc1)
     proc2.wait()
 
     cmds_gen.disconnect(server, target)
