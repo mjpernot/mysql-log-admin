@@ -218,7 +218,6 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual([x for x in dataout], self.filehandler)
 
-    @unittest.skip("Known Bug:  Cannot pass None to bin_path argument")
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
     def test_fetch_binlog(self, mock_sub, mock_fetch):
