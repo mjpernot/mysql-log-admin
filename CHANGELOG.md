@@ -14,6 +14,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - config/mysql_cfg.py.TEMPLATE:  Changed entry name.
 - Documentation updates.
 
+### Removed
+- Removed unused library module.
+
 
 ## [2.1.0] - 2019-12-16
 ### Fixed

@@ -81,7 +81,6 @@
 # For Python 2.6/2.7: Redirection of stdout in a print command.
 from __future__ import print_function
 import sys
-import os
 import subprocess
 import re
 import itertools
