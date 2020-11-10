@@ -7,6 +7,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [2.1.1] - 2020-11-10
 - Updated to use the mysql_libs v5.0.0 library.
 
+### Fixed
+- fetch_binlog:  Changed bin_path argument default to empty string.
+
 ### Changed
 - config/mysql_cfg.py.TEMPLATE:  Changed entry name.
 - Documentation updates.

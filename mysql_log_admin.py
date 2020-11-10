@@ -113,7 +113,7 @@ def help_message():
 
 
 def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
-                 opt_arg_list=None, bin_path=None, **kwargs):
+                 opt_arg_list=None, bin_path="", **kwargs):
 
     """Function:  fetch_binlog
 
