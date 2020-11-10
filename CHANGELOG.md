@@ -11,6 +11,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - fetch_binlog:  Changed bin_path argument default to empty string.
 
 ### Changed
+- find_dt_pos:  Changed variables to standard naming convention.
 - config/mysql_cfg.py.TEMPLATE:  Changed entry name.
 - Documentation updates.
 

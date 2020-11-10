@@ -204,34 +204,34 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     num_files = 0
     last_log_pos = None
 
-    for x in lines:
+    for item in lines:
 
         # Supports checksum and match for approriate format.
         if master.crc == "CRC32":
-            m = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
-                         r"server id\s+(?P<sid>\d+)\s+"
-                         r"end_log_pos\s+(?P<epos>\d+)\s+"
-                         r"CRC32\s+(?P<crc>\w+)\s+"
-                         r"(?P<type>\w+)", x)
+            match = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
+                             r"server id\s+(?P<sid>\d+)\s+"
+                             r"end_log_pos\s+(?P<epos>\d+)\s+"
+                             r"CRC32\s+(?P<crc>\w+)\s+"
+                             r"(?P<type>\w+)", item)
 
         else:
-            m = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
-                         r"server id\s+(?P<sid>\d+)\s+"
-                         r"end_log_pos\s+(?P<epos>\d+)\s+"
-                         r"(?P<type>\w+)", x)
+            match = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
+                             r"server id\s+(?P<sid>\d+)\s+"
+                             r"end_log_pos\s+(?P<epos>\d+)\s+"
+                             r"(?P<type>\w+)", item)
 
         # If a line matches then see if the end_log_pos is Start (new file) or
         #   has found a Query within the datetime range requested.
-        if m:
+        if match:
             # If matched line is at the start of the log.
-            if m.group("type") == "Start":
+            if match.group("type") == "Start":
                 # Increase file position by 1.
                 num_files += 1
 
             # If matched line is a Query
-            if m.group("type") == "Query":
+            if match.group("type") == "Query":
                 # Capture position of the log.
-                last_log_pos = m.group("epos")
+                last_log_pos = match.group("epos")
 
     # Return file and position as a Position class.
     return mysql_class.Position(log_files[num_files - 1], last_log_pos)
