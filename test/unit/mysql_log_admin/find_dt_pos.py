@@ -24,13 +24,12 @@ else:
     import unittest
 
 # Third-party
-import mock
 import re
+import mock
 
 # Local
 sys.path.append(os.getcwd())
 import mysql_log_admin
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -134,8 +133,8 @@ class UnitTest(unittest.TestCase):
         self.stop_dt = "end_datetime_format"
         self.fetch_log = ["data line here"]
 
-        self.m1 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
-        self.m2 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
+        self.match1 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
+        self.match2 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
 
     @unittest.skip("Possible Bug:  Slave argument has never been fully tested")
     @mock.patch("mysql_log_admin.mysql_class.Position",
@@ -155,7 +154,7 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.binlog_files2
         mock_binlog.return_value = self.fetch_log
-        mock_match.return_value = self.m2
+        mock_match.return_value = self.match2
 
         self.assertEqual(
             mysql_log_admin.find_dt_pos(
@@ -179,7 +178,7 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.binlog_files
         mock_binlog.return_value = self.fetch_log
-        mock_match.return_value = self.m2
+        mock_match.return_value = self.match2
 
         self.assertEqual(mysql_log_admin.find_dt_pos(
             self.master, self.start_dt, self.stop_dt), "Position")
@@ -201,7 +200,7 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.binlog_files
         mock_binlog.return_value = self.fetch_log
-        mock_match.return_value = self.m1
+        mock_match.return_value = self.match1
 
         self.assertEqual(mysql_log_admin.find_dt_pos(
             self.master, self.start_dt, self.stop_dt), "Position")
@@ -223,7 +222,7 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.binlog_files
         mock_binlog.return_value = self.fetch_log
-        mock_match.return_value = self.m1
+        mock_match.return_value = self.match1
 
         self.assertEqual(mysql_log_admin.find_dt_pos(
             self.master, self.start_dt, self.stop_dt), "Position")
