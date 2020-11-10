@@ -430,7 +430,7 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_validate.return_value = True
         mock_arg.arg_cond_req.return_value = True
         mock_lock.side_effect = \
-                              mysql_log_admin.gen_class.SingleInstanceException
+            mysql_log_admin.gen_class.SingleInstanceException
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_log_admin.main())
