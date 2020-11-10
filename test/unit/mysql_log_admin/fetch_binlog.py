@@ -82,7 +82,7 @@ class Server(object):
 
         self.extra_def_file = None
         self.sql_user = "mysql"
-        self.sql_pass = "pswd"
+        self.sql_pass = "japd"
         self.host = "hostname"
         self.port = 3306
 
