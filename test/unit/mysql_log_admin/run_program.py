@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mysql_log_admin
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -45,7 +44,12 @@ def fetch_log_pos(server, args_array, opt_arg_list):
 
     """
 
-    return True
+    status = True
+
+    if server and args_array and opt_arg_list:
+        status = True
+
+    return status
 
 
 class Server(object):
