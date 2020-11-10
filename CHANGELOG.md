@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - config/mysql_cfg.py.TEMPLATE:  Changed entry name.
+- Documentation updates.
 
 
 ## [2.1.0] - 2019-12-16

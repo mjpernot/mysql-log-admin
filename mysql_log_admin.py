@@ -8,22 +8,25 @@
         specific location, and printing logs.
 
     Usage:
-        mysql_log_admin.py -c file -d path {-L | -D | -R {-e file}
-            [-f file | -g file]} [-p path | -s datetime | -t datetime]
-            [-y flavor_id] [-v | -h]
+        mysql_log_admin.py -c file -d path
+            {-L -s "date time" -t "date time" |
+             -D -s "date time" -t "date time" |
+             -R -e file [-f file | -g file]}
+            [-y flavor_id] [-p path]
+            [-v | -h]
 
     Arguments:
         -c file => Database configuration file.  Required arg.
         -d dir path => Directory path to config files.  Required arg.
         -L => Locate position in binary logs, if start and stop
             datetimes are NULL, then get current position.
+        -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
+        -t "date time" => Stop datetime.  Format:  YYYY-MM-DD HH:MM:SS
         -D => Display log(s).  Will use a combination of start and stop
             datetimes along with log names.
         -R => Restore binary logs from a source database (-c) to a
-            target database (-e).  Requires args: -c and -e.
+            target database (-e).  Requires arg: -e.
         -e file => Target database configuration file.
-        -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
-        -t "date time" => Stop datetime.  Format:  YYYY-MM-DD HH:MM:SS
         -f file => First binary log file name.
         -g file => Last binary log file name.
         -p dir path => Directory path to mysql programs.  Only required if the
@@ -36,17 +39,17 @@
         NOTE:  -v or -h overrides the other options.
 
     Notes:
-        Database configuration file format (mysql_cfg.py.TEMPLATE):
-            # Configuration file for each Source/Target Database
-            user = "root"
-            passwd = "ROOT_PASSWORD"
+        Database configuration file format (config/mysql_cfg.py.TEMPLATE):
+            # Configuration file for a Database connection.
+            user = "USER"
+            japd = "PSWORD"
             host = "IP_ADDRESS"
-            serv_os = "Linux"
             name = "HOSTNAME"
-            port = PORT_NUMBER (default of mysql is 3306)
-            cfg_file = "DIRECTORY_PATH/my.cnf"
-            sid = "SERVER_ID"
-            extra_def_file = "DIRECTORY_PATH/mysql.cfg"
+            sid = SERVER_ID
+            extra_def_file = "PYTHON_PROJEXT/config/mysql.cfg"
+            serv_os = "Linux"
+            port = 3306
+            cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
 
         NOTE 1:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
@@ -60,8 +63,8 @@
         configuration modules -> name is runtime dependent as it can be used to
             connect to different databases with different names.
 
-        Defaults Extra File format (mysql.cfg.TEMPLATE):
-        password="ROOT_PASSWORD"
+        Defaults Extra File format (config/mysql.cfg.TEMPLATE):
+        password="PASSWORD"
         socket="DIRECTORY_PATH/mysql.sock"
 
         NOTE:  The socket information can be obtained from the my.cnf file
