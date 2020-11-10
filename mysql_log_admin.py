@@ -364,11 +364,11 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
 
     # Fetch binary logs (server) and restore to destination database (target)
     #   Wait until the load process has completed, before continuing.
-    P1 = fetch_binlog(server, args_array.get("-s"), args_array.get("-t"),
-                      binlog_list, opt_arg_list,
-                      arg_parser.arg_set_path(args_array, "-p"))
-    P2 = subprocess.Popen(cmd, stdin=P1)
-    P2.wait()
+    proc1 = fetch_binlog(
+        server, args_array.get("-s"), args_array.get("-t"), binlog_list,
+        opt_arg_list, arg_parser.arg_set_path(args_array, "-p"))
+    proc2 = subprocess.Popen(cmd, stdin=proc1)
+    proc2.wait()
 
     cmds_gen.disconnect(server, target)
 
