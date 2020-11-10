@@ -11,6 +11,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - fetch_binlog:  Changed bin_path argument default to empty string.
 
 ### Changed
+- main: Fixed handling command line arguments from SonarQube scan finding.
 - run_program:  Changed variables to standard naming convention.
 - load_log:  Changed variables to standard naming convention.
 - fetch_log_entries:  Changed variables to standard naming convention.

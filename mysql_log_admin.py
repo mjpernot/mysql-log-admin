@@ -424,6 +424,7 @@ def main():
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-L": fetch_log_pos, "-D": fetch_log_entries, "-R": load_log}
     opt_arg_list = ["--force-read", "--read-from-remote-server"]
@@ -445,7 +446,7 @@ def main():
        and arg_parser.arg_cond_req(args_array, opt_con_req_list):
 
         try:
-            prog_lock = gen_class.ProgramLock(sys.argv,
+            prog_lock = gen_class.ProgramLock(cmdline.argv,
                                               args_array.get("-y", ""))
             run_program(args_array, func_dict, opt_arg_list)
             del prog_lock
