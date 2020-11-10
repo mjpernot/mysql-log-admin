@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mysql_log_admin
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
