@@ -395,9 +395,9 @@ def run_program(args_array, func_dict, opt_arg_list, **kwargs):
     server.set_srv_binlog_crc()
 
     # Call function(s) - intersection of command line and function dict.
-    for x in set(args_array.keys()) & set(func_dict.keys()):
+    for item in set(args_array.keys()) & set(func_dict.keys()):
         # Call the function requested.
-        func_dict[x](server, args_array, opt_arg_list)
+        func_dict[item](server, args_array, opt_arg_list)
 
     cmds_gen.disconnect(server)
 
