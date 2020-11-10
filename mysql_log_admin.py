@@ -286,8 +286,8 @@ def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
                          opt_arg_list=opt_arg_list,
                          bin_path=arg_parser.arg_set_path(args_array, "-p"))
 
-    for x in lines:
-        print(x, end="")
+    for item in lines:
+        print(item, end="")
 
 
 def process_logs_list(server, args_array, **kwargs):
