@@ -131,6 +131,8 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
     """
 
+    subp = gen_libs.get_inst(subprocess)
+
     if opt_arg_list is None:
         opt_arg_list = list()
 
@@ -158,8 +160,7 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
         cmd = cmds_gen.add_cmd(cmd, arg="--stop-datetime=%s" % (stop_dt))
 
     # Return a file handler with log entries.
-    return iter(subprocess.Popen(cmd + binlog_files,
-                                 stdout=subprocess.PIPE).stdout)
+    return iter(subp.Popen(cmd + binlog_files, stdout=subp.PIPE).stdout)
 
 
 def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
