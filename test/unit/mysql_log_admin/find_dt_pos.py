@@ -157,9 +157,10 @@ class UnitTest(unittest.TestCase):
         mock_binlog.return_value = self.fetch_log
         mock_match.return_value = self.m2
 
-        self.assertEqual(mysql_log_admin.find_dt_pos(
-            self.master, self.start_dt, self.stop_dt, slave=self.slave),
-                         "Position")
+        self.assertEqual(
+            mysql_log_admin.find_dt_pos(
+                self.master, self.start_dt, self.stop_dt, slave=self.slave),
+            "Position")
 
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
@@ -326,10 +327,10 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.binlog_files
         mock_binlog.return_value = []
 
-        self.assertEqual(mysql_log_admin.find_dt_pos(
-            self.master, self.start_dt, self.stop_dt, bin_path="./",
-            opt_arg_list=self.opt_arg_list),
-                         "Position")
+        self.assertEqual(
+            mysql_log_admin.find_dt_pos(
+                self.master, self.start_dt, self.stop_dt, bin_path="./",
+                opt_arg_list=self.opt_arg_list), "Position")
 
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
@@ -348,9 +349,10 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.binlog_files
         mock_binlog.return_value = []
 
-        self.assertEqual(mysql_log_admin.find_dt_pos(
-            self.master, self.start_dt, self.stop_dt, bin_path="./"),
-                         "Position")
+        self.assertEqual(
+            mysql_log_admin.find_dt_pos(
+                self.master, self.start_dt, self.stop_dt, bin_path="./"),
+            "Position")
 
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
