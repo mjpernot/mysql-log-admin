@@ -140,9 +140,9 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
         opt_arg_list = list(opt_arg_list)
 
     if binlog_files is None:
-        # List of current binary logs.
-        binlog_files = [row["Log_name"]
-                        for row in mysql_libs.fetch_logs(server)]
+        # List of binary logs.
+        binlog_files = [
+            row["Log_name"] for row in mysql_libs.fetch_logs(server)]
 
     else:
         binlog_files = list(binlog_files)
@@ -224,13 +224,16 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
         # If a line matches then see if the end_log_pos is Start (new file) or
         #   has found a Query within the datetime range requested.
         if match:
+
             # If matched line is at the start of the log.
             if match.group("type") == "Start":
+
                 # Increase file position by 1.
                 num_files += 1
 
             # If matched line is a Query
             if match.group("type") == "Query":
+
                 # Capture position of the log.
                 last_log_pos = match.group("epos")
 
