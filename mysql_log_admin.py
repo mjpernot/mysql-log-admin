@@ -183,6 +183,7 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
     """
 
+    rem = gen_libs.get_inst(re)
     sub1 = r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
     sub2 = r"server id\s+(?P<sid>\d+)\s+"
     sub3 = r"end_log_pos\s+(?P<epos>\d+)\s+"
@@ -215,10 +216,10 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
         # Supports checksum and match for approriate format.
         if master.crc == "CRC32":
-            match = re.match(sub1 + sub2 + sub3 + sub4 + sub5, item)
+            match = rem.match(sub1 + sub2 + sub3 + sub4 + sub5, item)
 
         else:
-            match = re.match(sub1 + sub2 + sub3 + sub5, item)
+            match = rem.match(sub1 + sub2 + sub3 + sub5, item)
 
         # If a line matches then see if the end_log_pos is Start (new file) or
         #   has found a Query within the datetime range requested.
