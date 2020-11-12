@@ -183,6 +183,12 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
     """
 
+    sub1 = r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
+    sub2 = r"server id\s+(?P<sid>\d+)\s+"
+    sub3 = r"end_log_pos\s+(?P<epos>\d+)\s+"
+    sub4 = r"CRC32\s+(?P<crc>\w+)\s+"
+    sub5 = r"(?P<type>\w+)"
+
     if opt_arg_list is None:
         opt_arg_list = list()
 
@@ -209,24 +215,10 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
         # Supports checksum and match for approriate format.
         if master.crc == "CRC32":
-            line1 = r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
-            line2 = r"server id\s+(?P<sid>\d+)\s+"
-            line3 = r"end_log_pos\s+(?P<epos>\d+)\s+"
-            line4 = r"CRC32\s+(?P<crc>\w+)\s+"
-            line5 = r"(?P<type>\w+)"
-            lines = line1 + line2 + line3 + line4 + line5
-            match = re.match(lines, item)
-#            match = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
-#                             r"server id\s+(?P<sid>\d+)\s+"
-#                             r"end_log_pos\s+(?P<epos>\d+)\s+"
-#                             r"CRC32\s+(?P<crc>\w+)\s+"
-#                             r"(?P<type>\w+)", item)
+            match = re.match(sub1 + sub2 + sub3 + sub4 + sub5, item)
 
         else:
-            match = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
-                             r"server id\s+(?P<sid>\d+)\s+"
-                             r"end_log_pos\s+(?P<epos>\d+)\s+"
-                             r"(?P<type>\w+)", item)
+            match = re.match(sub1 + sub2 + sub3 + sub5, item)
 
         # If a line matches then see if the end_log_pos is Start (new file) or
         #   has found a Query within the datetime range requested.

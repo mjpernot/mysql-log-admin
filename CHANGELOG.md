@@ -14,6 +14,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - fetch_binlog:  Changed bin_path argument default to empty string.
 
 ### Changed
+- find_dt_pos:  Refactored the re.match regular expression string.
 - run_program:  Changed variables to standard naming convention.
 - load_log:  Changed variables to standard naming convention.
 - fetch_log_entries:  Changed variables to standard naming convention.
