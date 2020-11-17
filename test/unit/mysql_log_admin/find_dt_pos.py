@@ -30,6 +30,7 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mysql_log_admin
+import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -122,6 +123,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        rem = gen_libs.get_inst(re)
         self.master = Server()
         self.slave = Slave()
         self.filehandler = ["binlog1"]
@@ -133,8 +135,8 @@ class UnitTest(unittest.TestCase):
         self.stop_dt = "end_datetime_format"
         self.fetch_log = ["data line here"]
 
-        self.match1 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
-        self.match2 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
+        self.match1 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
+        self.match2 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
 
     @unittest.skip("Possible Bug:  Slave argument has never been fully tested")
     @mock.patch("mysql_log_admin.mysql_class.Position",
