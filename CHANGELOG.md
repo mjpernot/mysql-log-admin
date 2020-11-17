@@ -8,6 +8,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated to use the mysql_libs v5.0.0 library.
 
 ### Fixed
+- config/mysql.cfg.TEMPLATE:  Point to correct socket file.
 - find_dt_pos:  Fixed handling re line from SonarQube scan finding.
 - fetch_binlog:  Fixed handling subprocess line from SonarQube scan finding.
 - load_log:  Fixed handling subprocess line from SonarQube scan finding.

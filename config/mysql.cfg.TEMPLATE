@@ -2,4 +2,5 @@
 # Unclassified until filled in.
 [client]
 password='PASSWORD'
-socket=DIRECTORY_PATH/mysql.sock
+# Example:  socket=/opt/lamp/mysql/tmp/mysqld.sock
+socket=DIRECTORY_PATH/mysqld.sock
