@@ -106,10 +106,17 @@ class UnitTest(unittest.TestCase):
         self.loglist2 = ["binlog-08", "binlog-09", "binlog-10"]
         self.loglist3 = ["binlog-08", "binlog-09", "binlog-10", "binlog-11"]
         self.loglist4 = ["binlog-07", "binlog-08", "binlog-09", "binlog-10"]
+        self.status = (True, None)
+        self.status2 = (
+            False, "Error:  Option -f: '%s' not found in binary log list." %
+            (self.args_array5["-f"]))
+        self.status3 = (
+            False, "Error:  Option -g: '%s' not found in binary log list." %
+            (self.args_array6["-g"]))
+        self.status4 = (
+            False, "Error:  Option -g: '%s' is before -f '%s'." %
+            (self.args_array2["-g"], self.args_array2["-f"]))
 
-    @mock.patch("mysql_log_admin.sys.exit", mock.Mock(return_value=True))
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
-                mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     def test_last_missing(self, mock_fetch):
 
@@ -123,9 +130,9 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.fetch_logs
 
-        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
-                                                           self.args_array6),
-                         self.loglist)
+        self.assertEqual(
+            mysql_log_admin.process_logs_list(self.server, self.args_array6),
+            (self.status3, self.loglist))
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     def test_last_only(self, mock_fetch):
@@ -140,13 +147,10 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.fetch_logs
 
-        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
-                                                           self.args_array4),
-                         self.loglist4)
+        self.assertEqual(
+            mysql_log_admin.process_logs_list(self.server, self.args_array4),
+            (self.status, self.loglist4))
 
-    @mock.patch("mysql_log_admin.sys.exit", mock.Mock(return_value=True))
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
-                mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     def test_first_missing(self, mock_fetch):
 
@@ -160,9 +164,9 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.fetch_logs
 
-        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
-                                                           self.args_array5),
-                         self.loglist)
+        self.assertEqual(
+            mysql_log_admin.process_logs_list(self.server, self.args_array5),
+            (self.status2, self.loglist))
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     def test_first_only(self, mock_fetch):
@@ -177,12 +181,10 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.fetch_logs
 
-        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
-                                                           self.args_array3),
-                         self.loglist3)
+        self.assertEqual(
+            mysql_log_admin.process_logs_list(self.server, self.args_array3),
+            (self.status, self.loglist3))
 
-    @unittest.skip("Awaiting removal of sys.exit from function")
-    # @mock.patch("mysql_log_admin.sys.exit", mock.Mock(return_value=True))
     def test_last_first(self):
 
         """Function:  test_last_first
@@ -193,9 +195,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
-                                                           self.args_array2),
-                         self.loglist)
+        self.assertEqual(
+            mysql_log_admin.process_logs_list(self.server, self.args_array2),
+            (self.status4, []))
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     def test_first_last(self, mock_fetch):
@@ -210,9 +212,9 @@ class UnitTest(unittest.TestCase):
 
         mock_fetch.return_value = self.fetch_logs
 
-        self.assertEqual(mysql_log_admin.process_logs_list(self.server,
-                                                           self.args_array),
-                         self.loglist2)
+        self.assertEqual(
+            mysql_log_admin.process_logs_list(self.server, self.args_array),
+            (self.status, self.loglist2))
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     def test_process_logs_list(self, mock_fetch):
@@ -228,7 +230,7 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.fetch_logs
 
         self.assertEqual(mysql_log_admin.process_logs_list(self.server, {}),
-                         self.loglist)
+                         (self.status, self.loglist))
 
 
 if __name__ == "__main__":
