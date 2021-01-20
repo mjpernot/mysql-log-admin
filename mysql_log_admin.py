@@ -311,31 +311,42 @@ def process_logs_list(server, args_array, **kwargs):
     Arguments:
         (input) server -> Server instance.
         (input) args_array -> Array of command line options and values.
+        (output) status -> Tuple on process status.
+            status[0] - True|False - Process successful.
+            status[1] - Error message if process failed.
         (output) binlog_list -> List of binary log file names.
 
     """
 
     args_array = dict(args_array)
+    status = (True, None)
+    binlog_list = []
 
     # Is -f and -g in the argument list and in the correct order.
     if ("-f" in args_array and "-g" in args_array) \
        and args_array["-g"] < args_array["-f"]:
 
-        sys.exit("Error:  Option -g: '%s' is before -f '%s'." %
-                 (args_array["-g"], args_array["-f"]))
+        status = (False, "Error:  Option -g: '%s' is before -f '%s'." %
+                  (args_array["-g"], args_array["-f"]))
+
+        return status, binlog_list
 
     binlog_list = gen_libs.dict_2_list(mysql_libs.fetch_logs(server),
                                        "Log_name")
 
     if "-f" in args_array and args_array["-f"] in binlog_list:
+
         # Remove any logs before log file name.
         while binlog_list[0] < args_array["-f"]:
             binlog_list.pop(0)
 
     elif "-f" in args_array:
-        cmds_gen.disconnect(server)
-        sys.exit("Error:  Option -f: '%s' not found in binary log list." %
-                 (args_array["-f"]))
+
+        status = (
+            False, "Error:  Option -f: '%s' not found in binary log list." %
+            (args_array["-f"]))
+
+        return status, binlog_list
 
     if "-g" in args_array and args_array["-g"] in binlog_list:
         # Remove any logs after log file name.
@@ -343,11 +354,12 @@ def process_logs_list(server, args_array, **kwargs):
             binlog_list.pop(-1)
 
     elif "-g" in args_array:
-        cmds_gen.disconnect(server)
-        sys.exit("Error:  Option -g: '%s' not found in binary log list." %
-                 (args_array["-g"]))
 
-    return binlog_list
+        status = (
+            False, "Error:  Option -g: '%s' not found in binary log list." %
+            (args_array["-g"]))
+
+    return status, binlog_list
 
 
 def load_log(server, args_array, opt_arg_list, **kwargs):
