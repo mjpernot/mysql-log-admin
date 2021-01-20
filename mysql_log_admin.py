@@ -399,8 +399,6 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
     else:
         print("Error encountered: %s" % (status[1]))
 
-    cmds_gen.disconnect(server)
-
 
 def run_program(args_array, func_dict, opt_arg_list, **kwargs):
 
