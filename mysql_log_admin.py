@@ -380,21 +380,26 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
     subp = gen_libs.get_inst(subprocess)
     args_array = dict(args_array)
     opt_arg_list = list(opt_arg_list)
-    binlog_list = process_logs_list(server, args_array)
-    target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
-                                        mysql_class.Server)
-    cmd = mysql_libs.crt_cmd(
-        target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
+    status, binlog_list = process_logs_list(server, args_array)
 
-    # Fetch binary logs (server) and restore to destination database (target)
-    #   Wait until the load process has completed, before continuing.
-    proc1 = fetch_binlog(
-        server, args_array.get("-s"), args_array.get("-t"), binlog_list,
-        opt_arg_list, arg_parser.arg_set_path(args_array, "-p"))
-    proc2 = subp.Popen(cmd, stdin=proc1)
-    proc2.wait()
+    if status[0]:
+        target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
+                                            mysql_class.Server)
+        cmd = mysql_libs.crt_cmd(
+            target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
 
-    cmds_gen.disconnect(server, target)
+        # Fetch binary logs and restore to target database
+        proc1 = fetch_binlog(
+            server, args_array.get("-s"), args_array.get("-t"), binlog_list,
+            opt_arg_list, arg_parser.arg_set_path(args_array, "-p"))
+        proc2 = subp.Popen(cmd, stdin=proc1)
+        proc2.wait()
+        cmds_gen.disconnect(target)
+
+    else:
+        print("Error encountered: %s" % (status[1]))
+
+    cmds_gen.disconnect(server)
 
 
 def run_program(args_array, func_dict, opt_arg_list, **kwargs):
