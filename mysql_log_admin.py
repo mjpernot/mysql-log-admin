@@ -18,17 +18,23 @@
     Arguments:
         -c file => Database configuration file.  Required arg.
         -d dir path => Directory path to config files.  Required arg.
+
         -L => Locate position in binary logs, if start and stop
             datetimes are NULL, then get current position.
-        -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
-        -t "date time" => Stop datetime.  Format:  YYYY-MM-DD HH:MM:SS
+            -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
+            -t "date time" => Stop datetime.  Format:  YYYY-MM-DD HH:MM:SS
+
         -D => Display log(s).  Will use a combination of start and stop
             datetimes along with log names.
-        -R => Restore binary logs from a source database (-c) to a
-            target database (-e).  Requires arg: -e.
-        -e file => Target database configuration file.
-        -f file => First binary log file name.
-        -g file => Last binary log file name.
+            -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
+            -t "date time" => Stop datetime.  Format:  YYYY-MM-DD HH:MM:SS
+
+        -R => Restore binary logs from a master database (-c) to a slave
+            database (-e).
+            -e file => Target database configuration file.
+            -f file => First binary log file name.
+            -g file => Last binary log file name.
+
         -p dir path => Directory path to mysql programs.  Only required if the
             mysql binary programs do not run properly.  (i.e. not in the $PATH
             variable.)
@@ -40,10 +46,11 @@
 
     Notes:
         Database configuration file format (config/mysql_cfg.py.TEMPLATE):
+            Ignore the replication entries as they are not needed.
             # Configuration file for a Database connection.
             user = "USER"
             japd = "PSWORD"
-            host = "IP_ADDRESS"
+            host = "HOST_IP"
             name = "HOSTNAME"
             sid = SERVER_ID
             extra_def_file = "PYTHON_PROJEXT/config/mysql.cfg"
