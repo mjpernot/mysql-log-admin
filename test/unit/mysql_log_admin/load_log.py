@@ -133,8 +133,6 @@ class UnitTest(unittest.TestCase):
         self.status2 = (False, "Error Message")
         self.binlog_list = ["binlog1", "binlog2"]
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
-                mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.process_logs_list")
     def test_list_fail(self, mock_logs):
 
