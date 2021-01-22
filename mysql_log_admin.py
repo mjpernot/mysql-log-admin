@@ -9,8 +9,8 @@
 
     Usage:
         mysql_log_admin.py -c file -d path
-            {-L -s "date time" -t "date time" |
-             -D -s "date time" -t "date time" |
+            {-L [-s "date time" | -t "date time"] |
+             -D [-f file | -g file | -s "date time"] [-t "date time"] |
              -R -e file [-f file | -g file]}
             [-y flavor_id] [-p path]
             [-v | -h]
@@ -25,7 +25,9 @@
             -t "date time" => Stop datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
 
         -D => Display log(s).  Will use a combination of start and stop
-            datetimes along with log names.
+            datetimes and first and last binary log file names.
+            -f file => First binary log file name.
+            -g file => Last binary log file name.
             -s "date time" => Start datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
             -t "date time" => Stop datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
 
