@@ -16,6 +16,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - fetch_binlog:  Changed bin_path argument default to empty string.
 
 ### Changed
+- fetch_log_entries:  Add ability to fetch binary logs based on file names.
 - load_log:  Captured and processed "status" from process_logs_list function.
 - process_logs_list:  Removed sys.exit() and replaced with status and returned status to calling function.
 - find_dt_pos:  Refactored the re.match regular expression string.

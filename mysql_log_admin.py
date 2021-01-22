@@ -293,12 +293,20 @@ def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
 
     args_array = dict(args_array)
     opt_arg_list = list(opt_arg_list)
-    lines = fetch_binlog(server, args_array.get("-s"), args_array.get("-t"),
-                         opt_arg_list=opt_arg_list,
-                         bin_path=arg_parser.arg_set_path(args_array, "-p"))
+    status, binlog_list = process_logs_list(server, args_array)
 
-    for item in lines:
-        print(item, end="")
+    if status[0]:
+
+        lines = fetch_binlog(
+            server, opt_arg_list=opt_arg_list, start_dt=args_array.get("-s"),
+            stop_dt=args_array.get("-t"), binlog_files=binlog_list,
+            bin_path=arg_parser.arg_set_path(args_array, "-p"))
+
+        for item in lines:
+            print(item, end="")
+
+    else:
+        print("Error encountered: %s" % (status[1]))
 
 
 def process_logs_list(server, args_array, **kwargs):
