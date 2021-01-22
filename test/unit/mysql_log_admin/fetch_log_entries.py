@@ -70,6 +70,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_log_failure -> Test with process_logs_list failure.
+        test_log_success -> Test with process_logs_list successful.
         test_no_binlogs -> Test with no binary logs detected.
         test_fetch_log_entries -> Test with only default arguments passed.
 
@@ -88,10 +90,52 @@ class UnitTest(unittest.TestCase):
         self.server = Server()
         self.opt_arg_list = ["--force-read", "--read-from-remote-server"]
         self.args_array = {"-s": True, "-t": True, "-p": "/dir/patch"}
-        self.loglist = ["binlog1", "binlog2"]
+        self.loglist = ["line1", "line2"]
+        self.binlog_list = ["binarylog1", "binarylog2"]
+        self.status = (True, None)
+        self.status2 = (False, "Error Message")
 
+    @mock.patch("mysql_log_admin.process_logs_list")
     @mock.patch("mysql_log_admin.fetch_binlog")
-    def test_no_binlogs(self, mock_fetch):
+    def test_log_failure(self, mock_fetch, mock_logs):
+
+        """Function:  test_log_failure
+
+        Description:  Test with process_logs_list successful.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.loglist
+        mock_logs.return_value = self.status2, []
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_log_admin.fetch_log_entries(
+                self.server, self.args_array, self.opt_arg_list))
+
+    @mock.patch("mysql_log_admin.process_logs_list")
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    def test_log_success(self, mock_fetch, mock_logs):
+
+        """Function:  test_log_success
+
+        Description:  Test with process_logs_list successful.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.loglist
+        mock_logs.return_value = self.status, self.binlog_list
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_log_admin.fetch_log_entries(
+                self.server, self.args_array, self.opt_arg_list))
+
+    @mock.patch("mysql_log_admin.process_logs_list")
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    def test_no_binlogs(self, mock_fetch, mock_logs):
 
         """Function:  test_no_binlogs
 
@@ -102,12 +146,14 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_fetch.return_value = []
+        mock_logs.return_value = self.status, self.binlog_list
 
         self.assertFalse(mysql_log_admin.fetch_log_entries(
             self.server, self.args_array, self.opt_arg_list))
 
+    @mock.patch("mysql_log_admin.process_logs_list")
     @mock.patch("mysql_log_admin.fetch_binlog")
-    def test_fetch_log_entries(self, mock_fetch):
+    def test_fetch_log_entries(self, mock_fetch, mock_logs):
 
         """Function:  test_fetch_log_entries
 
@@ -118,6 +164,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_fetch.return_value = self.loglist
+        mock_logs.return_value = self.status, self.binlog_list
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_log_admin.fetch_log_entries(
