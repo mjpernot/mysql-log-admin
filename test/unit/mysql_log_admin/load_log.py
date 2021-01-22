@@ -158,7 +158,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     @mock.patch("mysql_log_admin.process_logs_list")
     def test_no_opt_arg_lists(self, mock_logs, mock_inst, mock_cmd, mock_fetch,
-                      mock_popen):
+                              mock_popen):
 
         """Function:  test_no_opt_arg_lists
 
