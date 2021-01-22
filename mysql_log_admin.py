@@ -21,13 +21,13 @@
 
         -L => Locate position in binary logs, if start and stop
             datetimes are NULL, then get current position.
-            -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
-            -t "date time" => Stop datetime.  Format:  YYYY-MM-DD HH:MM:SS
+            -s "date time" => Start datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
+            -t "date time" => Stop datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
 
         -D => Display log(s).  Will use a combination of start and stop
             datetimes along with log names.
-            -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
-            -t "date time" => Stop datetime.  Format:  YYYY-MM-DD HH:MM:SS
+            -s "date time" => Start datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
+            -t "date time" => Stop datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
 
         -R => Restore binary logs from a master database (-c) to a slave
             database (-e).
