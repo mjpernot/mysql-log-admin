@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  This program is used to administrate transaction logs in a MySQL database to include locating log positions and restoring transaction logs to a database.
+  Administrate transaction logs in a MySQL database to include locating log positions and restoring transaction logs to a database.
 
 
 ###  This README file is broken down into the following sections:
@@ -65,50 +65,60 @@ pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host
 
 # Configuration:
 
-Create MySQL configuration file for Source database.
+Create MySQL configuration file for Source database.  Make the appropriate change to the environment.
+  * Change these entries in the MySQL setup:
+    - japd = "PSWORD"
+    - host = "HOST_IP"
+    - name = "HOST_NAME"
+    - sid = SERVER_ID
+    - extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
+    - cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
+  * Change these entries only if required:
+    - serv_os = "Linux"
+    - port = 3306  
 
 ```
 cd config
 cp mysql_cfg.py.TEMPLATE mysql_cfg.py
-```
-
-Make the appropriate change to the environment.
-  * Change these entries in the MySQL setup:
-    - passwd = "PSWORD"
-    - host = "SERVER_IP"
-    - name = "HOST_NAME"
-    - sid = SERVER_ID
-    - extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
-
-```
 vim mysql_cfg.py
 chmod 600 mysql_cfg.py
 ```
 
-Create MySQL definition file for Source database.
-
-```
-cp mysql.cfg.TEMPLATE mysql.cfg
-```
-
-Make the appropriate change to the MySQL definition setup.
+Create MySQL definition file for Source database.  Make the appropriate change to the MySQL definition setup.
   * Change these entries in the MySQL configuration file:
     - password="PASSWORD"
     - socket=DIRECTORY_PATH/mysql.sock
 
 ```
+cp mysql.cfg.TEMPLATE mysql.cfg
 vim mysql.cfg
 chmod 600 mysql.cfg
 ```
 
-For each Target database, create a seperate MySQL configuration and MySQL definition file.
-
-Make the appropriate change to each Target environment.  See above for the changes required in each file.  In addition, the "extra_def_file" entry will require "mysql.cfg" to be changed to "mysql\_{TargetName}.cfg".
+Create MySQL configuration file for each Target database.  Make the appropriate change to the environment.
+  * Change these entries in the MySQL setup:
+    - japd = "PSWORD"
+    - host = "HOST_IP"
+    - name = "HOST_NAME"
+    - sid = SERVER_ID
+    - extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
+    - cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
+  * Change these entries only if required:
+    - serv_os = "Linux"
+    - port = 3306
 
 ```
 cp mysql_cfg.py.TEMPLATE mysql_cfg_TARGET_NAME.py
 vim mysql_cfg._TARGET_NAME.py
 chmod 600 mysql_cfg_TARGET_NAME.py
+```
+
+Create MySQL definition file for each Target database.  Make the appropriate change to the MySQL definition setup.
+  * Change these entries in the MySQL configuration file:
+    - password="PASSWORD"
+    - socket=DIRECTORY_PATH/mysql.sock
+
+```
 cp mysql.cfg.TEMPLATE mysql_TARGET_NAME.cfg
 vim mysql_TARGET_NAME.cfg
 chmod 600 mysql_TARGET_NAME.cfg
