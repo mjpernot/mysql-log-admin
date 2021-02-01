@@ -429,15 +429,20 @@ def run_program(args_array, func_dict, opt_arg_list, **kwargs):
     opt_arg_list = list(opt_arg_list)
     server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mysql_class.Server)
-    server.connect()
-    server.set_srv_binlog_crc()
+    server.connect(silent=True)
 
-    # Call function(s) - intersection of command line and function dict.
-    for item in set(args_array.keys()) & set(func_dict.keys()):
-        # Call the function requested.
-        func_dict[item](server, args_array, opt_arg_list)
+    if not server.conn_msg:
+        server.set_srv_binlog_crc()
 
-    cmds_gen.disconnect(server)
+        # Call function(s) - intersection of command line and function dict.
+        for item in set(args_array.keys()) & set(func_dict.keys()):
+            # Call the function requested.
+            func_dict[item](server, args_array, opt_arg_list)
+
+        cmds_gen.disconnect(server)
+
+    else:
+        print(server.conn_msg)
 
 
 def main():

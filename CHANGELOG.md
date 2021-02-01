@@ -5,7 +5,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [2.1.1] - 2020-11-10
-- Updated to use the mysql_libs v5.0.0 library.
+- Updated to use the mysql_libs v5.0.3 library.
 
 ### Fixed
 - load_log:  Added connect command and removed cmds_gen.disconnect for "server".
@@ -16,6 +16,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - fetch_binlog:  Changed bin_path argument default to empty string.
 
 ### Changed
+- run_program:  Added check on status of server connection message.
 - fetch_log_entries:  Add ability to fetch binary logs based on file names.
 - load_log:  Captured and processed "status" from process_logs_list function.
 - process_logs_list:  Removed sys.exit() and replaced with status and returned status to calling function.
