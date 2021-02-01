@@ -98,18 +98,26 @@ class Server(object):
         self.sql_user = "mysql"
         self.host = "hostname"
         self.port = 3306
+        self.name = "Server_Name"
+        self.conn_msg = None
 
-    def connect(self):
+    def connect(self, silent):
 
         """Method:  connect
 
         Description:  Connect method.
 
         Arguments:
+            (input) silent -> True|False on printing error message.
 
         """
 
-        pass
+        status = True
+
+        if silent:
+            status = True
+
+        return status
 
 
 class UnitTest(unittest.TestCase):
@@ -120,6 +128,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_connection_error -> Test with connection error.
+        test_connection_success -> Test with successful connection.
         test_list_fail -> Test with process_logs_list function fails.
         test_no_opt_arg_lists -> Test with empty opt_arg_list list.
         test_load_log -> Test with only default arguments passed.
@@ -145,6 +155,54 @@ class UnitTest(unittest.TestCase):
         self.status = (True, None)
         self.status2 = (False, "Error Message")
         self.binlog_list = ["binlog1", "binlog2"]
+
+    @mock.patch("mysql_log_admin.mysql_libs.create_instance")
+    @mock.patch("mysql_log_admin.process_logs_list")
+    def test_connection_error(self, mock_logs, mock_inst):
+
+        """Function:  test_connection_error
+
+        Description:  Test with connection error.
+
+        Arguments:
+
+        """
+
+        self.server.conn_msg = "Connection error message"
+
+        mock_logs.return_value = self.status, self.binlog_list
+        mock_inst.return_value = self.server
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_log_admin.load_log(
+                self.server, self.args_array, self.opt_arg_list))
+
+    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.subprocess.Popen")
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    @mock.patch("mysql_log_admin.mysql_libs.crt_cmd")
+    @mock.patch("mysql_log_admin.mysql_libs.create_instance")
+    @mock.patch("mysql_log_admin.process_logs_list")
+    def test_connection_success(self, mock_logs, mock_inst, mock_cmd,
+                                mock_fetch, mock_popen):
+
+        """Function:  test_connection_success
+
+        Description:  Test with successful connection.
+
+        Arguments:
+
+        """
+
+        mock_logs.return_value = self.status, self.binlog_list
+        mock_inst.return_value = self.server
+        mock_cmd.return_value = self.cmd_list
+        mock_fetch.return_value = "Process"
+        mock_popen.return_value = self.proc
+
+        self.assertFalse(mysql_log_admin.load_log(
+            self.server, self.args_array, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.process_logs_list")
     def test_list_fail(self, mock_logs):
