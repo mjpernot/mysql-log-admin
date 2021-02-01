@@ -395,20 +395,28 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
     if status[0]:
         target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
                                             mysql_class.Server)
-        target.connect()
-        cmd = mysql_libs.crt_cmd(
-            target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
+        target.connect(silent=True)
 
-        # Fetch binary logs and restore to target database
-        proc1 = fetch_binlog(
-            server, args_array.get("-s"), args_array.get("-t"), binlog_list,
-            opt_arg_list, arg_parser.arg_set_path(args_array, "-p"))
-        proc2 = subp.Popen(cmd, stdin=proc1)
-        proc2.wait()
-        cmds_gen.disconnect(target)
+        if not target.conn_msg:
+            cmd = mysql_libs.crt_cmd(
+                target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
+
+            # Fetch binary logs and restore to target database
+            proc1 = fetch_binlog(
+                server, args_array.get("-s"), args_array.get("-t"),
+                binlog_list, opt_arg_list,
+                arg_parser.arg_set_path(args_array, "-p"))
+            proc2 = subp.Popen(cmd, stdin=proc1)
+            proc2.wait()
+            cmds_gen.disconnect(target)
+
+        else:
+            print("load_log:  Error encountered on slave(%s):  %s" %
+                  (target.name, target.conn_msg))
 
     else:
-        print("Error encountered: %s" % (status[1]))
+        print("load_log:  Error encountered in process_logs_list: %s" %
+              (status[1]))
 
 
 def run_program(args_array, func_dict, opt_arg_list, **kwargs):
@@ -442,7 +450,8 @@ def run_program(args_array, func_dict, opt_arg_list, **kwargs):
         cmds_gen.disconnect(server)
 
     else:
-        print(server.conn_msg)
+        print("run_program:  Error encountered on master(%s):  %s" %
+              (server.name, server.conn_msg))
 
 
 def main():
