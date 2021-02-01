@@ -80,6 +80,7 @@ class Server(object):
 
     Methods:
         __init__ -> Class initialization.
+        connect -> Connect method.
 
     """
 
@@ -97,6 +98,18 @@ class Server(object):
         self.sql_user = "mysql"
         self.host = "hostname"
         self.port = 3306
+
+    def connect(self):
+
+        """Method:  connect
+
+        Description:  Connect method.
+
+        Arguments:
+
+        """
+
+        pass
 
 
 class UnitTest(unittest.TestCase):
