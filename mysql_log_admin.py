@@ -395,6 +395,7 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
     if status[0]:
         target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
                                             mysql_class.Server)
+        target.connect()
         cmd = mysql_libs.crt_cmd(
             target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
 
