@@ -80,6 +80,7 @@ class Server(object):
         self.sql_user = "mysql"
         self.host = "hostname"
         self.port = 3306
+        self.name = "Server_Name"
         self.conn_msg = None
 
     def connect(self, silent):
