@@ -4,27 +4,40 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.1.1] - 2020-11-10
+- Updated to use the mysql_libs v5.0.3 library.
+
+### Fixed
+- load_log:  Added connect command and removed cmds_gen.disconnect for "server".
+- config/mysql.cfg.TEMPLATE:  Point to correct socket file.
+- find_dt_pos:  Fixed handling re line from SonarQube scan finding.
+- load_log, fetch_binlog:  Fixed handling subprocess line from SonarQube scan finding.
+- main: Fixed handling command line arguments from SonarQube scan finding.
+- fetch_binlog:  Changed bin_path argument default to empty string.
+
+### Changed
+- load_log, run_program:  Added check on status of server connection message.
+- fetch_log_entries:  Add ability to fetch binary logs based on file names.
+- load_log:  Captured and processed "status" from process_logs_list function.
+- process_logs_list:  Removed sys.exit() and replaced with status and returned status to calling function.
+- find_dt_pos:  Refactored the re.match regular expression string.
+- load_log, fetch_log_entries, find_dt_pos, run_program:  Changed variables to standard naming convention.
+- config/mysql_cfg.py.TEMPLATE:  Changed entry name.
+- Documentation updates.
+
+### Removed
+- Removed os library module.
+
+
 ## [2.1.0] - 2019-12-16
 ### Fixed
-- fetch_binlog:  Fixed problem with mutable default arguments issue.
-- find_dt_pos:  Fixed problem with mutable default arguments issue.
-- fetch_log_pos:  Fixed problem with mutable default arguments issue.
-- fetch_log_entries:  Fixed problem with mutable default arguments issue.
-- process_logs_list:  Fixed problem with mutable default arguments issue.
-- load_log:  Fixed problem with mutable default arguments issue.
-- run_program:  Fixed problem with mutable default arguments issue.
+- find_dt_pos, fetch_log_pos, fetch_log_entries, process_logs_list, load_log, run_program, fetch_binlog:  Fixed problem with mutable default arguments issue.
 
 ### Changed
 - main:  Added program lock functionality to program.
 - main:  Added new option -y to the program.
-- main: Refactored 'if' statements.
-- fetch_binlog: Changed variable name to standard convention.
-- find_dt_pos: Changed variable name to standard convention.
-- fetch_log_pos: Changed variable name to standard convention.
-- fetch_log_entries: Changed variable name to standard convention.
-- process_logs_list: Changed variable name to standard convention.
-- load_log: Changed variable name to standard convention.
-- run_program: Changed variable name to standard convention.
+- main:  Refactored 'if' statements.
+- find_dt_pos, fetch_log_pos, fetch_log_entries, process_logs_list, load_log, run_program, fetch_binlog: Changed variable name to standard convention.
 - Documentation updates.
 
 
@@ -86,8 +99,7 @@ Breaking Change
 ### Changed
 - Load_Log:  Changed -C to -e.  To bring the argument options inline with the other programs.  Changed commands.Disconnect() to cmds_gen.Disconnect().  Replaced my_prog.Crt_Cmd with commands.Crt_Cmd.
 - main:  Changed -C to -e.  To bring the argument options inline with the other programs.  Replaced Arg_Parse with Arg_Parse2.
-- Process_Logs_List:  Changed commands.Disconnect() to cmds_gen.Disconnect().
-- Run_Program:  Changed commands.Disconnect() to cmds_gen.Disconnect().
+- Run_Program, Process_Logs_List:  Changed commands.Disconnect() to cmds_gen.Disconnect().
 - Fetch_Binlog:  Replaced my_prog.Append_Cmd with prog_gen.Add_Cmd.  Replaced my_prog.Crt_Cmd with commands.Crt_Cmd.
 
 
@@ -103,8 +115,7 @@ Breaking Change
 
 ## [1.1.0] - 2016-01-07
 ### Changed
-- Fetch_Log_Entries:  Added \*\*kwargs to argument list to allow for future use of additional arguments to the function.
-- Fetch_Log_Pos:  Added \*\*kwargs to argument list to allow for future use of additional arguments to the function.
+- Fetch_Log_Pos, Fetch_Log_Entries:  Added \*\*kwargs to argument list to allow for future use of additional arguments to the function.
 - Fetch_Binlog:  Removed extranous print command from function, left over from original testing phase.
 - main:  Added new variable to hold function calls to the validity functions.
 - main:  Added function call to Arg_Validate to check the validity of the data in some of the arguments.

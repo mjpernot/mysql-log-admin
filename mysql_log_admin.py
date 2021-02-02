@@ -8,24 +8,35 @@
         specific location, and printing logs.
 
     Usage:
-        mysql_log_admin.py -c file -d path {-L | -D | -R {-e file}
-            [-f file | -g file]} [-p path | -s datetime | -t datetime]
-            [-y flavor_id] [-v | -h]
+        mysql_log_admin.py -c file -d path
+            {-L [-s "date time" | -t "date time"] |
+             -D [-f file | -g file | -s "date time"] [-t "date time"] |
+             -R -e file [-f file | -g file]}
+            [-y flavor_id] [-p path]
+            [-v | -h]
 
     Arguments:
         -c file => Database configuration file.  Required arg.
         -d dir path => Directory path to config files.  Required arg.
+
         -L => Locate position in binary logs, if start and stop
             datetimes are NULL, then get current position.
+            -s "date time" => Start datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
+            -t "date time" => Stop datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
+
         -D => Display log(s).  Will use a combination of start and stop
-            datetimes along with log names.
-        -R => Restore binary logs from a source database (-c) to a
-            target database (-e).  Requires args: -c and -e.
-        -e file => Target database configuration file.
-        -s "date time" => Start datetime.  Format:  YYYY-MM-DD HH:MM:SS
-        -t "date time" => Stop datetime.  Format:  YYYY-MM-DD HH:MM:SS
-        -f file => First binary log file name.
-        -g file => Last binary log file name.
+            datetimes and first and last binary log file names.
+            -f file => First binary log file name.
+            -g file => Last binary log file name.
+            -s "date time" => Start datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
+            -t "date time" => Stop datetime.  Format:  "YYYY-MM-DD HH:MM:SS"
+
+        -R => Restore binary logs from a master database (-c) to a slave
+            database (-e).
+            -e file => Target database configuration file.
+            -f file => First binary log file name.
+            -g file => Last binary log file name.
+
         -p dir path => Directory path to mysql programs.  Only required if the
             mysql binary programs do not run properly.  (i.e. not in the $PATH
             variable.)
@@ -36,17 +47,18 @@
         NOTE:  -v or -h overrides the other options.
 
     Notes:
-        Database configuration file format (mysql_cfg.py.TEMPLATE):
-            # Configuration file for each Source/Target Database
-            user = "root"
-            passwd = "ROOT_PASSWORD"
-            host = "IP_ADDRESS"
-            serv_os = "Linux"
+        Database configuration file format (config/mysql_cfg.py.TEMPLATE):
+            Ignore the replication entries as they are not needed.
+            # Configuration file for a Database connection.
+            user = "USER"
+            japd = "PSWORD"
+            host = "HOST_IP"
             name = "HOSTNAME"
-            port = PORT_NUMBER (default of mysql is 3306)
-            cfg_file = "DIRECTORY_PATH/my.cnf"
-            sid = "SERVER_ID"
-            extra_def_file = "DIRECTORY_PATH/mysql.cfg"
+            sid = SERVER_ID
+            extra_def_file = "PYTHON_PROJEXT/config/mysql.cfg"
+            serv_os = "Linux"
+            port = 3306
+            cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
 
         NOTE 1:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
@@ -60,8 +72,8 @@
         configuration modules -> name is runtime dependent as it can be used to
             connect to different databases with different names.
 
-        Defaults Extra File format (mysql.cfg.TEMPLATE):
-        password="ROOT_PASSWORD"
+        Defaults Extra File format (config/mysql.cfg.TEMPLATE):
+        password="PASSWORD"
         socket="DIRECTORY_PATH/mysql.sock"
 
         NOTE:  The socket information can be obtained from the my.cnf file
@@ -78,7 +90,6 @@
 # For Python 2.6/2.7: Redirection of stdout in a print command.
 from __future__ import print_function
 import sys
-import os
 import subprocess
 import re
 import itertools
@@ -110,7 +121,7 @@ def help_message():
 
 
 def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
-                 opt_arg_list=None, bin_path=None, **kwargs):
+                 opt_arg_list=None, bin_path="", **kwargs):
 
     """Function:  fetch_binlog
 
@@ -129,6 +140,8 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
     """
 
+    subp = gen_libs.get_inst(subprocess)
+
     if opt_arg_list is None:
         opt_arg_list = list()
 
@@ -136,9 +149,9 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
         opt_arg_list = list(opt_arg_list)
 
     if binlog_files is None:
-        # List of current binary logs.
-        binlog_files = [row["Log_name"]
-                        for row in mysql_libs.fetch_logs(server)]
+        # List of binary logs.
+        binlog_files = [
+            row["Log_name"] for row in mysql_libs.fetch_logs(server)]
 
     else:
         binlog_files = list(binlog_files)
@@ -156,8 +169,7 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
         cmd = cmds_gen.add_cmd(cmd, arg="--stop-datetime=%s" % (stop_dt))
 
     # Return a file handler with log entries.
-    return iter(subprocess.Popen(cmd + binlog_files,
-                                 stdout=subprocess.PIPE).stdout)
+    return iter(subp.Popen(cmd + binlog_files, stdout=subp.PIPE).stdout)
 
 
 def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
@@ -179,6 +191,13 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
         (output) -> Position class (file, pos).
 
     """
+
+    rem = gen_libs.get_inst(re)
+    sub1 = r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
+    sub2 = r"server id\s+(?P<sid>\d+)\s+"
+    sub3 = r"end_log_pos\s+(?P<epos>\d+)\s+"
+    sub4 = r"CRC32\s+(?P<crc>\w+)\s+"
+    sub5 = r"(?P<type>\w+)"
 
     if opt_arg_list is None:
         opt_arg_list = list()
@@ -202,34 +221,30 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     num_files = 0
     last_log_pos = None
 
-    for x in lines:
+    for item in lines:
 
         # Supports checksum and match for approriate format.
         if master.crc == "CRC32":
-            m = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
-                         r"server id\s+(?P<sid>\d+)\s+"
-                         r"end_log_pos\s+(?P<epos>\d+)\s+"
-                         r"CRC32\s+(?P<crc>\w+)\s+"
-                         r"(?P<type>\w+)", x)
+            match = rem.match(sub1 + sub2 + sub3 + sub4 + sub5, item)
 
         else:
-            m = re.match(r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
-                         r"server id\s+(?P<sid>\d+)\s+"
-                         r"end_log_pos\s+(?P<epos>\d+)\s+"
-                         r"(?P<type>\w+)", x)
+            match = rem.match(sub1 + sub2 + sub3 + sub5, item)
 
         # If a line matches then see if the end_log_pos is Start (new file) or
         #   has found a Query within the datetime range requested.
-        if m:
+        if match:
+
             # If matched line is at the start of the log.
-            if m.group("type") == "Start":
+            if match.group("type") == "Start":
+
                 # Increase file position by 1.
                 num_files += 1
 
             # If matched line is a Query
-            if m.group("type") == "Query":
+            if match.group("type") == "Query":
+
                 # Capture position of the log.
-                last_log_pos = m.group("epos")
+                last_log_pos = match.group("epos")
 
     # Return file and position as a Position class.
     return mysql_class.Position(log_files[num_files - 1], last_log_pos)
@@ -280,12 +295,20 @@ def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
 
     args_array = dict(args_array)
     opt_arg_list = list(opt_arg_list)
-    lines = fetch_binlog(server, args_array.get("-s"), args_array.get("-t"),
-                         opt_arg_list=opt_arg_list,
-                         bin_path=arg_parser.arg_set_path(args_array, "-p"))
+    status, binlog_list = process_logs_list(server, args_array)
 
-    for x in lines:
-        print(x, end="")
+    if status[0]:
+
+        lines = fetch_binlog(
+            server, opt_arg_list=opt_arg_list, start_dt=args_array.get("-s"),
+            stop_dt=args_array.get("-t"), binlog_files=binlog_list,
+            bin_path=arg_parser.arg_set_path(args_array, "-p"))
+
+        for item in lines:
+            print(item, end="")
+
+    else:
+        print("Error encountered: %s" % (status[1]))
 
 
 def process_logs_list(server, args_array, **kwargs):
@@ -298,31 +321,42 @@ def process_logs_list(server, args_array, **kwargs):
     Arguments:
         (input) server -> Server instance.
         (input) args_array -> Array of command line options and values.
+        (output) status -> Tuple on process status.
+            status[0] - True|False - Process successful.
+            status[1] - Error message if process failed.
         (output) binlog_list -> List of binary log file names.
 
     """
 
     args_array = dict(args_array)
+    status = (True, None)
+    binlog_list = []
 
     # Is -f and -g in the argument list and in the correct order.
     if ("-f" in args_array and "-g" in args_array) \
        and args_array["-g"] < args_array["-f"]:
 
-        sys.exit("Error:  Option -g: '%s' is before -f '%s'." %
-                 (args_array["-g"], args_array["-f"]))
+        status = (False, "Error:  Option -g: '%s' is before -f '%s'." %
+                  (args_array["-g"], args_array["-f"]))
+
+        return status, binlog_list
 
     binlog_list = gen_libs.dict_2_list(mysql_libs.fetch_logs(server),
                                        "Log_name")
 
     if "-f" in args_array and args_array["-f"] in binlog_list:
+
         # Remove any logs before log file name.
         while binlog_list[0] < args_array["-f"]:
             binlog_list.pop(0)
 
     elif "-f" in args_array:
-        cmds_gen.disconnect(server)
-        sys.exit("Error:  Option -f: '%s' not found in binary log list." %
-                 (args_array["-f"]))
+
+        status = (
+            False, "Error:  Option -f: '%s' not found in binary log list." %
+            (args_array["-f"]))
+
+        return status, binlog_list
 
     if "-g" in args_array and args_array["-g"] in binlog_list:
         # Remove any logs after log file name.
@@ -330,11 +364,12 @@ def process_logs_list(server, args_array, **kwargs):
             binlog_list.pop(-1)
 
     elif "-g" in args_array:
-        cmds_gen.disconnect(server)
-        sys.exit("Error:  Option -g: '%s' not found in binary log list." %
-                 (args_array["-g"]))
 
-    return binlog_list
+        status = (
+            False, "Error:  Option -g: '%s' not found in binary log list." %
+            (args_array["-g"]))
+
+    return status, binlog_list
 
 
 def load_log(server, args_array, opt_arg_list, **kwargs):
@@ -352,23 +387,36 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
 
     """
 
+    subp = gen_libs.get_inst(subprocess)
     args_array = dict(args_array)
     opt_arg_list = list(opt_arg_list)
-    binlog_list = process_logs_list(server, args_array)
-    target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
-                                        mysql_class.Server)
-    cmd = mysql_libs.crt_cmd(
-        target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
+    status, binlog_list = process_logs_list(server, args_array)
 
-    # Fetch binary logs (server) and restore to destination database (target)
-    #   Wait until the load process has completed, before continuing.
-    P1 = fetch_binlog(server, args_array.get("-s"), args_array.get("-t"),
-                      binlog_list, opt_arg_list,
-                      arg_parser.arg_set_path(args_array, "-p"))
-    P2 = subprocess.Popen(cmd, stdin=P1)
-    P2.wait()
+    if status[0]:
+        target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
+                                            mysql_class.Server)
+        target.connect(silent=True)
 
-    cmds_gen.disconnect(server, target)
+        if not target.conn_msg:
+            cmd = mysql_libs.crt_cmd(
+                target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
+
+            # Fetch binary logs and restore to target database
+            proc1 = fetch_binlog(
+                server, args_array.get("-s"), args_array.get("-t"),
+                binlog_list, opt_arg_list,
+                arg_parser.arg_set_path(args_array, "-p"))
+            proc2 = subp.Popen(cmd, stdin=proc1)
+            proc2.wait()
+            cmds_gen.disconnect(target)
+
+        else:
+            print("load_log:  Error encountered on slave(%s):  %s" %
+                  (target.name, target.conn_msg))
+
+    else:
+        print("load_log:  Error encountered in process_logs_list: %s" %
+              (status[1]))
 
 
 def run_program(args_array, func_dict, opt_arg_list, **kwargs):
@@ -389,15 +437,21 @@ def run_program(args_array, func_dict, opt_arg_list, **kwargs):
     opt_arg_list = list(opt_arg_list)
     server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mysql_class.Server)
-    server.connect()
-    server.set_srv_binlog_crc()
+    server.connect(silent=True)
 
-    # Call function(s) - intersection of command line and function dict.
-    for x in set(args_array.keys()) & set(func_dict.keys()):
-        # Call the function requested.
-        func_dict[x](server, args_array, opt_arg_list)
+    if not server.conn_msg:
+        server.set_srv_binlog_crc()
 
-    cmds_gen.disconnect(server)
+        # Call function(s) - intersection of command line and function dict.
+        for item in set(args_array.keys()) & set(func_dict.keys()):
+            # Call the function requested.
+            func_dict[item](server, args_array, opt_arg_list)
+
+        cmds_gen.disconnect(server)
+
+    else:
+        print("run_program:  Error encountered on master(%s):  %s" %
+              (server.name, server.conn_msg))
 
 
 def main():
@@ -422,6 +476,7 @@ def main():
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-L": fetch_log_pos, "-D": fetch_log_entries, "-R": load_log}
     opt_arg_list = ["--force-read", "--read-from-remote-server"]
@@ -433,7 +488,7 @@ def main():
     opt_xor_dict = {"-L": ["-D", "-R"], "-D": ["-L", "-R"], "-R": ["-D", "-L"]}
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \
@@ -443,7 +498,7 @@ def main():
        and arg_parser.arg_cond_req(args_array, opt_con_req_list):
 
         try:
-            prog_lock = gen_class.ProgramLock(sys.argv,
+            prog_lock = gen_class.ProgramLock(cmdline.argv,
                                               args_array.get("-y", ""))
             run_program(args_array, func_dict, opt_arg_list)
             del prog_lock

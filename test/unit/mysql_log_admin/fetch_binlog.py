@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mysql_log_admin
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -82,7 +81,7 @@ class Server(object):
 
         self.extra_def_file = None
         self.sql_user = "mysql"
-        self.sql_pass = "pswd"
+        self.sql_pass = "japd"
         self.host = "hostname"
         self.port = 3306
 
@@ -218,7 +217,6 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual([x for x in dataout], self.filehandler)
 
-    @unittest.skip("Known Bug:  Cannot pass None to bin_path argument")
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
     def test_fetch_binlog(self, mock_sub, mock_fetch):
