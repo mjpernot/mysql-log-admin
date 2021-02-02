@@ -139,7 +139,6 @@ class UnitTest(unittest.TestCase):
         self.match1 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
         self.match2 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
 
-    #@unittest.skip("Possible Bug:  Slave argument has never been fully tested")
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
     @mock.patch("mysql_log_admin.re.match")
