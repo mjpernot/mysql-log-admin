@@ -57,7 +57,7 @@ class Slave(object):
 
         """
 
-        self.relay_mst_log = ["binlog2"]
+        self.relay_mst_log = "binlog2"
         self.sql_user = "mysql"
         self.host = "hostname"
         self.port = 3306
@@ -100,6 +100,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_slave -> Test with slave database.
         test_match_query -> Test with group match is query.
         test_match_start -> Test with group match is start of line.
         test_crc_32_match -> Test with CRC set to CRC32 and re.match.
@@ -138,17 +139,17 @@ class UnitTest(unittest.TestCase):
         self.match1 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
         self.match2 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
 
-    @unittest.skip("Possible Bug:  Slave argument has never been fully tested")
+    #@unittest.skip("Possible Bug:  Slave argument has never been fully tested")
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
     @mock.patch("mysql_log_admin.re.match")
     @mock.patch("mysql_log_admin.fetch_binlog")
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
-    def test_slave_empty(self, mock_fetch, mock_binlog, mock_match):
+    def test_slave(self, mock_fetch, mock_binlog, mock_match):
 
-        """Function:  test_slave_empty
+        """Function:  test_slave
 
-        Description:  Test with slave with no relay entry.
+        Description:  Test with slave database.
 
         Arguments:
 
