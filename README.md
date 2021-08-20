@@ -25,14 +25,10 @@
   * List of Linux packages that need to be installed on the server.
     - git
     - python-pip
-    - python-devel
 
   * Local class/library dependencies within the program structure.
-    - lib/cmds_gen
-    - lib/arg_parser
-    - lib/gen_libs
-    - mysql_lib/mysql_libs
-    - mysql_lib/mysql_class
+    - python-lib
+    - mysql-lib
 
 
 # Installation:
