@@ -167,4 +167,3 @@ test/unit/mysql_log_admin/unit_test_run.sh
 cd {Python_Project}/mysql-log-admin
 test/unit/mysql_log_admin/code_coverage.sh
 ```
-
