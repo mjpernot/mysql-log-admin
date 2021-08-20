@@ -141,7 +141,7 @@ def help_message():
 
 
 def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
-                 opt_arg_list=None, bin_path="", **kwargs):
+                 opt_arg_list=None, bin_path=""):
 
     """Function:  fetch_binlog
 
@@ -193,7 +193,7 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
 
 def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
-                slave=None, **kwargs):
+                slave=None):
 
     """Function:  find_dt_pos
 
@@ -270,7 +270,7 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     return mysql_class.Position(log_files[num_files - 1], last_log_pos)
 
 
-def fetch_log_pos(server, args_array, opt_arg_list=None, **kwargs):
+def fetch_log_pos(server, args_array, opt_arg_list=None):
 
     """Function:  fetch_log_pos
 
@@ -299,7 +299,7 @@ def fetch_log_pos(server, args_array, opt_arg_list=None, **kwargs):
     print("Filename: {0}, Position: {1}".format(pos.file, pos.pos))
 
 
-def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
+def fetch_log_entries(server, args_array, opt_arg_list):
 
     """Function:  fetch_log_entries
 
@@ -331,7 +331,7 @@ def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
         print("Error encountered: %s" % (status[1]))
 
 
-def process_logs_list(server, args_array, **kwargs):
+def process_logs_list(server, args_array):
 
     """Function:  process_logs_list
 
@@ -392,7 +392,7 @@ def process_logs_list(server, args_array, **kwargs):
     return status, binlog_list
 
 
-def load_log(server, args_array, opt_arg_list, **kwargs):
+def load_log(server, args_array, opt_arg_list):
 
     """Function:  load_log
 
@@ -439,7 +439,7 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
               (status[1]))
 
 
-def run_program(args_array, func_dict, opt_arg_list, **kwargs):
+def run_program(args_array, func_dict, opt_arg_list):
 
     """Function:  run_program
 
