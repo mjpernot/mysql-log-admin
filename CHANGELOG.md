@@ -10,6 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated to use the mysql_libs v5.2.2 library.
 
 ### Changed
+- Removed unnecessary \*\*kwargs in function argument list.
 - Documentation updates.
 
 
