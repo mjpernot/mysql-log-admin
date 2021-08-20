@@ -428,7 +428,7 @@ def load_log(server, args_array, opt_arg_list):
                 arg_parser.arg_set_path(args_array, "-p"))
             proc2 = subp.Popen(cmd, stdin=proc1)
             proc2.wait()
-            cmds_gen.disconnect(target)
+            mysql_libs.disconnect(target)
 
         else:
             print("load_log:  Error encountered on slave(%s):  %s" %
