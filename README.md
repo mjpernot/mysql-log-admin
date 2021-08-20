@@ -112,8 +112,9 @@ chmod 600 mysql_cfg_TARGET_NAME.py
 
 Create MySQL definition file for each Target database.  Make the appropriate change to the MySQL definition setup.
   * Change these entries in the MySQL configuration file:
+  * Note:  socket use is only required to be set in certain conditions when connecting using localhost.
     - password="PASSWORD"
-    - socket=DIRECTORY_PATH/mysql.sock
+    - socket=DIRECTORY_PATH/mysqld.sock
 
 ```
 cp mysql.cfg.TEMPLATE mysql_TARGET_NAME.cfg
