@@ -10,7 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated to use the mysql_libs v5.2.2 library.
 
 ### Changed
-- run_program:  Replaced cmds_gen.disconnect with mysql_libs.disconnect.
+- run_program, load_log:  Replaced cmds_gen.disconnect with mysql_libs.disconnect.
 - Removed unnecessary \*\*kwargs in function argument list.
 - Documentation updates.
 
