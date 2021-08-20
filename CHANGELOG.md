@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.2.0] - 2021-08-20
+- Updated to work in MySQL 8.0 and 5.7 environments.
+- Updated to work in a SSL environment.
+- Updated to use the mysql_libs v5.2.2 library.
+
+
 ## [2.1.1] - 2020-11-10
 - Updated to use the mysql_libs v5.0.3 library.
 
