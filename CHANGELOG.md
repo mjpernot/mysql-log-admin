@@ -10,6 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated to use the mysql_libs v5.2.2 library.
 
 ### Changed
+- config/mysql_cfg.py.TEMPLATE:  Add SSL configuration entries.
 - config/mysql.cfg.TEMPLATE:  Point to correct socket file.
 - run_program, load_log:  Replaced cmds_gen.disconnect with mysql_libs.disconnect.
 - Removed unnecessary \*\*kwargs in function argument list.
