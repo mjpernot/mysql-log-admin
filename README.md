@@ -70,9 +70,21 @@ Create MySQL configuration file for Source database.  Make the appropriate chang
     - sid = SERVER_ID
     - extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
     - cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
+
   * Change these entries only if required:
     - serv_os = "Linux"
     - port = 3306  
+
+  * If SSL connections are being used, configure one or more of these entries:
+    - ssl_client_ca = None
+    - ssl_client_key = None
+    - ssl_client_cert = None
+
+  * Only changes these if necessary and have knowledge in MySQL SSL configuration setup:
+    - ssl_client_flag = None
+    - ssl_disabled = False
+    - ssl_verify_id = False
+    - ssl_verify_cert = False
 
 ```
 cd config
