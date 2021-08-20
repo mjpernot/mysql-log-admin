@@ -467,7 +467,7 @@ def run_program(args_array, func_dict, opt_arg_list):
             # Call the function requested.
             func_dict[item](server, args_array, opt_arg_list)
 
-        cmds_gen.disconnect(server)
+        mysql_libs.disconnect(server)
 
     else:
         print("run_program:  Error encountered on master(%s):  %s" %
