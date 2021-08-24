@@ -99,6 +99,7 @@ class Server(object):
         self.host = "hostname"
         self.port = 3306
         self.name = "Server_Name"
+        self.conn = "Connection Handler"
         self.conn_msg = None
 
     def connect(self, silent):
@@ -177,7 +178,7 @@ class UnitTest(unittest.TestCase):
             self.assertFalse(mysql_log_admin.load_log(
                 self.server, self.args_array, self.opt_arg_list))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.subprocess.Popen")
     @mock.patch("mysql_log_admin.fetch_binlog")
@@ -221,7 +222,7 @@ class UnitTest(unittest.TestCase):
             self.assertFalse(mysql_log_admin.load_log(
                 self.server, self.args_array, self.opt_arg_list))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.subprocess.Popen")
     @mock.patch("mysql_log_admin.fetch_binlog")
@@ -248,7 +249,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mysql_log_admin.load_log(
             self.server, self.args_array, []))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.subprocess.Popen")
     @mock.patch("mysql_log_admin.fetch_binlog")
