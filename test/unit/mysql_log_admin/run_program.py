@@ -60,9 +60,9 @@ class Server(object):
     Description:  Class stub holder for mysql_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
-        connect -> Method stub holder for mysql_class.Server.connect.
-        set_srv_binlog_crc -> Stub for mysql_class.Server.set_srv_binlog_crc.
+        __init__
+        connect
+        set_srv_binlog_crc
 
     """
 
@@ -90,7 +90,7 @@ class Server(object):
         Description:  Method stub holder for mysql_class.Server.connect.
 
         Arguments:
-            (input) silent -> True|False on printing error message.
+            (input) silent
 
         """
 
@@ -121,10 +121,10 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_connect_failure -> Test with failed connection.
-        test_connect_successful -> Test with successful connection.
-        test_run_program -> Test with only default arguments passed.
+        setUp
+        test_connect_failure
+        test_connect_successful
+        test_run_program
 
     """
 
