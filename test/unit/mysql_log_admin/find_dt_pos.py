@@ -43,7 +43,7 @@ class Slave(object):
     Description:  Class stub holder for mysql_class.Slave class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -71,7 +71,7 @@ class Server(object):
     Description:  Class stub holder for mysql_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -99,18 +99,18 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_slave -> Test with slave database.
-        test_match_query -> Test with group match is query.
-        test_match_start -> Test with group match is start of line.
-        test_crc_32_match -> Test with CRC set to CRC32 and re.match.
-        test_crc_none -> Test with CRC set to None.
-        test_crc_32 -> Test with CRC set to CRC32.
-        test_fetch_binlog_data -> Test with list from fetch_binlog.
-        test_fetch_binlog_empty -> Test with empty list from fetch_binlog.
-        test_opt_arg_list -> Test with opt_arg_list argument passed.
-        test_binpath -> Test with bin_path argument passed.
-        test_find_dt_pos -> Test with only default arguments passed.
+        setUp
+        test_slave
+        test_match_query
+        test_match_start
+        test_crc_32_match
+        test_crc_none
+        test_crc_32
+        test_fetch_binlog_data
+        test_fetch_binlog_empty
+        test_opt_arg_list
+        test_binpath
+        test_find_dt_pos
 
     """
 
