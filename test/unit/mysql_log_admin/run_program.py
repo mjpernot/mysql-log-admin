@@ -81,6 +81,7 @@ class Server(object):
         self.host = "hostname"
         self.port = 3306
         self.name = "Server_Name"
+        self.conn = "Connection Handler"
         self.conn_msg = None
 
     def connect(self, silent):
@@ -143,7 +144,7 @@ class UnitTest(unittest.TestCase):
         self.func_dict = {"-L": fetch_log_pos}
         self.server = Server()
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     def test_connect_failure(self, mock_server):
@@ -164,7 +165,7 @@ class UnitTest(unittest.TestCase):
             self.assertFalse(mysql_log_admin.run_program(
                 self.args_array, self.func_dict, self.opt_arg_list))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     def test_connect_successful(self, mock_server):
@@ -182,7 +183,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mysql_log_admin.run_program(
             self.args_array, self.func_dict, self.opt_arg_list))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     def test_run_program(self, mock_server):
