@@ -41,7 +41,7 @@ class Server(object):
     Description:  Class stub holder for mysql_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -68,14 +68,14 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_last_missing -> Test with last argument missing in binlog list.
-        test_last_only -> Test with last argument only.
-        test_first_missing -> Test with first argument missing in binlog list.
-        test_first_only -> Test with first argument only.
-        test_last_first -> Test with last before first passed.
-        test_first_last -> Test with first and last arguments passed.
-        test_process_logs_list -> Test with only default arguments passed.
+        setUp
+        test_last_missing
+        test_last_only
+        test_first_missing
+        test_first_only
+        test_last_first
+        test_first_last
+        test_process_logs_list
 
     """
 
