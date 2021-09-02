@@ -117,7 +117,6 @@ import itertools
 # Local
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
-import lib.cmds_gen as cmds_gen
 import lib.gen_class as gen_class
 import mysql_lib.mysql_libs as mysql_libs
 import mysql_lib.mysql_class as mysql_class
@@ -180,13 +179,13 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
     if opt_arg_list:
         for arg in opt_arg_list:
-            cmd = cmds_gen.add_cmd(cmd, arg=arg)
+            cmd = gen_libs.add_cmd(cmd, arg=arg)
 
     if start_dt:
-        cmd = cmds_gen.add_cmd(cmd, arg="--start-datetime=%s" % (start_dt))
+        cmd = gen_libs.add_cmd(cmd, arg="--start-datetime=%s" % (start_dt))
 
     if stop_dt:
-        cmd = cmds_gen.add_cmd(cmd, arg="--stop-datetime=%s" % (stop_dt))
+        cmd = gen_libs.add_cmd(cmd, arg="--stop-datetime=%s" % (stop_dt))
 
     # Return a file handler with log entries.
     return iter(subp.Popen(cmd + binlog_files, stdout=subp.PIPE).stdout)
