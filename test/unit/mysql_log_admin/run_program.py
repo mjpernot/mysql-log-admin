@@ -60,9 +60,9 @@ class Server(object):
     Description:  Class stub holder for mysql_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
-        connect -> Method stub holder for mysql_class.Server.connect.
-        set_srv_binlog_crc -> Stub for mysql_class.Server.set_srv_binlog_crc.
+        __init__
+        connect
+        set_srv_binlog_crc
 
     """
 
@@ -81,6 +81,7 @@ class Server(object):
         self.host = "hostname"
         self.port = 3306
         self.name = "Server_Name"
+        self.conn = "Connection Handler"
         self.conn_msg = None
 
     def connect(self, silent):
@@ -90,7 +91,7 @@ class Server(object):
         Description:  Method stub holder for mysql_class.Server.connect.
 
         Arguments:
-            (input) silent -> True|False on printing error message.
+            (input) silent
 
         """
 
@@ -121,10 +122,10 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_connect_failure -> Test with failed connection.
-        test_connect_successful -> Test with successful connection.
-        test_run_program -> Test with only default arguments passed.
+        setUp
+        test_connect_failure
+        test_connect_successful
+        test_run_program
 
     """
 
@@ -143,7 +144,7 @@ class UnitTest(unittest.TestCase):
         self.func_dict = {"-L": fetch_log_pos}
         self.server = Server()
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     def test_connect_failure(self, mock_server):
@@ -164,7 +165,7 @@ class UnitTest(unittest.TestCase):
             self.assertFalse(mysql_log_admin.run_program(
                 self.args_array, self.func_dict, self.opt_arg_list))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     def test_connect_successful(self, mock_server):
@@ -182,7 +183,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mysql_log_admin.run_program(
             self.args_array, self.func_dict, self.opt_arg_list))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     def test_run_program(self, mock_server):
