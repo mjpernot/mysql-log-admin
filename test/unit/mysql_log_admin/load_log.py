@@ -42,8 +42,8 @@ class SubProcess(object):
     Description:  Class stub holder for subprocess class.
 
     Methods:
-        __init__ -> Class initialization.
-        wait -> Stub holder for subprocess subprocess.wait method.
+        __init__
+        wait
 
     """
 
@@ -79,8 +79,8 @@ class Server(object):
     Description:  Class stub holder for mysql_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
-        connect -> Connect method.
+        __init__
+        connect
 
     """
 
@@ -99,6 +99,7 @@ class Server(object):
         self.host = "hostname"
         self.port = 3306
         self.name = "Server_Name"
+        self.conn = "Connection Handler"
         self.conn_msg = None
 
     def connect(self, silent):
@@ -108,7 +109,7 @@ class Server(object):
         Description:  Connect method.
 
         Arguments:
-            (input) silent -> True|False on printing error message.
+            (input) silent
 
         """
 
@@ -127,12 +128,12 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_connection_error -> Test with connection error.
-        test_connection_success -> Test with successful connection.
-        test_list_fail -> Test with process_logs_list function fails.
-        test_no_opt_arg_lists -> Test with empty opt_arg_list list.
-        test_load_log -> Test with only default arguments passed.
+        setUp
+        test_connection_error
+        test_connection_success
+        test_list_fail
+        test_no_opt_arg_lists
+        test_load_log
 
     """
 
@@ -177,7 +178,7 @@ class UnitTest(unittest.TestCase):
             self.assertFalse(mysql_log_admin.load_log(
                 self.server, self.args_array, self.opt_arg_list))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.subprocess.Popen")
     @mock.patch("mysql_log_admin.fetch_binlog")
@@ -221,7 +222,7 @@ class UnitTest(unittest.TestCase):
             self.assertFalse(mysql_log_admin.load_log(
                 self.server, self.args_array, self.opt_arg_list))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.subprocess.Popen")
     @mock.patch("mysql_log_admin.fetch_binlog")
@@ -248,7 +249,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mysql_log_admin.load_log(
             self.server, self.args_array, []))
 
-    @mock.patch("mysql_log_admin.cmds_gen.disconnect",
+    @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.subprocess.Popen")
     @mock.patch("mysql_log_admin.fetch_binlog")

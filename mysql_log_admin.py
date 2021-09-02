@@ -60,24 +60,44 @@
             port = 3306
             cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
 
+            # If SSL connections are being used, configure one or more of these
+                entries:
+            ssl_client_ca = None
+            ssl_client_key = None
+            ssl_client_cert = None
+
+            # Only changes these if necessary and have knowledge in MySQL
+                SSL configuration setup:
+            ssl_client_flag = None
+            ssl_disabled = False
+            ssl_verify_id = False
+            ssl_verify_cert = False
+
         NOTE 1:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
-
         NOTE 2:  In MySQL 5.6 - it now gives warning if password is passed on
             the command line.  To suppress this warning, will require the use
             of the --defaults-extra-file option (i.e. extra_def_file) in the
             database configuration file.  See below for the defaults-extra-file
             format.
+        NOTE 3:  Ignore the Replication user information entries.  They are
+            not required for this program.
 
         configuration modules -> name is runtime dependent as it can be used to
             connect to different databases with different names.
 
         Defaults Extra File format (config/mysql.cfg.TEMPLATE):
         password="PASSWORD"
-        socket="DIRECTORY_PATH/mysql.sock"
+        socket="DIRECTORY_PATH/mysqld.sock"
 
-        NOTE:  The socket information can be obtained from the my.cnf file
-            under ~/mysql directory.
+        NOTE 1:  The socket information can be obtained from the my.cnf
+            file under ~/mysql directory.
+        NOTE 2:  The --defaults-extra-file option will be overridden if there
+            is a ~/.my.cnf or ~/.mylogin.cnf file located in the home directory
+            of the user running this program.  The extras file will in effect
+            be ignored.
+        NOTE 3:  Socket use is only required to be set in certain conditions
+            when connecting using localhost.
 
     Example:
         mysql_log_admin.py -c database -d config -L
@@ -97,7 +117,6 @@ import itertools
 # Local
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
-import lib.cmds_gen as cmds_gen
 import lib.gen_class as gen_class
 import mysql_lib.mysql_libs as mysql_libs
 import mysql_lib.mysql_class as mysql_class
@@ -121,7 +140,7 @@ def help_message():
 
 
 def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
-                 opt_arg_list=None, bin_path="", **kwargs):
+                 opt_arg_list=None, bin_path=""):
 
     """Function:  fetch_binlog
 
@@ -160,20 +179,20 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
     if opt_arg_list:
         for arg in opt_arg_list:
-            cmd = cmds_gen.add_cmd(cmd, arg=arg)
+            cmd = gen_libs.add_cmd(cmd, arg=arg)
 
     if start_dt:
-        cmd = cmds_gen.add_cmd(cmd, arg="--start-datetime=%s" % (start_dt))
+        cmd = gen_libs.add_cmd(cmd, arg="--start-datetime=%s" % (start_dt))
 
     if stop_dt:
-        cmd = cmds_gen.add_cmd(cmd, arg="--stop-datetime=%s" % (stop_dt))
+        cmd = gen_libs.add_cmd(cmd, arg="--stop-datetime=%s" % (stop_dt))
 
     # Return a file handler with log entries.
     return iter(subp.Popen(cmd + binlog_files, stdout=subp.PIPE).stdout)
 
 
 def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
-                slave=None, **kwargs):
+                slave=None):
 
     """Function:  find_dt_pos
 
@@ -250,7 +269,7 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     return mysql_class.Position(log_files[num_files - 1], last_log_pos)
 
 
-def fetch_log_pos(server, args_array, opt_arg_list=None, **kwargs):
+def fetch_log_pos(server, args_array, opt_arg_list=None):
 
     """Function:  fetch_log_pos
 
@@ -279,7 +298,7 @@ def fetch_log_pos(server, args_array, opt_arg_list=None, **kwargs):
     print("Filename: {0}, Position: {1}".format(pos.file, pos.pos))
 
 
-def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
+def fetch_log_entries(server, args_array, opt_arg_list):
 
     """Function:  fetch_log_entries
 
@@ -311,7 +330,7 @@ def fetch_log_entries(server, args_array, opt_arg_list, **kwargs):
         print("Error encountered: %s" % (status[1]))
 
 
-def process_logs_list(server, args_array, **kwargs):
+def process_logs_list(server, args_array):
 
     """Function:  process_logs_list
 
@@ -372,7 +391,7 @@ def process_logs_list(server, args_array, **kwargs):
     return status, binlog_list
 
 
-def load_log(server, args_array, opt_arg_list, **kwargs):
+def load_log(server, args_array, opt_arg_list):
 
     """Function:  load_log
 
@@ -408,7 +427,7 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
                 arg_parser.arg_set_path(args_array, "-p"))
             proc2 = subp.Popen(cmd, stdin=proc1)
             proc2.wait()
-            cmds_gen.disconnect(target)
+            mysql_libs.disconnect(target)
 
         else:
             print("load_log:  Error encountered on slave(%s):  %s" %
@@ -419,7 +438,7 @@ def load_log(server, args_array, opt_arg_list, **kwargs):
               (status[1]))
 
 
-def run_program(args_array, func_dict, opt_arg_list, **kwargs):
+def run_program(args_array, func_dict, opt_arg_list):
 
     """Function:  run_program
 
@@ -447,7 +466,7 @@ def run_program(args_array, func_dict, opt_arg_list, **kwargs):
             # Call the function requested.
             func_dict[item](server, args_array, opt_arg_list)
 
-        cmds_gen.disconnect(server)
+        mysql_libs.disconnect(server)
 
     else:
         print("run_program:  Error encountered on master(%s):  %s" %
