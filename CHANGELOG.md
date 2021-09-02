@@ -11,11 +11,15 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated to use gen_libs v2.8.4 library.
 
 ### Changed
+- fetch_binlog:  Changed cmds_gen.add_cmd to gen_libs.add_cmd.
 - config/mysql_cfg.py.TEMPLATE:  Add SSL configuration entries.
 - config/mysql.cfg.TEMPLATE:  Point to correct socket file.
 - run_program, load_log:  Replaced cmds_gen.disconnect with mysql_libs.disconnect.
 - Removed unnecessary \*\*kwargs in function argument list.
 - Documentation updates.
+
+### Removed
+- cmds_gen module.
 
 
 ## [2.1.1] - 2020-11-10
