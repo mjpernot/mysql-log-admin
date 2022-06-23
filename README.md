@@ -86,6 +86,9 @@ Create MySQL configuration file for Source database.  Make the appropriate chang
     - ssl_verify_id = False
     - ssl_verify_cert = False
 
+  * TLS version: Set what TLS versions are allowed in the connection set up.
+    - tls_versions = []
+
 ```
 cd config
 cp mysql_cfg.py.TEMPLATE mysql_cfg.py
@@ -113,9 +116,24 @@ Create MySQL configuration file for each Target database.  Make the appropriate 
     - sid = SERVER_ID
     - extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
     - cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
+
   * Change these entries only if required:
     - serv_os = "Linux"
-    - port = 3306
+    - port = 3306  
+
+  * If SSL connections are being used, configure one or more of these entries:
+    - ssl_client_ca = None
+    - ssl_client_key = None
+    - ssl_client_cert = None
+
+  * Only changes these if necessary and have knowledge in MySQL SSL configuration setup:
+    - ssl_client_flag = None
+    - ssl_disabled = False
+    - ssl_verify_id = False
+    - ssl_verify_cert = False
+
+  * TLS version: Set what TLS versions are allowed in the connection set up.
+    - tls_versions = []
 
 ```
 cp mysql_cfg.py.TEMPLATE mysql_cfg_TARGET_NAME.py
@@ -126,7 +144,7 @@ chmod 600 mysql_cfg_TARGET_NAME.py
 Create MySQL definition file for each Target database.  Make the appropriate change to the MySQL definition setup.
   * Change these entries in the MySQL configuration file:
   * Note:  socket use is only required to be set in certain conditions when connecting using localhost.
-    - password="PASSWORD"
+    - password="PSWORD"
     - socket=DIRECTORY_PATH/mysqld.sock
 
 ```
