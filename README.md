@@ -57,7 +57,7 @@ Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-mysql-lib.txt --target mysql_lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-mysql-python-lib.txt --target mysql_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 # Configuration:
@@ -96,7 +96,7 @@ chmod 600 mysql_cfg.py
 Create MySQL definition file for Source database.  Make the appropriate change to the MySQL definition setup.
   * Change these entries in the MySQL configuration file:
   * Note:  socket use is only required to be set in certain conditions when connecting using localhost.
-    - password="PASSWORD"
+    - password="PSWORD"
     - socket=DIRECTORY_PATH/mysqld.sock
 
 ```
