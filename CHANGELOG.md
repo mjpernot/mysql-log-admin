@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.2.1] - 2022-06-23
+
+
 ## [2.2.0] - 2021-08-20
 - Updated to work in MySQL 8.0 and 5.7 environments.
 - Updated to work in a SSL environment.
