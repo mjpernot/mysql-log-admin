@@ -73,6 +73,9 @@
             ssl_verify_id = False
             ssl_verify_cert = False
 
+            # TLS versions: Set the TLS versions allowed in the connection
+            tls_versions = []
+
         NOTE 1:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
         NOTE 2:  In MySQL 5.6 - it now gives warning if password is passed on
@@ -87,7 +90,7 @@
             connect to different databases with different names.
 
         Defaults Extra File format (config/mysql.cfg.TEMPLATE):
-        password="PASSWORD"
+        password="PSWORD"
         socket="DIRECTORY_PATH/mysqld.sock"
 
         NOTE 1:  The socket information can be obtained from the my.cnf
