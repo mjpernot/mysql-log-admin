@@ -6,12 +6,12 @@
 
 echo ""
 echo "Unit testing..."
-test/unit/mysql_log_admin/fetch_binlog.py
-test/unit/mysql_log_admin/fetch_log_entries.py
-test/unit/mysql_log_admin/fetch_log_pos.py
-test/unit/mysql_log_admin/find_dt_pos.py
-test/unit/mysql_log_admin/help_message.py
-test/unit/mysql_log_admin/load_log.py
-test/unit/mysql_log_admin/main.py
-test/unit/mysql_log_admin/process_logs_list.py
-test/unit/mysql_log_admin/run_program.py
+/usr/bin/python ./test/unit/mysql_log_admin/fetch_binlog.py
+/usr/bin/python ./test/unit/mysql_log_admin/fetch_log_entries.py
+/usr/bin/python ./test/unit/mysql_log_admin/fetch_log_pos.py
+/usr/bin/python ./test/unit/mysql_log_admin/find_dt_pos.py
+/usr/bin/python ./test/unit/mysql_log_admin/help_message.py
+/usr/bin/python ./test/unit/mysql_log_admin/load_log.py
+/usr/bin/python ./test/unit/mysql_log_admin/main.py
+/usr/bin/python ./test/unit/mysql_log_admin/process_logs_list.py
+/usr/bin/python ./test/unit/mysql_log_admin/run_program.py
