@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  run_program.py
@@ -17,13 +16,7 @@
 # Standard
 import sys
 import os
-
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
-
-# Third-party
+import unittest
 import mock
 
 # Local
@@ -141,7 +134,7 @@ class UnitTest(unittest.TestCase):
 
         self.opt_arg_list = ["--force-read", "--read-from-remote-server"]
         self.args_array = {"-c": True, "-d": True, "-L": True}
-        self.func_dict = {"-L": fetch_log_pos}
+        self.func_list = {"-L": fetch_log_pos}
         self.server = Server()
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
@@ -163,7 +156,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_log_admin.run_program(
-                self.args_array, self.func_dict, self.opt_arg_list))
+                self.args_array, self.func_list, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -181,7 +174,7 @@ class UnitTest(unittest.TestCase):
         mock_server.return_value = self.server
 
         self.assertFalse(mysql_log_admin.run_program(
-            self.args_array, self.func_dict, self.opt_arg_list))
+            self.args_array, self.func_list, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -199,7 +192,7 @@ class UnitTest(unittest.TestCase):
         mock_server.return_value = self.server
 
         self.assertFalse(mysql_log_admin.run_program(
-            self.args_array, self.func_dict, self.opt_arg_list))
+            self.args_array, self.func_list, self.opt_arg_list))
 
 
 if __name__ == "__main__":
