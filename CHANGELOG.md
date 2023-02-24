@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.2.3] - 2023-02-24
+
+
 ## [2.2.2] - 2022-10-12
 - Updated to work in Python 3 too
 - Upgraded python-lib to v2.9.4
