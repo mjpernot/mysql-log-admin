@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
-## [2.2.3] - 2023-02-24
+## [3.0.0] - 2023-02-24
+Breaking Changes
+
+- Set up instance of the gen_class.ArgParser class which replaces all manual operations of the args_array variable that contain the command line arguments.
 
 
 ## [2.2.2] - 2022-10-12
