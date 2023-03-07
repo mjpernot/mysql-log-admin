@@ -495,7 +495,6 @@ def main():
     Variables:
         dir_perms_chk -> contains options which will be directories and the
             octal permission settings
-#        dir_chk_list -> contains options which will be directories
         func_dict -> dictionary list for the function calls or other options
         opt_arg_list -> contains arguments to add to command line by default
         opt_con_req_list -> contains the options that require other options
@@ -503,7 +502,6 @@ def main():
         opt_val_list -> contains options which require values
         opt_valid_val -> contains list of types of values to be validated
         opt_xor_val -> dictionary with key and values that will be xor
-#        opt_xor_dict -> contains options which are XOR with its values
 
     Arguments:
         (input) argv -> Arguments from the command line.
@@ -512,36 +510,24 @@ def main():
 
     cmdline = gen_libs.get_inst(sys)
     dir_perms_chk = {"-d": 5, "-p": 5}
-#    dir_chk_list = ["-d", "-p"]
     func_dict = {"-L": fetch_log_pos, "-D": fetch_log_entries, "-R": load_log}
     opt_arg_list = ["--force-read", "--read-from-remote-server"]
     opt_con_req_list = {"-R": ["-e"]}
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-e", "-d", "-f", "-g", "-p", "-s", "-t", "-y"]
     valid_func = {"-s": gen_libs.validate_date, "-t": gen_libs.validate_date}
-#    opt_valid_val = {"-s": gen_libs.validate_date,
-#                     "-t": gen_libs.validate_date}
     opt_xor_val = {"-L": ["-D", "-R"], "-D": ["-L", "-R"], "-R": ["-D", "-L"]}
-#    opt_xor_dict = {"-L": ["-D", "-R"], "-D": ["-L", "-R"], "-R": ["-D", "-L"]}
 
     # Process argument list from command line.
     args = gen_class.ArgParser(
         cmdline.argv, opt_val=opt_val_list, do_parse=True)
-#    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
 
     if not gen_libs.help_func(args.get_args(), __version__, help_message)   \
        and args.arg_require(opt_req=opt_req_list)                           \
        and args.arg_xor_dict(opt_xor_val=opt_xor_val)                       \
-# Reverse the unittest on these from T -> or F -> T.
        and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)                    \
        and args.arg_validate(valid_func=valid_func)                         \
        and args.arg_cond_req(opt_con_req=opt_con_req_list):
-#    if not gen_libs.help_func(args_array, __version__, help_message) \
-#       and not arg_parser.arg_require(args_array, opt_req_list) \
-#       and arg_parser.arg_xor_dict(args_array, opt_xor_dict) \
-#       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list) \
-#       and arg_parser.arg_validate(args_array, opt_valid_val) \
-#       and arg_parser.arg_cond_req(args_array, opt_con_req_list):
 
         try:
             prog_lock = gen_class.ProgramLock(cmdline.argv,
