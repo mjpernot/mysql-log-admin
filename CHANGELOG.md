@@ -10,7 +10,7 @@ Breaking Changes
 - Replaced args_parser module with the gen_class.ArgParser class.
 
 ### Changed
-- main: Replaced the use of arg_parser (args_array) with gen_class.ArgParser class (args).
+- main, run_program: Replaced the use of arg_parser (args_array) with gen_class.ArgParser class (args).
 
 
 ## [2.2.2] - 2022-10-12

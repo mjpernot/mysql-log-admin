@@ -161,13 +161,13 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
         Returns the entries as a file.
 
     Arguments:
-        (input) server -> Server instance.
-        (input) start_dt -> Start datetime.
-        (input) stop_dr -> Stop datetime.
-        (input) binlog_files -> List of binary log names.
-        (input) opt_arg_list ->  Arguments to be added to command line.
-        (input) bin_path -> Path to Mysql binary directory.
-        (output) -> File handler to list of log entries.
+        (input) server -> Server instance
+        (input) start_dt -> Start datetime
+        (input) stop_dr -> Stop datetime
+        (input) binlog_files -> List of binary log names
+        (input) opt_arg_list ->  Arguments to be added to command line
+        (input) bin_path -> Path to Mysql binary directory
+        (output) -> File handler to list of log entries
 
     """
 
@@ -214,12 +214,12 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
         position found along with the binary log name that it was found in.
 
     Arguments:
-        (input) master -> Server instance or Master, if Slave present.
-        (input) start_dt -> Start datetime.
-        (input) stop_dt -> Stop datetime.
-        (input) opt_arg_list ->  Arguments to be added to command line.
-        (input) slave -> Slave server instance.
-        (output) -> Position class (file, pos).
+        (input) master -> Server instance or Master, if Slave present
+        (input) start_dt -> Start datetime
+        (input) stop_dt -> Stop datetime
+        (input) opt_arg_list ->  Arguments to be added to command line
+        (input) slave -> Slave server instance
+        (output) -> Position class (file, pos)
 
     """
 
@@ -289,9 +289,9 @@ def fetch_log_pos(server, args_array, opt_arg_list=None):
         start and stop datetimes.
 
     Arguments:
-        (input) server -> Server instance.
-        (input) args_array -> Array of command line options and values.
-        (input) opt_arg_list ->  Arguments to be added to command line.
+        (input) server -> Server instance
+        (input) args_array -> Array of command line options and values
+        (input) opt_arg_list ->  Arguments to be added to command line
 
     """
 
@@ -318,9 +318,9 @@ def fetch_log_entries(server, args_array, opt_arg_list):
         and stop datetimes.
 
     Arguments:
-        (input) server -> Server instance.
-        (input) args_array -> Array of command line options and values.
-        (input) opt_arg_list ->  Arguments to be added to command line.
+        (input) server -> Server instance
+        (input) args_array -> Array of command line options and values
+        (input) opt_arg_list ->  Arguments to be added to command line
 
     """
 
@@ -350,12 +350,12 @@ def process_logs_list(server, args_array):
         Clean up the list if the -f and/or -g options are used.
 
     Arguments:
-        (input) server -> Server instance.
-        (input) args_array -> Array of command line options and values.
-        (output) status -> Tuple on process status.
-            status[0] - True|False - Process successful.
-            status[1] - Error message if process failed.
-        (output) binlog_list -> List of binary log file names.
+        (input) server -> Server instance
+        (input) args_array -> Array of command line options and values
+        (output) status -> Tuple on process status
+            status[0] - True|False - Process successful
+            status[1] - Error message if process failed
+        (output) binlog_list -> List of binary log file names
 
     """
 
@@ -412,9 +412,9 @@ def load_log(server, args_array, opt_arg_list):
         database before closing all connections.
 
     Arguments:
-        (input) server -> Server instance.
-        (input) args_array -> Array of command line options and values.
-        (input) opt_arg_list ->  Arguments to be added to command line.
+        (input) server -> Server instance
+        (input) args_array -> Array of command line options and values
+        (input) opt_arg_list ->  Arguments to be added to command line
 
     """
 
@@ -450,33 +450,32 @@ def load_log(server, args_array, opt_arg_list):
               (status[1]))
 
 
-def run_program(args_array, func_dict, opt_arg_list):
+def run_program(args, func_dict, opt_arg_list):
 
     """Function:  run_program
 
     Description:  Creates class instance(s) and controls flow of the program.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) func_dict -> Dictionary list of functions and options.
-        (input) opt_arg_list ->  Arguments to be added to command line.
+        (input) args -> ArgParser class instance
+        (input) func_dict -> Dictionary list of functions and options
+        (input) opt_arg_list ->  Arguments to be added to command line
 
     """
 
-    args_array = dict(args_array)
     func_dict = dict(func_dict)
     opt_arg_list = list(opt_arg_list)
-    server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
-                                        mysql_class.Server)
+    server = mysql_libs.create_instance(
+        args.get_val("-c"), args.get_val("-d"), mysql_class.Server)
     server.connect(silent=True)
 
     if not server.conn_msg:
         server.set_srv_binlog_crc()
 
         # Call function(s) - intersection of command line and function dict.
-        for item in set(args_array.keys()) & set(func_dict.keys()):
+        for item in set(args.get_args_keys()) & set(func_dict.keys()):
             # Call the function requested.
-            func_dict[item](server, args_array, opt_arg_list)
+            func_dict[item](server, args, opt_arg_list)
 
         mysql_libs.disconnect(server)
 
@@ -530,14 +529,14 @@ def main():
        and args.arg_cond_req(opt_con_req=opt_con_req_list):
 
         try:
-            prog_lock = gen_class.ProgramLock(cmdline.argv,
-                                              args_array.get("-y", ""))
-            run_program(args_array, func_dict, opt_arg_list)
+            prog_lock = gen_class.ProgramLock(
+                cmdline.argv, args.get_val("-y", def_val=""))
+            run_program(args, func_dict, opt_arg_list)
             del prog_lock
 
         except gen_class.SingleInstanceException:
             print("WARNING:  lock in place for mysql_log_admin with id of: %s"
-                  % (args_array.get("-y", "")))
+                  % (args.get_val("-y", def_val="")))
 
 
 if __name__ == "__main__":
