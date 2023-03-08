@@ -403,7 +403,7 @@ def process_logs_list(server, args_array):
     return status, binlog_list
 
 
-def load_log(server, args_array, opt_arg_list):
+def load_log(server, args, opt_arg_list):
 
     """Function:  load_log
 
@@ -413,30 +413,28 @@ def load_log(server, args_array, opt_arg_list):
 
     Arguments:
         (input) server -> Server instance
-        (input) args_array -> Array of command line options and values
+        (input) args -> ArgParser class instance
         (input) opt_arg_list ->  Arguments to be added to command line
 
     """
 
     subp = gen_libs.get_inst(subprocess)
-    args_array = dict(args_array)
     opt_arg_list = list(opt_arg_list)
-    status, binlog_list = process_logs_list(server, args_array)
+    status, binlog_list = process_logs_list(server, args)
 
     if status[0]:
-        target = mysql_libs.create_instance(args_array["-e"], args_array["-d"],
-                                            mysql_class.Server)
+        target = mysql_libs.create_instance(
+            args.get_val("-e"), args.get_val("-d"), mysql_class.Server)
         target.connect(silent=True)
 
         if not target.conn_msg:
             cmd = mysql_libs.crt_cmd(
-                target, arg_parser.arg_set_path(args_array, "-p") + "mysql")
+                target, args.arg_set_path("-p") + "mysql")
 
             # Fetch binary logs and restore to target database
             proc1 = fetch_binlog(
-                server, args_array.get("-s"), args_array.get("-t"),
-                binlog_list, opt_arg_list,
-                arg_parser.arg_set_path(args_array, "-p"))
+                server, args.get_val("-s"), args.get_val("-t"),
+                binlog_list, opt_arg_list, args.arg_set_path("-p"))
             proc2 = subp.Popen(cmd, stdin=proc1)
             proc2.wait()
             mysql_libs.disconnect(target)
