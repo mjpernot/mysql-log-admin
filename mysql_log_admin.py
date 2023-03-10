@@ -342,7 +342,7 @@ def fetch_log_entries(server, args_array, opt_arg_list):
         print("Error encountered: %s" % (status[1]))
 
 
-def process_logs_list(server, args_array):
+def process_logs_list(server, args):
 
     """Function:  process_logs_list
 
@@ -351,7 +351,7 @@ def process_logs_list(server, args_array):
 
     Arguments:
         (input) server -> Server instance
-        (input) args_array -> Array of command line options and values
+        (input) args -> ArgParser class instance
         (output) status -> Tuple on process status
             status[0] - True|False - Process successful
             status[1] - Error message if process failed
@@ -359,7 +359,7 @@ def process_logs_list(server, args_array):
 
     """
 
-    args_array = dict(args_array)
+### STOPPED HERE
     status = (True, None)
     binlog_list = []
 
