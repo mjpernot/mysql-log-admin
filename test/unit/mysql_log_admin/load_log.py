@@ -28,6 +28,61 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+        arg_set_path
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {
+            "-e": "mysql_cfg", "-d": "config", "-s": "start_time",
+            "-t": "end_time", "-p": "/path"}
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def arg_set_path(self, arg_opt):
+
+        """Method:  arg_set_path
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_set_path.
+
+        Arguments:
+
+        """
+
+        path = os.path.join(
+            self.args_array[arg_opt] if arg_opt in self.args_array else "")
+
+        return path
+
+
 class SubProcess(object):
 
     """Class:  SubProcess
@@ -142,9 +197,8 @@ class UnitTest(unittest.TestCase):
 
         self.server = Server()
         self.proc = SubProcess()
+        self.args = ArgParser()
         self.opt_arg_list = ["--force-read", "--read-from-remote-server"]
-        self.args_array = {"-e": True, "-d": True, "-p": "/dir/patch",
-                           "-s": True, "-t": True}
         self.cmd_list = ["command", "options"]
         self.status = (True, None)
         self.status2 = (False, "Error Message")
@@ -169,7 +223,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_log_admin.load_log(
-                self.server, self.args_array, self.opt_arg_list))
+                self.server, self.args, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -196,7 +250,7 @@ class UnitTest(unittest.TestCase):
         mock_popen.return_value = self.proc
 
         self.assertFalse(mysql_log_admin.load_log(
-            self.server, self.args_array, self.opt_arg_list))
+            self.server, self.args, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.process_logs_list")
     def test_list_fail(self, mock_logs):
@@ -213,7 +267,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_log_admin.load_log(
-                self.server, self.args_array, self.opt_arg_list))
+                self.server, self.args, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -240,7 +294,7 @@ class UnitTest(unittest.TestCase):
         mock_popen.return_value = self.proc
 
         self.assertFalse(mysql_log_admin.load_log(
-            self.server, self.args_array, []))
+            self.server, self.args, []))
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -267,7 +321,7 @@ class UnitTest(unittest.TestCase):
         mock_popen.return_value = self.proc
 
         self.assertFalse(mysql_log_admin.load_log(
-            self.server, self.args_array, self.opt_arg_list))
+            self.server, self.args, self.opt_arg_list))
 
 
 if __name__ == "__main__":

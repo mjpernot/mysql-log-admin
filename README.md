@@ -7,7 +7,6 @@
 
 ###  This README file is broken down into the following sections:
   * Features
-  * Prerequisites
   * Installation
   * Configuration
   * Program Help Function
@@ -19,16 +18,6 @@
   * Locate a transaction log position using start and end datetimes.
   * Display transaction logs in readable format using start and end datetimes.
   * Restore transaction logs from a source database to a target database.
-
-# Prerequisites:
-
-  * List of Linux packages that need to be installed on the server.
-    - git
-    - python-pip
-
-  * Local class/library dependencies within the program structure.
-    - python-lib
-    - mysql-lib
 
 
 # Installation:

@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.0] - 2023-02-24
+Breaking Changes
+
+- Replaced args_parser module with the gen_class.ArgParser class.
+
+### Changed
+- main, run_program, load_log, process_logs_list, fetch_log_entries, fetch_log_pos: Replaced the use of arg_parser (args_array) with gen_class.ArgParser class (args).
+
+
 ## [2.2.2] - 2022-10-12
 - Updated to work in Python 3 too
 - Upgraded python-lib to v2.9.4
