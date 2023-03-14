@@ -359,46 +359,45 @@ def process_logs_list(server, args):
 
     """
 
-### STOPPED HERE
     status = (True, None)
     binlog_list = []
 
     # Is -f and -g in the argument list and in the correct order.
-    if ("-f" in args_array and "-g" in args_array) \
-       and args_array["-g"] < args_array["-f"]:
+    if (args.arg_exist("-f") and args.arg_exist("-g")) \
+       and args.get_val("-g") < args.get_val("-f"):
 
         status = (False, "Error:  Option -g: '%s' is before -f '%s'." %
-                  (args_array["-g"], args_array["-f"]))
+                  (args.get_val("-g"), args.get_val("-f")))
 
         return status, binlog_list
 
-    binlog_list = gen_libs.dict_2_list(mysql_libs.fetch_logs(server),
-                                       "Log_name")
+    binlog_list = gen_libs.dict_2_list(
+        mysql_libs.fetch_logs(server), "Log_name")
 
-    if "-f" in args_array and args_array["-f"] in binlog_list:
+    if args.arg_exist("-f") and args.get_val("-f") in binlog_list:
 
         # Remove any logs before log file name.
-        while binlog_list[0] < args_array["-f"]:
+        while binlog_list[0] < args.get_val("-f"):
             binlog_list.pop(0)
 
-    elif "-f" in args_array:
+    elif args.arg_exist("-f"):
 
         status = (
             False, "Error:  Option -f: '%s' not found in binary log list." %
-            (args_array["-f"]))
+            (args.get_val("-f")))
 
         return status, binlog_list
 
-    if "-g" in args_array and args_array["-g"] in binlog_list:
+    if args.arg_exist("-g") and args.get_val("-g") in binlog_list:
         # Remove any logs after log file name.
-        while binlog_list[-1] > args_array["-g"]:
+        while binlog_list[-1] > args.get_val("-g"):
             binlog_list.pop(-1)
 
-    elif "-g" in args_array:
+    elif args.arg_exist("-g"):
 
         status = (
             False, "Error:  Option -g: '%s' not found in binary log list." %
-            (args_array["-g"]))
+            (args.get_val("-g")))
 
     return status, binlog_list
 
