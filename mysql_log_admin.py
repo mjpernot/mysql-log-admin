@@ -310,7 +310,7 @@ def fetch_log_pos(server, args_array, opt_arg_list=None):
     print("Filename: {0}, Position: {1}".format(pos.file, pos.pos))
 
 
-def fetch_log_entries(server, args_array, opt_arg_list):
+def fetch_log_entries(server, args, opt_arg_list):
 
     """Function:  fetch_log_entries
 
@@ -319,21 +319,20 @@ def fetch_log_entries(server, args_array, opt_arg_list):
 
     Arguments:
         (input) server -> Server instance
-        (input) args_array -> Array of command line options and values
+        (input) args -> ArgParser class instance
         (input) opt_arg_list ->  Arguments to be added to command line
 
     """
 
-    args_array = dict(args_array)
     opt_arg_list = list(opt_arg_list)
-    status, binlog_list = process_logs_list(server, args_array)
+    status, binlog_list = process_logs_list(server, args)
 
     if status[0]:
 
         lines = fetch_binlog(
-            server, opt_arg_list=opt_arg_list, start_dt=args_array.get("-s"),
-            stop_dt=args_array.get("-t"), binlog_files=binlog_list,
-            bin_path=arg_parser.arg_set_path(args_array, "-p"))
+            server, opt_arg_list=opt_arg_list, start_dt=args.get_val("-s"),
+            stop_dt=args.get_val("-t"), binlog_files=binlog_list,
+            bin_path=args.arg_set_path("-p"))
 
         for item in lines:
             print(item, end="")
