@@ -296,11 +296,6 @@ def fetch_log_pos(server, args, opt_arg_list=None):
     """
 
     opt_arg_list = list() if opt_arg_list is None else list(opt_arg_list)
-#    if opt_arg_list is None:
-#        opt_arg_list = list()
-#
-#    else:
-#        opt_arg_list = list(opt_arg_list)
 
     # Get Position class from file and log position.
     pos = find_dt_pos(server, args.get_val("-s"), args.get_val("-t"),
