@@ -10,7 +10,7 @@ Breaking Changes
 - Replaced args_parser module with the gen_class.ArgParser class.
 
 ### Changed
-- main, run_program, load_log, process_logs_list, fetch_log_entries: Replaced the use of arg_parser (args_array) with gen_class.ArgParser class (args).
+- main, run_program, load_log, process_logs_list, fetch_log_entries, fetch_log_pos: Replaced the use of arg_parser (args_array) with gen_class.ArgParser class (args).
 
 
 ## [2.2.2] - 2022-10-12

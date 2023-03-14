@@ -281,7 +281,7 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     return mysql_class.Position(log_files[num_files - 1], last_log_pos)
 
 
-def fetch_log_pos(server, args_array, opt_arg_list=None):
+def fetch_log_pos(server, args, opt_arg_list=None):
 
     """Function:  fetch_log_pos
 
@@ -290,22 +290,21 @@ def fetch_log_pos(server, args_array, opt_arg_list=None):
 
     Arguments:
         (input) server -> Server instance
-        (input) args_array -> Array of command line options and values
+        (input) args -> ArgParser class instance
         (input) opt_arg_list ->  Arguments to be added to command line
 
     """
 
-    args_array = dict(args_array)
-
-    if opt_arg_list is None:
-        opt_arg_list = list()
-
-    else:
-        opt_arg_list = list(opt_arg_list)
+    opt_arg_list = list() if opt_arg_list is None else list(opt_arg_list)
+#    if opt_arg_list is None:
+#        opt_arg_list = list()
+#
+#    else:
+#        opt_arg_list = list(opt_arg_list)
 
     # Get Position class from file and log position.
-    pos = find_dt_pos(server, args_array.get("-s"), args_array.get("-t"),
-                      opt_arg_list, arg_parser.arg_set_path(args_array, "-p"))
+    pos = find_dt_pos(server, args.get_val("-s"), args.get_val("-t"),
+                      opt_arg_list, args.arg_set_path("-p"))
 
     print("Filename: {0}, Position: {1}".format(pos.file, pos.pos))
 
