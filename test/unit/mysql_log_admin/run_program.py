@@ -46,6 +46,56 @@ def fetch_log_pos(server, args_array, opt_arg_list):
     return status
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+        get_args_keys
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.args_array = {"-c": "mysql_cfg", "-d": "config"}
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
+
+
 class Server(object):
 
     """Class:  Server
@@ -133,8 +183,8 @@ class UnitTest(unittest.TestCase):
         """
 
         self.opt_arg_list = ["--force-read", "--read-from-remote-server"]
-        self.args_array = {"-c": True, "-d": True, "-L": True}
         self.func_list = {"-L": fetch_log_pos}
+        self.args = ArgParser()
         self.server = Server()
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
@@ -151,12 +201,13 @@ class UnitTest(unittest.TestCase):
         """
 
         self.server.conn_msg = "Error connection message"
+        self.args.args_array["-L"] = True
 
         mock_server.return_value = self.server
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_log_admin.run_program(
-                self.args_array, self.func_list, self.opt_arg_list))
+                self.args, self.func_list, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -171,10 +222,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.args.args_array["-L"] = True
+
         mock_server.return_value = self.server
 
         self.assertFalse(mysql_log_admin.run_program(
-            self.args_array, self.func_list, self.opt_arg_list))
+            self.args, self.func_list, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -189,10 +242,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.args.args_array["-L"] = True
+
         mock_server.return_value = self.server
 
         self.assertFalse(mysql_log_admin.run_program(
-            self.args_array, self.func_list, self.opt_arg_list))
+            self.args, self.func_list, self.opt_arg_list))
 
 
 if __name__ == "__main__":
