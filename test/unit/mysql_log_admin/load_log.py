@@ -67,7 +67,7 @@ class ArgParser(object):
 
         return self.args_array.get(skey, def_val)
 
-    def arg_set_path(self, arg_opt):
+    def arg_set_path(self, arg_opt, cmd):
 
         """Method:  arg_set_path
 
@@ -78,7 +78,8 @@ class ArgParser(object):
         """
 
         path = os.path.join(
-            self.args_array[arg_opt] if arg_opt in self.args_array else "")
+            self.args_array[arg_opt] if arg_opt in self.args_array else "",
+            cmd)
 
         return path
 

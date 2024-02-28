@@ -169,8 +169,6 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
     """
 
-    subp = gen_libs.get_inst(subprocess)
-
     if opt_arg_list is None:
         opt_arg_list = list()
 
@@ -198,7 +196,8 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
         cmd = gen_libs.add_cmd(cmd, arg="--stop-datetime=%s" % (stop_dt))
 
     # Return a file handler with log entries.
-    return iter(subp.Popen(cmd + binlog_files, stdout=subp.PIPE).stdout)
+    return iter(
+        subprocess.Popen(cmd + binlog_files, stdout=subprocess.PIPE).stdout)
 
 
 def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
@@ -221,7 +220,6 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
     """
 
-    rem = gen_libs.get_inst(re)
     sub1 = r"#\d{6}\s+\d?\d:\d\d:\d\d\s+"
     sub2 = r"server id\s+(?P<sid>\d+)\s+"
     sub3 = r"end_log_pos\s+(?P<epos>\d+)\s+"
@@ -254,10 +252,10 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
         # Supports checksum and match for approriate format.
         if master.crc == "CRC32":
-            match = rem.match(sub1 + sub2 + sub3 + sub4 + sub5, item)
+            match = re.match(sub1 + sub2 + sub3 + sub4 + sub5, item)
 
         else:
-            match = rem.match(sub1 + sub2 + sub3 + sub5, item)
+            match = re.match(sub1 + sub2 + sub3 + sub5, item)
 
         # If a line matches then see if the end_log_pos is Start (new file) or
         #   has found a Query within the datetime range requested.
@@ -297,7 +295,7 @@ def fetch_log_pos(server, args, opt_arg_list=None):
 
     # Get Position class from file and log position.
     pos = find_dt_pos(server, args.get_val("-s"), args.get_val("-t"),
-                      opt_arg_list, args.arg_set_path("-p"))
+                      opt_arg_list, args.get_val("-p"))
 
     print("Filename: {0}, Position: {1}".format(pos.file, pos.pos))
 
@@ -324,7 +322,7 @@ def fetch_log_entries(server, args, opt_arg_list):
         lines = fetch_binlog(
             server, opt_arg_list=opt_arg_list, start_dt=args.get_val("-s"),
             stop_dt=args.get_val("-t"), binlog_files=binlog_list,
-            bin_path=args.arg_set_path("-p"))
+            bin_path=args.get_val("-p"))
 
         for item in lines:
             print(item, end="")
@@ -408,7 +406,6 @@ def load_log(server, args, opt_arg_list):
 
     """
 
-    subp = gen_libs.get_inst(subprocess)
     opt_arg_list = list(opt_arg_list)
     status, binlog_list = process_logs_list(server, args)
 
@@ -419,13 +416,13 @@ def load_log(server, args, opt_arg_list):
 
         if not target.conn_msg:
             cmd = mysql_libs.crt_cmd(
-                target, args.arg_set_path("-p") + "mysql")
+                target, args.arg_set_path("-p", cmd="mysql"))
 
             # Fetch binary logs and restore to target database
             proc1 = fetch_binlog(
                 server, args.get_val("-s"), args.get_val("-t"),
-                binlog_list, opt_arg_list, args.arg_set_path("-p"))
-            proc2 = subp.Popen(cmd, stdin=proc1)
+                binlog_list, opt_arg_list, args.get_val("-p"))
+            proc2 = subprocess.Popen(cmd, stdin=proc1)
             proc2.wait()
             mysql_libs.disconnect(target)
 
@@ -495,7 +492,6 @@ def main():
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
     dir_perms_chk = {"-d": 5, "-p": 5}
     func_dict = {"-L": fetch_log_pos, "-D": fetch_log_entries, "-R": load_log}
     opt_arg_list = ["--force-read", "--read-from-remote-server"]
@@ -507,18 +503,18 @@ def main():
 
     # Process argument list from command line.
     args = gen_class.ArgParser(
-        cmdline.argv, opt_val=opt_val_list, do_parse=True)
+        sys.argv, opt_val=opt_val_list, do_parse=True)
 
-    if not gen_libs.help_func(args.get_args(), __version__, help_message)   \
-       and args.arg_require(opt_req=opt_req_list)                           \
-       and args.arg_xor_dict(opt_xor_val=opt_xor_val)                       \
-       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)                    \
-       and args.arg_validate(valid_func=valid_func)                         \
+    if not gen_libs.help_func(args, __version__, help_message)  \
+       and args.arg_require(opt_req=opt_req_list)               \
+       and args.arg_xor_dict(opt_xor_val=opt_xor_val)           \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)        \
+       and args.arg_validate(valid_func=valid_func)             \
        and args.arg_cond_req(opt_con_req=opt_con_req_list):
 
         try:
             prog_lock = gen_class.ProgramLock(
-                cmdline.argv, args.get_val("-y", def_val=""))
+                sys.argv, args.get_val("-y", def_val=""))
             run_program(args, func_dict, opt_arg_list)
             del prog_lock
 
