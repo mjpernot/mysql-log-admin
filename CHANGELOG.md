@@ -5,6 +5,20 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [3.0.1] - 2024-02-28
+- Updated to work in Red Hat 8
+- Updated python-lib to v3.0.3
+- Updated mysql-lib to v5.3.4
+
+### Fixed
+- fetch_log_pos, fetch_log_entries, load_log: Replaced args.arg_set_path with args.get_val.
+- load_log: Placed the mysql command inside the method call to args.arg_set_path.
+
+### Changed
+- main, fetch_binlog, find_dt_pos, load_log:  Removed gen_libs.get_inst call.
+- main: Changed gen_libs.help_func to use the gen_class.ArgParser parameter format.
+- Set simplejson to 3.12.0 for Python 3.
+- Set chardet to 3.0.4 for Python 2.
+- Documentation updates.
 
 
 ## [3.0.0] - 2023-02-24

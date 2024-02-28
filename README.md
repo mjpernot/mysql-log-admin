@@ -7,6 +7,7 @@
 
 ###  This README file is broken down into the following sections:
   * Features
+  * Prerequisites
   * Installation
   * Configuration
   * Program Help Function
@@ -20,6 +21,15 @@
   * Restore transaction logs from a source database to a target database.
 
 
+# Prerequisites:
+
+  * List of Linux packages that need to be installed on the server.
+    - Centos 7 (Running Python 2.7):
+      -> python-pip
+    - Redhat 8 (Running Python 3.6):
+      -> python3-pip
+
+
 # Installation:
 
 Install this project using git.
@@ -27,27 +37,41 @@ Install this project using git.
 
 ```
 umask 022
-cd {Python_Project}
 clone git@sc.appdev.proj.coe.ic.gov:JAC-DSXD/mysql-log-admin.git
+cd mysql-log-admin
 ```
 
 Install/upgrade system modules.
 
+Centos 7 (Running Python 2.7):
 ```
-cd mysql-log-admin
-sudo bash
-umask 022
-pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
-exit
+sudo pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
+
+Redhat 8 (Running Python 3.6):
+NOTE: Install as the user that will run the program.
+
+```
+python -m pip install --user -r requirements3.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
+```
+
 
 Install supporting classes and libraries.
 
+Centos 7 (Running Python 2.7):
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-mysql-lib.txt --target mysql_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-mysql-python-lib.txt --target mysql_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
+
+Redhat 8 (Running Python 3.6):
+```
+python -m pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+python -m pip install -r requirements-mysql-lib.txt --target mysql_lib --trusted-host pypi.appdev.proj.coe.ic.gov
+python -m pip install -r requirements-mysql-python-lib.txt --target mysql_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
+```
+
 
 # Configuration:
 
