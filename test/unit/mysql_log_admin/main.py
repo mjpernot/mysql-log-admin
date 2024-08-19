@@ -43,6 +43,7 @@ class ArgParser(object):
         arg_xor_dict
         get_args
         get_val
+        arg_parse2
 
     """
 
@@ -68,6 +69,7 @@ class ArgParser(object):
         self.opt_xor_val2 = True
         self.valid_func = None
         self.valid_func2 = True
+        self.argparse2 = True
 
     def arg_cond_req(self, opt_con_req):
 
@@ -163,6 +165,18 @@ class ArgParser(object):
 
         return self.args_array.get(skey, def_val)
 
+    def arg_parse2(self):
+
+        """Method:  arg_parse2
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_parse2.
+
+        Arguments:
+
+        """
+
+        return self.argparse2
+
 
 class ProgramLock(object):
 
@@ -199,6 +213,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_arg_parse2_false
+        test_arg_parse2_true
         test_help_true
         test_help_false
         test_arg_req_false
@@ -231,10 +247,43 @@ class UnitTest(unittest.TestCase):
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
         self.args = ArgParser()
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_help_true(self, mock_arg):
+    def test_arg_parse2_false(self, mock_arg):
+
+        """Function:  test_arg_parse2_false
+
+        Description:  Test arg_parser2 returns false.
+
+        Arguments:
+
+        """
+
+        self.args.argparse2 = False
+
+        mock_arg.return_value = self.args
+
+        self.assertFalse(mysql_log_admin.main())
+
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
+    @mock.patch("mysql_log_admin.gen_class.ArgParser")
+    def test_arg_parse2_true(self, mock_arg, mock_help):
+
+        """Function:  test_arg_parse2_true
+
+        Description:  Test arg_parser2 returns true.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args
+        mock_help.return_value = True
+
+        self.assertFalse(mysql_log_admin.main())
+
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
+    @mock.patch("mysql_log_admin.gen_class.ArgParser")
+    def test_help_true(self, mock_arg, mock_help):
 
         """Function:  test_help_true
 
@@ -245,13 +294,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_arg.return_value = self.args
+        mock_help.return_value = True
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_help_false(self, mock_arg):
+    def test_help_false(self, mock_arg, mock_help):
 
         """Function:  test_help_false
 
@@ -264,13 +313,13 @@ class UnitTest(unittest.TestCase):
         self.args.opt_req2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_req_false(self, mock_arg):
+    def test_arg_req_false(self, mock_arg, mock_help):
 
         """Function:  test_arg_req_false
 
@@ -283,13 +332,13 @@ class UnitTest(unittest.TestCase):
         self.args.opt_req2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_req_true(self, mock_arg):
+    def test_arg_req_true(self, mock_arg, mock_help):
 
         """Function:  test_arg_req_true
 
@@ -302,13 +351,13 @@ class UnitTest(unittest.TestCase):
         self.args.opt_xor_val2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_xor_false(self, mock_arg):
+    def test_arg_xor_false(self, mock_arg, mock_help):
 
         """Function:  test_arg_xor_false
 
@@ -321,13 +370,13 @@ class UnitTest(unittest.TestCase):
         self.args.opt_xor_val2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_xor_true(self, mock_arg):
+    def test_arg_xor_true(self, mock_arg, mock_help):
 
         """Function:  test_arg_xor_true
 
@@ -340,13 +389,13 @@ class UnitTest(unittest.TestCase):
         self.args.dir_perms_chk2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_dir_false(self, mock_arg):
+    def test_arg_dir_false(self, mock_arg, mock_help):
 
         """Function:  test_arg_dir_false
 
@@ -359,13 +408,13 @@ class UnitTest(unittest.TestCase):
         self.args.dir_perms_chk2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_dir_true(self, mock_arg):
+    def test_arg_dir_true(self, mock_arg, mock_help):
 
         """Function:  test_arg_dir_true
 
@@ -378,13 +427,13 @@ class UnitTest(unittest.TestCase):
         self.args.valid_func2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_validate_false(self, mock_arg):
+    def test_arg_validate_false(self, mock_arg, mock_help):
 
         """Function:  test_arg_validate_false
 
@@ -397,13 +446,13 @@ class UnitTest(unittest.TestCase):
         self.args.valid_func2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_validate_true(self, mock_arg):
+    def test_arg_validate_true(self, mock_arg, mock_help):
 
         """Function:  test_arg_validate_true
 
@@ -416,13 +465,13 @@ class UnitTest(unittest.TestCase):
         self.args.opt_con_req2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_cond_req_false(self, mock_arg):
+    def test_arg_cond_req_false(self, mock_arg, mock_help):
 
         """Function:  test_cond_req_false
 
@@ -435,15 +484,15 @@ class UnitTest(unittest.TestCase):
         self.args.opt_con_req2 = False
 
         mock_arg.return_value = self.args
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.run_program", mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ProgramLock")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_arg_cond_req_true(self, mock_arg, mock_lock):
+    def test_arg_cond_req_true(self, mock_arg, mock_lock, mock_help):
 
         """Function:  test_arg_cond_req_true
 
@@ -455,15 +504,15 @@ class UnitTest(unittest.TestCase):
 
         mock_arg.return_value = self.args
         mock_lock.return_value = self.proglock
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.run_program", mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ProgramLock")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_run_program(self, mock_arg, mock_lock):
+    def test_run_program(self, mock_arg, mock_lock, mock_help):
 
         """Function:  test_run_program
 
@@ -475,15 +524,15 @@ class UnitTest(unittest.TestCase):
 
         mock_arg.return_value = self.args
         mock_lock.return_value = self.proglock
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.run_program", mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ProgramLock")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_programlock_true(self, mock_arg, mock_lock):
+    def test_programlock_true(self, mock_arg, mock_lock, mock_help):
 
         """Function:  test_programlock_true
 
@@ -495,14 +544,14 @@ class UnitTest(unittest.TestCase):
 
         mock_arg.return_value = self.args
         mock_lock.return_value = self.proglock
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ProgramLock")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_programlock_false(self, mock_arg, mock_lock):
+    def test_programlock_false(self, mock_arg, mock_lock, mock_help):
 
         """Function:  test_programlock_false
 
@@ -515,16 +564,16 @@ class UnitTest(unittest.TestCase):
         mock_arg.return_value = self.args
         mock_lock.side_effect = \
             mysql_log_admin.gen_class.SingleInstanceException
+        mock_help.return_value = False
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_log_admin.main())
 
-    @mock.patch("mysql_log_admin.gen_libs.help_func",
-                mock.Mock(return_value=True))
     @mock.patch("mysql_log_admin.run_program", mock.Mock(return_value=True))
+    @mock.patch("mysql_log_admin.gen_libs.help_func")
     @mock.patch("mysql_log_admin.gen_class.ProgramLock")
     @mock.patch("mysql_log_admin.gen_class.ArgParser")
-    def test_programlock_id(self, mock_arg, mock_lock):
+    def test_programlock_id(self, mock_arg, mock_lock, mock_help):
 
         """Function:  test_programlock_id
 
@@ -538,6 +587,7 @@ class UnitTest(unittest.TestCase):
 
         mock_arg.return_value = self.args
         mock_lock.return_value = self.proglock
+        mock_help.return_value = False
 
         self.assertFalse(mysql_log_admin.main())
 
