@@ -200,7 +200,7 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
         subprocess.Popen(cmd + binlog_files, stdout=subprocess.PIPE).stdout)
 
 
-def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
+def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path="",
                 slave=None):
 
     """Function:  find_dt_pos
@@ -502,14 +502,14 @@ def main():
     opt_xor_val = {"-L": ["-D", "-R"], "-D": ["-L", "-R"], "-R": ["-D", "-L"]}
 
     # Process argument list from command line.
-    args = gen_class.ArgParser(
-        sys.argv, opt_val=opt_val_list, do_parse=True)
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list)
 
-    if not gen_libs.help_func(args, __version__, help_message)  \
-       and args.arg_require(opt_req=opt_req_list)               \
-       and args.arg_xor_dict(opt_xor_val=opt_xor_val)           \
-       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)        \
-       and args.arg_validate(valid_func=valid_func)             \
+    if args.arg_parse2()                                            \
+       and not gen_libs.help_func(args, __version__, help_message)  \
+       and args.arg_require(opt_req=opt_req_list)                   \
+       and args.arg_xor_dict(opt_xor_val=opt_xor_val)               \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk)            \
+       and args.arg_validate(valid_func=valid_func)                 \
        and args.arg_cond_req(opt_con_req=opt_con_req_list):
 
         try:
