@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.2] - 2024-08-19
+- Updated simplejson==3.13.2 for Python 2.
+
+### Fixed
+- find_dt_pos: Set the argument default value for bin_path to an empty string.
+
+### Changed
+- main: Removed parsing from gen_class.ArgParser call and called arg_parse2 as part of "if" statement.
+
+
 ## [3.0.1] - 2024-02-28
 - Updated to work in Red Hat 8
 - Updated python-lib to v3.0.3
