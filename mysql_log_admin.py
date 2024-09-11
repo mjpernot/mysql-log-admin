@@ -324,7 +324,7 @@ def fetch_log_entries(server, args, opt_arg_list):
 
         for item in lines:
             if isinstance(item, bytes):
-                print(type(item))
+                print(item.decode("utf-8"))
 
             else:
                 print(item, end="")
