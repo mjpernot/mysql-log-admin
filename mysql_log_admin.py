@@ -324,7 +324,7 @@ def fetch_log_entries(server, args, opt_arg_list):
 
         for item in lines:
             if isinstance(item, bytes):
-                print(str(item))
+                print(type(item))
 
             else:
                 print(item, end="")
