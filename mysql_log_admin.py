@@ -174,12 +174,6 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
     if bin_path is None:
         bin_path = ""
 
-#    if opt_arg_list is None:
-#        opt_arg_list = list()
-#
-#    else:
-#        opt_arg_list = list(opt_arg_list)
-
     if binlog_files is None:
         # List of binary logs.
         binlog_files = [
@@ -235,14 +229,6 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
 
     if bin_path is None:
         bin_path = ""
-
-#    if opt_arg_list is None:
-#        opt_arg_list = list()
-#
-#    else:
-#        opt_arg_list = list(opt_arg_list)
-
-    
 
     # List of current binary log names.
     log_files = [row["Log_name"] for row in mysql_libs.fetch_logs(master)]
@@ -337,7 +323,11 @@ def fetch_log_entries(server, args, opt_arg_list):
             bin_path=args.get_val("-p"))
 
         for item in lines:
-            print(item, end="")
+            if isinstance(item, bytes):
+                print(item)
+
+            else:
+                print(item, end="")
 
     else:
         print("Error encountered: %s" % (status[1]))
