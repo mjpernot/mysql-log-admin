@@ -200,7 +200,7 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
         subprocess.Popen(cmd + binlog_files, stdout=subprocess.PIPE).stdout)
 
 
-def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path="",
+def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
                 slave=None):
 
     """Function:  find_dt_pos
@@ -226,11 +226,18 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path="",
     sub4 = r"CRC32\s+(?P<crc>\w+)\s+"
     sub5 = r"(?P<type>\w+)"
 
-    if opt_arg_list is None:
-        opt_arg_list = list()
+    opt_arg_list = list() if opt_arg_list is None else list(opt_arg_list)
 
-    else:
-        opt_arg_list = list(opt_arg_list)
+    if bin_path is None:
+        bin_path = ""
+
+#    if opt_arg_list is None:
+#        opt_arg_list = list()
+#
+#    else:
+#        opt_arg_list = list(opt_arg_list)
+
+    
 
     # List of current binary log names.
     log_files = [row["Log_name"] for row in mysql_libs.fetch_logs(master)]

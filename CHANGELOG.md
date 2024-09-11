@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.3] - 2024-09-11
+
+### Fixed
+- find_dt_pos: Check on bin_path to set to empty string if passed as None.
+
+
 ## [3.0.2] - 2024-08-19
 - Updated simplejson==3.13.2 for Python 2.
 

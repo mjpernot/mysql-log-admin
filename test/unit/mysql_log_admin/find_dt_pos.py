@@ -93,6 +93,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_binpath_empty
+        test_binpath_none
         test_slave
         test_match_query
         test_match_start
@@ -131,6 +133,50 @@ class UnitTest(unittest.TestCase):
 
         self.match1 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
         self.match2 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
+
+    @mock.patch("mysql_log_admin.mysql_class.Position",
+                mock.Mock(return_value="Position"))
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_binpath_empty(self, mock_fetch, mock_binlog):
+
+        """Function:  test_binpath_empty
+
+        Description:  Test with bin_path argument passed with empty string.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.binlog_files
+        mock_binlog.return_value = []
+
+        self.assertEqual(
+            mysql_log_admin.find_dt_pos(
+                self.master, self.start_dt, self.stop_dt, bin_path=""),
+            "Position")
+
+    @mock.patch("mysql_log_admin.mysql_class.Position",
+                mock.Mock(return_value="Position"))
+    @mock.patch("mysql_log_admin.fetch_binlog")
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    def test_binpath_none(self, mock_fetch, mock_binlog):
+
+        """Function:  test_binpath_none
+
+        Description:  Test with bin_path argument passed with None.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.binlog_files
+        mock_binlog.return_value = []
+
+        self.assertEqual(
+            mysql_log_admin.find_dt_pos(
+                self.master, self.start_dt, self.stop_dt, bin_path=None),
+            "Position")
 
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
