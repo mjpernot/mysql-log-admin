@@ -150,7 +150,7 @@ def help_message():
 
 
 def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
-                 opt_arg_list=None, bin_path=""):
+                 opt_arg_list=None, bin_path=None):
 
     """Function:  fetch_binlog
 
@@ -169,11 +169,16 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
     """
 
-    if opt_arg_list is None:
-        opt_arg_list = list()
+    opt_arg_list = list() if opt_arg_list is None else list(opt_arg_list)
 
-    else:
-        opt_arg_list = list(opt_arg_list)
+    if bin_path is None:
+        bin_path = ""
+
+#    if opt_arg_list is None:
+#        opt_arg_list = list()
+#
+#    else:
+#        opt_arg_list = list(opt_arg_list)
 
     if binlog_files is None:
         # List of binary logs.

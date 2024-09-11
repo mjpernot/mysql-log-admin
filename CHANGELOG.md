@@ -14,7 +14,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated simplejson==3.13.2 for Python 2.
 
 ### Fixed
-- find_dt_pos: Set the argument default value for bin_path to an empty string.
+- find_dt_pos, fetch_binlog: Set the argument default value for bin_path to an empty string.
 
 ### Changed
 - main: Removed parsing from gen_class.ArgParser call and called arg_parse2 as part of "if" statement.
