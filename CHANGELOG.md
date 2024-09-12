@@ -7,6 +7,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [3.0.3] - 2024-09-11
 
 ### Fixed
+- fetch_log_entries, find_dt_pos:  Convert bytes to strings.
 - find_dt_pos: Check on bin_path to set to empty string if passed as None.
 
 
@@ -14,7 +15,6 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated simplejson==3.13.2 for Python 2.
 
 ### Fixed
-- fetch_log_entries, find_dt_pos:  Convert bytes to strings.
 - find_dt_pos, fetch_binlog: Set the argument default value for bin_path to an empty string.
 
 ### Changed
