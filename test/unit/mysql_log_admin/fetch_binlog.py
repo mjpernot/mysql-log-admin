@@ -87,6 +87,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_binpath_empty
+        test_binpath_none
         test_stop_dt
         test_start_dt
         test_opt_arg_list
@@ -112,6 +114,44 @@ class UnitTest(unittest.TestCase):
         self.opt_arg_list = ["--force-read", "--read-from-remote-server"]
         self.start_dt = "start_datetime_format"
         self.stop_dt = "end_datetime_format"
+
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    @mock.patch("mysql_log_admin.subprocess.Popen")
+    def test_binpath_empty(self, mock_sub, mock_fetch):
+
+        """Function:  test_binpath_empty
+
+        Description:  Test with bin_path argument passed with empty string.
+
+        Arguments:
+
+        """
+
+        mock_sub.return_value = Popen()
+        mock_fetch.return_value = self.binlog_files
+
+        dataout = mysql_log_admin.fetch_binlog(self.server, bin_path="")
+
+        self.assertEqual([x for x in dataout], self.filehandler)
+
+    @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
+    @mock.patch("mysql_log_admin.subprocess.Popen")
+    def test_binpath_none(self, mock_sub, mock_fetch):
+
+        """Function:  test_binpath_none
+
+        Description:  Test with bin_path argument passed with None.
+
+        Arguments:
+
+        """
+
+        mock_sub.return_value = Popen()
+        mock_fetch.return_value = self.binlog_files
+
+        dataout = mysql_log_admin.fetch_binlog(self.server, bin_path=None)
+
+        self.assertEqual([x for x in dataout], self.filehandler)
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")

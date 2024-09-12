@@ -175,9 +175,8 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.loglist
         mock_logs.return_value = self.status, self.binlog_list
 
-        with gen_libs.no_std_out():
-            self.assertFalse(mysql_log_admin.fetch_log_entries(
-                self.server, self.args, self.opt_arg_list))
+        self.assertFalse(mysql_log_admin.fetch_log_entries(
+            self.server, self.args, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.process_logs_list")
     @mock.patch("mysql_log_admin.fetch_binlog")
@@ -212,9 +211,8 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.loglist
         mock_logs.return_value = self.status, self.binlog_list
 
-        with gen_libs.no_std_out():
-            self.assertFalse(mysql_log_admin.fetch_log_entries(
-                self.server, self.args, self.opt_arg_list))
+        self.assertFalse(mysql_log_admin.fetch_log_entries(
+            self.server, self.args, self.opt_arg_list))
 
 
 if __name__ == "__main__":
