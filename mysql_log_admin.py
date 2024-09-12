@@ -247,7 +247,8 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     last_log_pos = None
 
     for item in lines:
-        item = item.decode("utf-8")
+        if sys.version_info < (3, 0):
+            item = item.decode("utf-8")
 
         # Supports checksum and match for approriate format.
         if master.crc == "CRC32":
@@ -324,7 +325,9 @@ def fetch_log_entries(server, args, opt_arg_list):
             bin_path=args.get_val("-p"))
 
         for item in lines:
-            item = item.decode("utf-8")
+            if sys.version_info < (3, 0):
+                item = item.decode("utf-8")
+
             print(item, end="")
 
     else:
