@@ -323,9 +323,7 @@ def fetch_log_entries(server, args, opt_arg_list):
             bin_path=args.get_val("-p"))
 
         for item in lines:
-            if isinstance(item, bytes):
-                item = item.decode("utf-8")
-
+            item = item.decode("utf-8")
             print(item, end="")
 
     else:

@@ -14,6 +14,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated simplejson==3.13.2 for Python 2.
 
 ### Fixed
+- fetch_log_entries:  Convert bytes to strings.
 - find_dt_pos, fetch_binlog: Set the argument default value for bin_path to an empty string.
 
 ### Changed
