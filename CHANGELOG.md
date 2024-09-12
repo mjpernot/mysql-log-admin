@@ -4,11 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.3] - 2024-09-11
+
+### Fixed
+- find_dt_pos: Check on bin_path to set to empty string if passed as None.
+
+
 ## [3.0.2] - 2024-08-19
 - Updated simplejson==3.13.2 for Python 2.
 
 ### Fixed
-- find_dt_pos: Set the argument default value for bin_path to an empty string.
+- fetch_log_entries, find_dt_pos:  Convert bytes to strings.
+- find_dt_pos, fetch_binlog: Set the argument default value for bin_path to an empty string.
 
 ### Changed
 - main: Removed parsing from gen_class.ArgParser call and called arg_parse2 as part of "if" statement.
