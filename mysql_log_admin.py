@@ -325,8 +325,8 @@ def fetch_log_entries(server, args, opt_arg_list):
             bin_path=args.get_val("-p"))
 
         for item in lines:
-            if sys.version_info < (3, 0):
-                item = item.decode("utf-8")
+            #if sys.version_info < (3, 0):
+            item = item.decode("utf-8")
 
             print(item, end="")
 
