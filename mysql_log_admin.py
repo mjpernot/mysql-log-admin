@@ -247,7 +247,7 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     last_log_pos = None
 
     for item in lines:
-        print(type(item))
+        item = item.decode("utf-8")
 
         # Supports checksum and match for approriate format.
         if master.crc == "CRC32":
