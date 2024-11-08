@@ -119,7 +119,6 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        rem = gen_libs.get_inst(re)
         self.master = Server()
         self.slave = Slave()
         self.filehandler = ["binlog1"]
@@ -131,8 +130,8 @@ class UnitTest(unittest.TestCase):
         self.stop_dt = "end_datetime_format"
         self.fetch_log = ["data line here"]
 
-        self.match1 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
-        self.match2 = rem.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
+        self.match1 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Start line")
+        self.match2 = re.match(r"(?P<type>\w+)\s+(?P<epos>\w+)", "Query 123")
 
     @mock.patch("mysql_log_admin.mysql_class.Position",
                 mock.Mock(return_value="Position"))
