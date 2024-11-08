@@ -189,7 +189,7 @@ Install the project using the procedures in the Installation section.
 
 ```
 cd {Python_Project}/mysql-log-admin
-test/unit/mysql_log_admin/unit_test_run.sh
+test/unit/mysql_log_admin/unit_test_run3.sh
 ```
 
 ### Code coverage:
