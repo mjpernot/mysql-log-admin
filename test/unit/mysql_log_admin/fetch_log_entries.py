@@ -21,14 +21,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mysql_log_admin
-import lib.gen_libs as gen_libs
-import version
+import mysql_log_admin                          # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -81,7 +81,7 @@ class ArgParser(object):
         return path
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -175,8 +175,9 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.loglist
         mock_logs.return_value = self.status, self.binlog_list
 
-        self.assertFalse(mysql_log_admin.fetch_log_entries(
-            self.server, self.args, self.opt_arg_list))
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_log_admin.fetch_log_entries(
+                self.server, self.args, self.opt_arg_list))
 
     @mock.patch("mysql_log_admin.process_logs_list")
     @mock.patch("mysql_log_admin.fetch_binlog")
@@ -211,8 +212,9 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.loglist
         mock_logs.return_value = self.status, self.binlog_list
 
-        self.assertFalse(mysql_log_admin.fetch_log_entries(
-            self.server, self.args, self.opt_arg_list))
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_log_admin.fetch_log_entries(
+                self.server, self.args, self.opt_arg_list))
 
 
 if __name__ == "__main__":

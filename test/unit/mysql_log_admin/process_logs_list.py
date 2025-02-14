@@ -21,13 +21,13 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mysql_log_admin
-import version
+import mysql_log_admin                          # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -50,7 +50,7 @@ class ArgParser(object):
 
         """
 
-        self.args_array = dict()
+        self.args_array = {}
 
     def get_val(self, skey, def_val=None):
 
@@ -74,10 +74,10 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -152,14 +152,14 @@ class UnitTest(unittest.TestCase):
         self.loglist4 = ["binlog-07", "binlog-08", "binlog-09", "binlog-10"]
         self.status = (True, None)
         self.status2 = (
-            False, "Error:  Option -f: '%s' not found in binary log list." %
-            (self.args_array5["-f"]))
+            False, f'Error:  Option -f: {self.args_array5["-f"]} not found in'
+            f' binary log list.')
         self.status3 = (
-            False, "Error:  Option -g: '%s' not found in binary log list." %
-            (self.args_array6["-g"]))
+            False, f'Error:  Option -g: {self.args_array6["-g"]} not found in'
+            f' binary log list.')
         self.status4 = (
-            False, "Error:  Option -g: '%s' is before -f '%s'." %
-            (self.args_array2["-g"], self.args_array2["-f"]))
+            False, f'Error:  Option -g: {self.args_array2["-g"]} is before -f'
+            f' {self.args_array2["-f"]}')
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     def test_last_missing(self, mock_fetch):
