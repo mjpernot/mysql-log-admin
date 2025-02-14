@@ -108,8 +108,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
-from __future__ import absolute_import
 
 # Standard
 import sys
@@ -126,10 +124,10 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.gen_libs as gen_libs
-    import lib.gen_class as gen_class
-    import mysql_lib.mysql_class as mysql_class
-    import mysql_lib.mysql_libs as mysql_libs
+    import lib.gen_libs as gen_libs                     # pylint:disable=R0402
+    import lib.gen_class as gen_class                   # pylint:disable=R0402
+    import mysql_lib.mysql_class as mysql_class         # pylint:disable=R0402
+    import mysql_lib.mysql_libs as mysql_libs           # pylint:disable=R0402
     import version
 
 __version__ = version.__version__
@@ -149,8 +147,9 @@ def help_message():
     print(__doc__)
 
 
-def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
-                 opt_arg_list=None, bin_path=None):
+def fetch_binlog(                                       # pylint:disable=R0913
+        server, start_dt=None, stop_dt=None, binlog_files=None,
+        opt_arg_list=None, bin_path=None):
 
     """Function:  fetch_binlog
 
@@ -169,7 +168,7 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
 
     """
 
-    opt_arg_list = list() if opt_arg_list is None else list(opt_arg_list)
+    opt_arg_list = [] if opt_arg_list is None else list(opt_arg_list)
 
     if bin_path is None:
         bin_path = ""
@@ -189,18 +188,19 @@ def fetch_binlog(server, start_dt=None, stop_dt=None, binlog_files=None,
             cmd = gen_libs.add_cmd(cmd, arg=arg)
 
     if start_dt:
-        cmd = gen_libs.add_cmd(cmd, arg="--start-datetime=%s" % (start_dt))
+        cmd = gen_libs.add_cmd(cmd, arg=f"--start-datetime={start_dt}")
 
     if stop_dt:
-        cmd = gen_libs.add_cmd(cmd, arg="--stop-datetime=%s" % (stop_dt))
+        cmd = gen_libs.add_cmd(cmd, arg=f"--stop-datetime={stop_dt}")
 
     # Return a file handler with log entries.
     return iter(
         subprocess.Popen(cmd + binlog_files, stdout=subprocess.PIPE).stdout)
 
 
-def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
-                slave=None):
+def find_dt_pos(                                # pylint:disable=R0913,R0914
+        master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
+        slave=None):
 
     """Function:  find_dt_pos
 
@@ -225,7 +225,7 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     sub4 = r"CRC32\s+(?P<crc>\w+)\s+"
     sub5 = r"(?P<type>\w+)"
 
-    opt_arg_list = list() if opt_arg_list is None else list(opt_arg_list)
+    opt_arg_list = [] if opt_arg_list is None else list(opt_arg_list)
 
     if bin_path is None:
         bin_path = ""
@@ -236,13 +236,13 @@ def find_dt_pos(master, start_dt, stop_dt, opt_arg_list=None, bin_path=None,
     if slave:
         # Get only those binary log files up to the relay log file.
         efile = slave.relay_mst_log
-        files = list(itertools.dropwhile(lambda file: file != efile,
-                                         log_files))
+        files = list(
+            itertools.dropwhile(lambda file: file != efile, log_files))
         log_files = files
 
     # Get entries between start and stop datetimes.
-    lines = fetch_binlog(master, start_dt, stop_dt, log_files, opt_arg_list,
-                         bin_path)
+    lines = fetch_binlog(
+        master, start_dt, stop_dt, log_files, opt_arg_list, bin_path)
     num_files = 0
     last_log_pos = None
 
@@ -291,13 +291,13 @@ def fetch_log_pos(server, args, opt_arg_list=None):
 
     """
 
-    opt_arg_list = list() if opt_arg_list is None else list(opt_arg_list)
+    opt_arg_list = [] if opt_arg_list is None else list(opt_arg_list)
 
     # Get Position class from file and log position.
     pos = find_dt_pos(server, args.get_val("-s"), args.get_val("-t"),
                       opt_arg_list, args.get_val("-p"))
 
-    print("Filename: {0}, Position: {1}".format(pos.file, pos.pos))
+    print(f"Filename: {pos.file}, Position: {pos.pos}")
 
 
 def fetch_log_entries(server, args, opt_arg_list):
@@ -331,7 +331,7 @@ def fetch_log_entries(server, args, opt_arg_list):
             print(item, end="")
 
     else:
-        print("Error encountered: %s" % (status[1]))
+        print(f"Error encountered: {status[1]}")
 
 
 def process_logs_list(server, args):
@@ -358,8 +358,8 @@ def process_logs_list(server, args):
     if (args.arg_exist("-f") and args.arg_exist("-g")) \
        and args.get_val("-g") < args.get_val("-f"):
 
-        status = (False, "Error:  Option -g: '%s' is before -f '%s'." %
-                  (args.get_val("-g"), args.get_val("-f")))
+        status = (False, f'Error:  Option -g: {args.get_val("-g")} is before'
+                  f' -f {args.get_val("-f")}')
 
         return status, binlog_list
 
@@ -375,8 +375,8 @@ def process_logs_list(server, args):
     elif args.arg_exist("-f"):
 
         status = (
-            False, "Error:  Option -f: '%s' not found in binary log list." %
-            (args.get_val("-f")))
+            False, f'Error:  Option -f: {args.get_val("-f")} not found in'
+            f' binary log list.')
 
         return status, binlog_list
 
@@ -388,8 +388,8 @@ def process_logs_list(server, args):
     elif args.arg_exist("-g"):
 
         status = (
-            False, "Error:  Option -g: '%s' not found in binary log list." %
-            (args.get_val("-g")))
+            False, f'Error:  Option -g: {args.get_val("-g")} not found in'
+            f' binary log list.')
 
     return status, binlog_list
 
@@ -425,17 +425,17 @@ def load_log(server, args, opt_arg_list):
             proc1 = fetch_binlog(
                 server, args.get_val("-s"), args.get_val("-t"),
                 binlog_list, opt_arg_list, args.get_val("-p"))
-            proc2 = subprocess.Popen(cmd, stdin=proc1)
+            proc2 = subprocess.Popen(cmd, stdin=proc1)  # pylint:disable=R1732
             proc2.wait()
             mysql_libs.disconnect(target)
 
         else:
-            print("load_log:  Error encountered on slave(%s):  %s" %
-                  (target.name, target.conn_msg))
+            print(f"load_log:  Error encountered on slave {target.name}:"
+                  f" {target.conn_msg}")
 
     else:
-        print("load_log:  Error encountered in process_logs_list: %s" %
-              (status[1]))
+        print(f"load_log:  Error encountered in process_logs_list:"
+              f" {status[1]}")
 
 
 def run_program(args, func_dict, opt_arg_list):
@@ -468,8 +468,8 @@ def run_program(args, func_dict, opt_arg_list):
         mysql_libs.disconnect(server)
 
     else:
-        print("run_program:  Error encountered on master(%s):  %s" %
-              (server.name, server.conn_msg))
+        print(f"run_program:  Error encountered on master {server.name}:"
+              f" {server.conn_msg}")
 
 
 def main():
@@ -522,8 +522,8 @@ def main():
             del prog_lock
 
         except gen_class.SingleInstanceException:
-            print("WARNING:  lock in place for mysql_log_admin with id of: %s"
-                  % (args.get_val("-y", def_val="")))
+            print(f'WARNING:  lock in place for mysql_log_admin with id of:'
+                  f' {args.get_val("-y", def_val="")}')
 
 
 if __name__ == "__main__":

@@ -21,9 +21,9 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mysql_log_admin
-import lib.gen_libs as gen_libs
-import version
+import mysql_log_admin                          # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -46,7 +46,7 @@ def fetch_log_pos(server, args_array, opt_arg_list):
     return status
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -96,7 +96,7 @@ class ArgParser(object):
         return list(self.args_array.keys())
 
 
-class Server(object):
+class Server():
 
     """Class:  Server
 
