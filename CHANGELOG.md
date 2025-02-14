@@ -12,6 +12,7 @@ Breaking Changes
 - Updated python-lib v4.0.0
 
 ### Changed
+- find_dt_pos: Refactored "if" statements.
 - Converted strings to f-strings.
 - Replaced list() with [].
 - Documentation changes.

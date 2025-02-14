@@ -250,28 +250,23 @@ def find_dt_pos(                                # pylint:disable=R0913,R0914
         if not isinstance(item, str):
             item = item.decode("utf-8")
 
+        match = re.match(sub1 + sub2 + sub3 + sub5, item)
+
         # Supports checksum and match for approriate format.
         if master.crc == "CRC32":
             match = re.match(sub1 + sub2 + sub3 + sub4 + sub5, item)
 
-        else:
-            match = re.match(sub1 + sub2 + sub3 + sub5, item)
-
         # If a line matches then see if the end_log_pos is Start (new file) or
         #   has found a Query within the datetime range requested.
-        if match:
+        # Matched line is at the start of the log.
+        if match and match.group("type") == "Start":
+            # Increase file position by 1.
+            num_files += 1
 
-            # If matched line is at the start of the log.
-            if match.group("type") == "Start":
-
-                # Increase file position by 1.
-                num_files += 1
-
-            # If matched line is a Query
-            if match.group("type") == "Query":
-
-                # Capture position of the log.
-                last_log_pos = match.group("epos")
+        # Matched line is a Query
+        if match and match.group("type") == "Query":
+            # Capture position of the log.
+            last_log_pos = match.group("epos")
 
     # Return file and position as a Position class.
     return mysql_class.Position(log_files[num_files - 1], last_log_pos)
