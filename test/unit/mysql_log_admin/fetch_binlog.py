@@ -21,13 +21,13 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mysql_log_admin
-import version
+import mysql_log_admin                          # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class Popen(object):
+class Popen():                                          # pylint:disable=R0903
 
     """Class:  Popen
 
@@ -51,7 +51,7 @@ class Popen(object):
         self.stdout = ["binlog1"]
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -132,7 +132,8 @@ class UnitTest(unittest.TestCase):
 
         dataout = mysql_log_admin.fetch_binlog(self.server, bin_path="")
 
-        self.assertEqual([x for x in dataout], self.filehandler)
+        self.assertEqual(
+            [x for x in dataout], self.filehandler)     # pylint:disable=R1721
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
@@ -151,7 +152,8 @@ class UnitTest(unittest.TestCase):
 
         dataout = mysql_log_admin.fetch_binlog(self.server, bin_path=None)
 
-        self.assertEqual([x for x in dataout], self.filehandler)
+        self.assertEqual(
+            [x for x in dataout], self.filehandler)     # pylint:disable=R1721
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
@@ -171,7 +173,8 @@ class UnitTest(unittest.TestCase):
         dataout = mysql_log_admin.fetch_binlog(
             self.server, bin_path="./", stop_dt=self.stop_dt)
 
-        self.assertEqual([x for x in dataout], self.filehandler)
+        self.assertEqual(
+            [x for x in dataout], self.filehandler)     # pylint:disable=R1721
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
@@ -191,7 +194,8 @@ class UnitTest(unittest.TestCase):
         dataout = mysql_log_admin.fetch_binlog(
             self.server, bin_path="./", start_dt=self.start_dt)
 
-        self.assertEqual([x for x in dataout], self.filehandler)
+        self.assertEqual(
+            [x for x in dataout], self.filehandler)     # pylint:disable=R1721
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
@@ -211,7 +215,8 @@ class UnitTest(unittest.TestCase):
         dataout = mysql_log_admin.fetch_binlog(
             self.server, bin_path="./", opt_arg_list=self.opt_arg_list)
 
-        self.assertEqual([x for x in dataout], self.filehandler)
+        self.assertEqual(
+            [x for x in dataout], self.filehandler)     # pylint:disable=R1721
 
     @mock.patch("mysql_log_admin.subprocess.Popen")
     def test_binlog_files(self, mock_sub):
@@ -229,7 +234,8 @@ class UnitTest(unittest.TestCase):
         dataout = mysql_log_admin.fetch_binlog(
             self.server, bin_path="./", binlog_files=self.binlog_files)
 
-        self.assertEqual([x for x in dataout], self.filehandler)
+        self.assertEqual(
+            [x for x in dataout], self.filehandler)     # pylint:disable=R1721
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
@@ -248,7 +254,8 @@ class UnitTest(unittest.TestCase):
 
         dataout = mysql_log_admin.fetch_binlog(self.server, bin_path="./")
 
-        self.assertEqual([x for x in dataout], self.filehandler)
+        self.assertEqual(
+            [x for x in dataout], self.filehandler)     # pylint:disable=R1721
 
     @mock.patch("mysql_log_admin.mysql_libs.fetch_logs")
     @mock.patch("mysql_log_admin.subprocess.Popen")
@@ -267,7 +274,8 @@ class UnitTest(unittest.TestCase):
 
         dataout = mysql_log_admin.fetch_binlog(self.server)
 
-        self.assertEqual([x for x in dataout], self.filehandler)
+        self.assertEqual(
+            [x for x in dataout], self.filehandler)     # pylint:disable=R1721
 
 
 if __name__ == "__main__":

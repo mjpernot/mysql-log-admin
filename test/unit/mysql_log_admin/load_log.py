@@ -21,14 +21,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mysql_log_admin
-import lib.gen_libs as gen_libs
-import version
+import mysql_log_admin                          # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():
 
     """Class:  ArgParser
 
@@ -84,7 +84,7 @@ class ArgParser(object):
         return path
 
 
-class SubProcess(object):
+class SubProcess():                                     # pylint:disable=R0903
 
     """Class:  SubProcess
 
@@ -121,7 +121,7 @@ class SubProcess(object):
         return True
 
 
-class Server(object):
+class Server():                                         # pylint:disable=R0903
 
     """Class:  Server
 
@@ -233,8 +233,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mysql_log_admin.mysql_libs.crt_cmd")
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     @mock.patch("mysql_log_admin.process_logs_list")
-    def test_connection_success(self, mock_logs, mock_inst, mock_cmd,
-                                mock_fetch, mock_popen):
+    def test_connection_success(                        # pylint:disable=R0913
+            self, mock_logs, mock_inst, mock_cmd, mock_fetch, mock_popen):
 
         """Function:  test_connection_success
 
@@ -277,8 +277,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mysql_log_admin.mysql_libs.crt_cmd")
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     @mock.patch("mysql_log_admin.process_logs_list")
-    def test_no_opt_arg_lists(self, mock_logs, mock_inst, mock_cmd, mock_fetch,
-                              mock_popen):
+    def test_no_opt_arg_lists(                          # pylint:disable=R0913
+            self, mock_logs, mock_inst, mock_cmd, mock_fetch, mock_popen):
 
         """Function:  test_no_opt_arg_lists
 
@@ -304,8 +304,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mysql_log_admin.mysql_libs.crt_cmd")
     @mock.patch("mysql_log_admin.mysql_libs.create_instance")
     @mock.patch("mysql_log_admin.process_logs_list")
-    def test_load_log(self, mock_logs, mock_inst, mock_cmd, mock_fetch,
-                      mock_popen):
+    def test_load_log(                                  # pylint:disable=R0913
+            self, mock_logs, mock_inst, mock_cmd, mock_fetch, mock_popen):
 
         """Function:  test_load_log
 
